@@ -1,0 +1,135 @@
+{
+  "schema": "circuitheroeslm-native-run-v1",
+  "project": "circuitheroesLM",
+  "architecture": "Engineering State Router",
+  "device": "mps",
+  "random_initialization": true,
+  "seed": 20260802,
+  "steps": 500,
+  "wall_seconds": 282.6832188750268,
+  "best_validation_loss": 0.2635243386030197,
+  "parameters": {
+    "total": 1163648,
+    "embedding_tied": 147456,
+    "per_layer_embeddings": 589824,
+    "core": 426368
+  },
+  "config": {
+    "vocab_size": 1536,
+    "width": 96,
+    "layers": 4,
+    "lanes": 4,
+    "state_width": 32,
+    "mixer_width": 192,
+    "context": 128,
+    "norm_epsilon": 1e-06,
+    "per_layer_embeddings": true
+  },
+  "history": [
+    {
+      "step": 1,
+      "train_loss": 7.348346710205078,
+      "validation_loss": 6.859926700592041
+    },
+    {
+      "step": 25,
+      "train_loss": 3.575864553451538,
+      "validation_loss": 3.655383914709091
+    },
+    {
+      "step": 50,
+      "train_loss": 1.7372339963912964,
+      "validation_loss": 1.7386739253997803
+    },
+    {
+      "step": 75,
+      "train_loss": 1.0839987993240356,
+      "validation_loss": 1.040521152317524
+    },
+    {
+      "step": 100,
+      "train_loss": 0.7631511688232422,
+      "validation_loss": 0.676928736269474
+    },
+    {
+      "step": 125,
+      "train_loss": 0.5380209684371948,
+      "validation_loss": 0.47995326668024063
+    },
+    {
+      "step": 150,
+      "train_loss": 0.4365784227848053,
+      "validation_loss": 0.37162134796380997
+    },
+    {
+      "step": 175,
+      "train_loss": 0.41983193159103394,
+      "validation_loss": 0.37072519958019257
+    },
+    {
+      "step": 200,
+      "train_loss": 0.3780995011329651,
+      "validation_loss": 0.37558653205633163
+    },
+    {
+      "step": 225,
+      "train_loss": 0.369322806596756,
+      "validation_loss": 0.289412435144186
+    },
+    {
+      "step": 250,
+      "train_loss": 0.3406980037689209,
+      "validation_loss": 0.31274015828967094
+    },
+    {
+      "step": 275,
+      "train_loss": 0.3245713412761688,
+      "validation_loss": 0.30701711401343346
+    },
+    {
+      "step": 300,
+      "train_loss": 0.27861544489860535,
+      "validation_loss": 0.2996559627354145
+    },
+    {
+      "step": 325,
+      "train_loss": 0.2808510661125183,
+      "validation_loss": 0.29536752589046955
+    },
+    {
+      "step": 350,
+      "train_loss": 0.24449974298477173,
+      "validation_loss": 0.32406756468117237
+    },
+    {
+      "step": 375,
+      "train_loss": 0.28767168521881104,
+      "validation_loss": 0.288590632379055
+    },
+    {
+      "step": 400,
+      "train_loss": 0.3836666941642761,
+      "validation_loss": 0.2804927546530962
+    },
+    {
+      "step": 425,
+      "train_loss": 0.2522280514240265,
+      "validation_loss": 0.33620505034923553
+    },
+    {
+      "step": 450,
+      "train_loss": 0.28680023550987244,
+      "validation_loss": 0.2635243386030197
+    },
+    {
+      "step": 475,
+      "train_loss": 0.3814578652381897,
+      "validation_loss": 0.3109518513083458
+    },
+    {
+      "step": 500,
+      "train_loss": 0.2455270141363144,
+      "validation_loss": 0.28103725612163544
+    }
+  ]
+}

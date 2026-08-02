@@ -54,6 +54,7 @@ def main() -> None:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--split", default="test-heldout-family")
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--component-id", default="")
     parser.add_argument("--row-int8", action="store_true")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
@@ -67,6 +68,8 @@ def main() -> None:
         _, state_dict = quantized_state_dict(state_dict)
     model.load_state_dict(state_dict)
     rows = [json.loads(line) for line in (ROOT / f"generated/native-pilot-v0.1/{args.split}.jsonl").read_text().splitlines()]
+    if args.component_id:
+        rows = [row for row in rows if row["component_id"] == args.component_id]
     if args.limit:
         rows = rows[:args.limit]
     results = []
@@ -88,7 +91,8 @@ def main() -> None:
                "by_task": {task: {"passed": task_passes[task], "total": count} for task, count in task_counts.items()},
                "results": results}
     quantization_tag = "-row-int8" if args.row_int8 else ""
-    output = ROOT / f"generated/{Path(args.checkpoint).stem}-{args.split}{quantization_tag}-evaluation.json"
+    selection_tag = f"-{args.component_id}" if args.component_id else (f"-first-{args.limit}" if args.limit else "")
+    output = ROOT / f"generated/{Path(args.checkpoint).stem}-{args.split}{selection_tag}{quantization_tag}-evaluation.json"
     output.write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps({key: value for key, value in summary.items() if key != "results"}, indent=2))
 

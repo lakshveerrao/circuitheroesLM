@@ -19,6 +19,7 @@ class ESRConfig:
     mixer_width: int = 192
     context: int = 128
     norm_epsilon: float = 1e-6
+    per_layer_embeddings: bool = False
 
     def validate(self) -> None:
         for name in ("vocab_size", "width", "layers", "lanes", "state_width", "mixer_width", "context"):
@@ -27,7 +28,7 @@ class ESRConfig:
         if self.lanes != 4:
             raise ValueError("native pilot contract requires four engineering lanes")
 
-    def to_dict(self) -> dict[str, int | float]:
+    def to_dict(self) -> dict[str, int | float | bool]:
         return asdict(self)
 
 
@@ -87,6 +88,10 @@ class EngineeringStateRouterLM(nn.Module):
         config.validate()
         self.config = config
         self.embedding = nn.Embedding(config.vocab_size, config.width)
+        self.layer_embeddings = (
+            nn.Parameter(torch.empty(config.layers, config.vocab_size, config.width))
+            if config.per_layer_embeddings else None
+        )
         self.blocks = nn.ModuleList(EngineeringStateLayer(config) for _ in range(config.layers))
         self.final_norm = RootMeanSquareNorm(config.width, config.norm_epsilon)
         self.output_bias = nn.Parameter(torch.zeros(config.vocab_size))
@@ -101,6 +106,8 @@ class EngineeringStateRouterLM(nn.Module):
                     nn.init.zeros_(module.bias)
         for block in self.blocks:
             nn.init.zeros_(block.recurrent_scale)
+        if self.layer_embeddings is not None:
+            nn.init.normal_(self.layer_embeddings, mean=0.0, std=0.02)
         nn.init.zeros_(self.output_bias)
 
     def empty_state(self, batch: int, *, device=None, dtype=None) -> tuple[Tensor, ...]:
@@ -118,8 +125,10 @@ class EngineeringStateRouterLM(nn.Module):
         reset = (token_ids == 3).view(-1, 1, 1, 1)
         latch = (token_ids == 4).view(-1, 1, 1)
         next_states = []
-        for block, block_state in zip(self.blocks, state):
+        for layer_index, (block, block_state) in enumerate(zip(self.blocks, state)):
             block_state = torch.where(reset, torch.zeros_like(block_state), block_state)
+            if self.layer_embeddings is not None:
+                token = token + self.layer_embeddings[layer_index, token_ids]
             token, block_state = block.step(token, block_state, latch)
             next_states.append(block_state)
         token = self.final_norm(token)
@@ -141,4 +150,6 @@ class EngineeringStateRouterLM(nn.Module):
     def parameter_report(self) -> dict[str, int]:
         total = sum(parameter.numel() for parameter in self.parameters())
         embedding = self.embedding.weight.numel()
-        return {"total": total, "embedding_tied": embedding, "core": total - embedding}
+        per_layer = self.layer_embeddings.numel() if self.layer_embeddings is not None else 0
+        return {"total": total, "embedding_tied": embedding,
+                "per_layer_embeddings": per_layer, "core": total - embedding - per_layer}

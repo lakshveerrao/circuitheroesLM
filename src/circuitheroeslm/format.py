@@ -102,8 +102,9 @@ def write_chlm(path: str | Path, config, state_dict: dict[str, torch.Tensor]) ->
         start = directory_offset + index * ENTRY_BYTES
         image[start:start + ENTRY_BYTES] = entry
     payload_crc = zlib.crc32(image[data_offset:])
-    header = struct.pack("<4sHH3I7If3I", MAGIC, VERSION, ENDIAN_MARKER, HEADER_BYTES, ENTRY_BYTES,
-                         len(tensors), config.vocab_size, config.width, config.layers, config.lanes,
+    flags = 1 if getattr(config, "per_layer_embeddings", False) else 0
+    header = struct.pack("<4sHH3I7If3I", MAGIC, VERSION, ENDIAN_MARKER, len(image), len(tensors), flags,
+                         config.vocab_size, config.width, config.layers, config.lanes,
                          config.state_width, config.mixer_width, config.context, config.norm_epsilon,
                          directory_offset, data_offset, payload_crc)
     if len(header) != HEADER_BYTES:
@@ -113,7 +114,7 @@ def write_chlm(path: str | Path, config, state_dict: dict[str, torch.Tensor]) ->
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(image)
     manifest = {"schema": "circuitheroeslm-chlm-v1-manifest", "format": "CHLM", "version": VERSION,
-                "bytes": len(image), "payload_crc32": f"{payload_crc:08x}",
+                "bytes": len(image), "flags": flags, "payload_crc32": f"{payload_crc:08x}",
                 "config": config.to_dict(), "tensors": [
                     {"name": item.name, "hash": f"{item.name_hash:08x}", "dtype": item.dtype,
                      "shape": list(item.shape), "data_bytes": len(item.data), "scale_bytes": len(item.scales)}

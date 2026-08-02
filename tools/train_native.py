@@ -65,13 +65,15 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=8e-4)
     parser.add_argument("--seed", type=int, default=20260802)
     parser.add_argument("--tag", default="native-pilot-v0.1")
+    parser.add_argument("--per-layer-embeddings", action="store_true")
     args = parser.parse_args()
     torch.manual_seed(args.seed)
     random.seed(args.seed)
     device = "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer_path = ROOT / "generated" / "native-tokenizer.json"
     tokenizer = EngineeringTokenizer.load(tokenizer_path)
-    config = ESRConfig(vocab_size=tokenizer.vocab_size)
+    config = ESRConfig(vocab_size=tokenizer.vocab_size,
+                       per_layer_embeddings=args.per_layer_embeddings)
     model = EngineeringStateRouterLM(config).to(device)
     train = load_rows(ROOT / "generated/native-pilot-v0.1/train.jsonl")
     validation = load_rows(ROOT / "generated/native-pilot-v0.1/validation.jsonl")
@@ -113,4 +115,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

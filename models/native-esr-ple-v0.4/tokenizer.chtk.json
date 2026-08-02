@@ -1,0 +1,10 @@
+{
+  "schema": "circuitheroeslm-chtk-v1-manifest",
+  "format": "CHTK",
+  "version": 1,
+  "bytes": 24194,
+  "vocab_size": 1536,
+  "merge_count": 1267,
+  "sha256": "3f9441df4108d8bca53ffe30b84c222003a14670ae910c44419cca19d2cb978c",
+  "source_sha256": "ebd2b9b8715a26f1c000edc728f21252bd40b46d923f61c45dd5c661904899b4"
+}

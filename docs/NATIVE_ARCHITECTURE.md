@@ -70,12 +70,13 @@ on factuality, unseen-family evaluation, quantized quality, and device speed.
 
 ## Native inference format
 
-The format will use magic `CHLM`, an explicit version, endian marker, tensor
+The format uses magic `CHLM`, an explicit version, endian marker, tensor
 directory, dimensions, quantization descriptors, offsets, lengths, CRC32, and
 whole-file SHA-256. Unknown versions and invalid bounds must fail closed.
 
-The first reference export uses row-wise INT8 to establish correctness. INT4
-is introduced only after float/INT8 host and device goldens agree.
+The first reference export uses row-wise INT8 and has passed float/INT8 host
+and device goldens. INT4 remains a future candidate and cannot replace the
+baseline until it independently passes the same gates.
 
 ## Engineering release gates
 

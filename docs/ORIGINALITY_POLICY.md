@@ -35,3 +35,10 @@ Before release:
 The defensible claim is independently implemented—not that all underlying
 mathematics or source engineering facts were invented by this project.
 
+## Published-method attribution
+
+When a published architecture idea is used, its origin must be named even when
+the implementation is independent. The per-layer-embedding candidate adapts
+Google's published Gemma 3n PLE concept and is documented separately. It uses
+no Gemma weights or source code and must not be described as an invention of
+circuitheroesLM.

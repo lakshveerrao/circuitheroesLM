@@ -36,6 +36,25 @@ def test_state_is_constant_size_across_context():
     assert [item.shape for item in short_state] == [item.shape for item in long_state]
 
 
+def test_per_layer_embedding_candidate_is_incremental_and_additive():
+    config = ESRConfig(vocab_size=64, width=24, layers=2, lanes=4,
+                       state_width=8, mixer_width=40, context=16,
+                       per_layer_embeddings=True)
+    torch.manual_seed(13)
+    model = EngineeringStateRouterLM(config).eval()
+    tokens = torch.tensor([[3, 9, 4, 12]])
+    with torch.no_grad():
+        sequence, _ = model(tokens)
+        state = None
+        incremental = []
+        for position in range(tokens.shape[1]):
+            logits, state = model.step(tokens[:, position], state)
+            incremental.append(logits)
+    assert torch.allclose(sequence, torch.stack(incremental, dim=1), atol=1e-6)
+    report = model.parameter_report()
+    assert report["per_layer_embeddings"] == 2 * 64 * 24
+
+
 def test_random_logits_have_healthy_scale():
     torch.manual_seed(11)
     model = EngineeringStateRouterLM(tiny_config()).eval()

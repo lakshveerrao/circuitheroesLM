@@ -22,5 +22,7 @@ electronics reasoning or correctness of unreviewed source facts.
 
 `model.pt` is the float PyTorch research checkpoint. `model.chlm` is the native
 614,848-byte row-INT8 reference export. INT8 retained 864/864 held-out verifier
-passes; maximum/mean host logit delta was 0.05884/0.006884. Native C-runtime and
-ESP32 verification remain open.
+passes; maximum/mean host logit delta was 0.05884/0.006884. The strict native C
+golden, sanitizer run, 100-sequence ESP32-S3 test, native tokenizer, and full
+grounded device generation all pass. `tokenizer.chtk` is the exact 24,194-byte
+native tokenizer artifact. See `docs/NATIVE_RESULTS.md` for measured limits.

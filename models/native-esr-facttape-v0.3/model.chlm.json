@@ -809,7 +809,7 @@
   ],
   "float_vs_row_int8_max_logit_delta": 0.05883726477622986,
   "float_vs_row_int8_mean_logit_delta": 0.006883634719997644,
-  "sha256": "6ec1c54939cc8cfb4b9138254bc3508a9fc1a1f9bcc2d74d0a9db1bc97d7be07",
+  "sha256": "da00ffaa8460d608fb614750a92909c75a2a8d1db5ca4284c7b8d9374f1a3cb8",
   "golden_sha256": "a796c00ec7498594b4225d96767d93b84985ac4251df22469b89d0eb757df241",
   "golden_tokens": [
     3,
