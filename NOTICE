@@ -1,0 +1,9 @@
+Circuit Heroes LM
+Copyright 2026 Laksh
+
+Includes software adapted from slvDev/esp32-ai, licensed under the MIT License.
+See licenses/slvdev-esp32-ai-MIT.txt.
+
+Includes a transformed catalogue derived from the KiCad official symbol
+library, licensed under CC BY-SA 4.0 with the KiCad libraries exception. See
+licenses/KiCad-LICENSE.md. Source paths are retained in the catalogue.

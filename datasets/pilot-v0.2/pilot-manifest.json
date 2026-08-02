@@ -1,0 +1,21 @@
+{
+  "schema": "circuit-heroes-hil-v0.1",
+  "review_status": "engineering-review-required",
+  "license": "CC0-1.0",
+  "component_count": 52,
+  "tasks": [
+    "explain",
+    "symbol",
+    "behavior",
+    "game"
+  ],
+  "splits": {
+    "train": 5499,
+    "validation": 674,
+    "test": 691
+  },
+  "hil_sha256": "a132f731717e0b70f1ef070d3e050a83e047da0f5c7735bfb120c78b6f454c68",
+  "prompt_tokens": 21269,
+  "max_prompt_tokens": 131,
+  "header": "circuitlm_pilot_data.h"
+}

@@ -1,0 +1,23 @@
+{
+  "train": {
+    "records": 77357,
+    "tokens": 16725920,
+    "answer_tokens": 2871821,
+    "file": "train.bin",
+    "answer_mask": "train.answer-mask.bin"
+  },
+  "validation": {
+    "records": 20006,
+    "tokens": 3975425,
+    "answer_tokens": 661999,
+    "file": "validation.bin",
+    "answer_mask": "validation.answer-mask.bin"
+  },
+  "test": {
+    "records": 6084,
+    "tokens": 1286709,
+    "answer_tokens": 217129,
+    "file": "test.bin",
+    "answer_mask": "test.answer-mask.bin"
+  }
+}

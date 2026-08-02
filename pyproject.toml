@@ -1,0 +1,16 @@
+[project]
+name = "circuit-heroes-lm"
+version = "0.1.0.dev0"
+description = "Offline electronics-centric TinyLM for ESP devices"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "Laksh"}]
+license = "MIT"
+dependencies = [
+  "numpy>=2.5.1",
+  "tokenizers>=0.23.1",
+  "torch>=2.13.0",
+]
+
+[project.urls]
+Repository = "https://github.com/lakshveerrao/circuit-heroes-lm"

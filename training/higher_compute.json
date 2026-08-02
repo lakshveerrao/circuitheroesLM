@@ -1,0 +1,21 @@
+{
+  "experiment": "grounded-7m-v1",
+  "status": "rejected_after_qualitative_evaluation",
+  "architecture": "ple",
+  "vocab": 4096,
+  "d_model": 128,
+  "n_layers": 8,
+  "n_heads": 4,
+  "ffn_hidden": 256,
+  "ple_dim": 128,
+  "seq_len": 256,
+  "batch_size": 8,
+  "maximum_steps": 1200,
+  "warmup_steps": 100,
+  "evaluation_interval": 100,
+  "early_stop_evaluations": 4,
+  "learning_rate": 0.0008,
+  "seed": 43,
+  "require_grounded_context": true,
+  "release_on_training_loss": false
+}

@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "boards": {
+    "waveshare-s3-touch-amoled-1.8": {
+      "macro": "CIRCUITLM_BOARD_WAVESHARE_S3_TOUCH_AMOLED_18",
+      "target": "esp32s3",
+      "tier": "full",
+      "flash_mb": 16,
+      "psram_mb": 8,
+      "display": "amoled-1.8-touch",
+      "builtin_audio_codec": "es8311",
+      "tested": true
+    },
+    "esp32-s3-generic-16m8m": {
+      "macro": "CIRCUITLM_BOARD_ESP32_S3_GENERIC_16M8M",
+      "target": "esp32s3",
+      "tier": "full",
+      "flash_mb": 16,
+      "psram_mb": 8,
+      "display": "none",
+      "tested": false
+    },
+    "esp32-s2-generic-4m2m": {
+      "macro": "CIRCUITLM_BOARD_ESP32_S2_GENERIC_4M2M",
+      "target": "esp32s2",
+      "tier": "compact",
+      "flash_mb": 4,
+      "psram_mb": 2,
+      "display": "none",
+      "tested": false
+    },
+    "esp32-c3-generic": {
+      "macro": "CIRCUITLM_BOARD_ESP32_C3_GENERIC",
+      "target": "esp32c3",
+      "tier": "micro",
+      "flash_mb": 4,
+      "psram_mb": 0,
+      "display": "none",
+      "tested": false
+    },
+    "esp32-c6-generic": {
+      "macro": "CIRCUITLM_BOARD_ESP32_C6_GENERIC",
+      "target": "esp32c6",
+      "tier": "micro",
+      "flash_mb": 4,
+      "psram_mb": 0,
+      "display": "none",
+      "tested": false
+    },
+    "esp32-p4-generic": {
+      "macro": "CIRCUITLM_BOARD_ESP32_P4_GENERIC",
+      "target": "esp32p4",
+      "tier": "full",
+      "flash_mb": 16,
+      "psram_mb": 16,
+      "display": "none",
+      "tested": false
+    }
+  },
+  "displays": {
+    "none": {"macro": "CIRCUITLM_DISPLAY_NONE"},
+    "oled-1.96-i2c": {"macro": "CIRCUITLM_DISPLAY_OLED_196_I2C"},
+    "spi-2.92": {"macro": "CIRCUITLM_DISPLAY_SPI_292"},
+    "amoled-1.96": {"macro": "CIRCUITLM_DISPLAY_AMOLED_196"},
+    "amoled-1.96-touch": {"macro": "CIRCUITLM_DISPLAY_AMOLED_196_TOUCH"},
+    "amoled-1.8-touch": {"macro": "CIRCUITLM_DISPLAY_AMOLED_18_TOUCH"}
+  },
+  "microphones": {
+    "none": {"macro": "CIRCUITLM_MIC_NONE"},
+    "modulino-i2s": {"macro": "CIRCUITLM_MIC_MODULINO"},
+    "generic-i2s": {"macro": "CIRCUITLM_MIC_GENERIC_I2S"}
+  },
+  "speakers": {
+    "none": {"macro": "CIRCUITLM_SPEAKER_NONE"},
+    "mini-i2s": {"macro": "CIRCUITLM_SPEAKER_MINI_I2S"},
+    "external-i2s": {"macro": "CIRCUITLM_SPEAKER_EXTERNAL_I2S"}
+  }
+}

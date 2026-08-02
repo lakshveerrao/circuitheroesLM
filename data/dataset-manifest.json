@@ -1,0 +1,16 @@
+{
+  "source_rows": 21349,
+  "splits": {
+    "train": 77357,
+    "validation": 20006,
+    "test": 6084
+  },
+  "tasks": {
+    "appearance": 18051,
+    "beginner_explanation": 21349,
+    "identity": 21349,
+    "purpose": 21349,
+    "type": 21349
+  },
+  "catalogue_sha256": "ac0f4ff02b1fa159c5b3468e1d7a0d4ff66bea475462f7ca581b7d05648b4b52"
+}

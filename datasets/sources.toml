@@ -1,0 +1,51 @@
+schema = 1
+
+[[source]]
+id = "kicad-symbol-library"
+name = "KiCad official symbol library"
+kind = "component_catalogue"
+homepage = "https://gitlab.com/kicad/libraries/kicad-symbols"
+license = "CC-BY-SA-4.0 WITH KiCad-libraries-exception"
+redistribute = true
+enabled = true
+local_artifact = "../../android_shell/model/electronics_catalogue.tsv"
+use = ["identity", "subtype", "description", "footprint", "provenance"]
+
+[[source]]
+id = "circuit-benchmark"
+name = "CIRCUIT: Circuit Interpretation and Reasoning Benchmark"
+kind = "evaluation_candidate"
+homepage = "https://arxiv.org/abs/2502.07980"
+license = "unverified"
+redistribute = false
+enabled = false
+reason = "Useful 510-question evaluation candidate; disabled until the dataset license is verified."
+
+[[source]]
+id = "electrovizqa"
+name = "ElectroVizQA"
+kind = "visual_evaluation_candidate"
+homepage = "https://arxiv.org/abs/2412.00102"
+license = "unverified"
+redistribute = false
+enabled = false
+reason = "Potential digital-electronics evaluation set; not suitable for this text-only checkpoint without a visual encoder."
+
+[[source]]
+id = "tinystories"
+name = "TinyStories"
+kind = "language_pretraining_reference"
+homepage = "https://huggingface.co/datasets/roneneldan/TinyStories"
+license = "cdla-sharing-1.0"
+redistribute = false
+enabled = false
+reason = "Reference only; CircuitLM needs electronics-first training, not story imitation."
+
+[[source]]
+id = "manufacturer-datasheets"
+name = "Manufacturer datasheets"
+kind = "factual_evaluation"
+license = "varies"
+redistribute = false
+enabled = false
+reason = "Do not bulk redistribute copyrighted PDFs. Extract only licensed facts with citations."

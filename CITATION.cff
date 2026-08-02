@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use Circuit Heroes LM, please cite this repository."
+title: "Circuit Heroes LM"
+type: software
+authors:
+  - given-names: "Laksh"
+repository-code: "https://github.com/lakshveerrao/circuit-heroes-lm"
+license: MIT
+version: 0.1.0-dev
+date-released: 2026-08-02
