@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="690" viewBox="0 0 1400 690" role="img" aria-labelledby="title desc">
+  <title id="title">circuitheroesLM ESP32-S3 memory and inference flow</title>
+  <desc id="desc">The quantized CHLM model stays in flash, per-layer rows stream into the Engineering State Router, and compact recurrent states remain in fast internal memory.</desc>
+  <defs>
+    <linearGradient id="bg2"><stop stop-color="#06101d"/><stop offset="1" stop-color="#17132d"/></linearGradient>
+    <linearGradient id="flash"><stop stop-color="#ffb33d"/><stop offset="1" stop-color="#ff5e68"/></linearGradient>
+    <linearGradient id="ram"><stop stop-color="#22daf3"/><stop offset="1" stop-color="#6a80ff"/></linearGradient>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e8ff"/></marker>
+  </defs>
+  <rect width="1400" height="690" rx="32" fill="url(#bg2)"/>
+  <text x="70" y="80" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="42" font-weight="700">Designed around the memory hierarchy of an ESP32-S3</text>
+  <text x="72" y="121" fill="#9eb3d1" font-family="Inter,Arial,sans-serif" font-size="20">The model moves bytes, not megabytes, through the hot path</text>
+
+  <g transform="translate(70 185)">
+    <rect width="350" height="410" rx="28" fill="#251b25" stroke="#ff8b55" stroke-width="2"/>
+    <text x="30" y="52" fill="#ffbd52" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">FLASH · LARGE / PERSISTENT</text>
+    <text x="30" y="95" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="700">CHLM row-INT8 model</text>
+    <text x="30" y="132" fill="#ffd4b5" font-family="Inter,Arial,sans-serif" font-size="21">1,229,312 bytes</text>
+    <g font-family="Inter,Arial,sans-serif" font-size="17">
+      <rect x="30" y="167" width="290" height="46" rx="12" fill="#3a2630"/><text x="48" y="196" fill="#ffe5d1">token + output embeddings</text>
+      <rect x="30" y="225" width="290" height="46" rx="12" fill="#3a2630"/><text x="48" y="254" fill="#ffe5d1">4 per-layer embedding tables</text>
+      <rect x="30" y="283" width="290" height="46" rx="12" fill="#3a2630"/><text x="48" y="312" fill="#ffe5d1">ESR gates, mixers, routers</text>
+      <rect x="30" y="341" width="290" height="46" rx="12" fill="#3a2630"/><text x="48" y="370" fill="#ffe5d1">CRC-checked tensor directory</text>
+    </g>
+  </g>
+
+  <g transform="translate(530 185)">
+    <rect width="340" height="410" rx="28" fill="#102a3a" stroke="#2bd7ef" stroke-width="2"/>
+    <text x="30" y="52" fill="#5be8fb" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">INTERNAL RAM · FAST / SMALL</text>
+    <text x="30" y="95" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="700">The thinking core</text>
+    <g transform="translate(30 135)" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700">
+      <rect width="130" height="72" rx="15" fill="#123e50" stroke="#2bd7ef"/><text x="28" y="43" fill="#bcf7ff">ENTITY</text>
+      <rect x="150" width="130" height="72" rx="15" fill="#1c3459" stroke="#7486ff"/><text x="164" y="43" fill="#dce0ff">RELATION</text>
+      <rect y="92" width="130" height="72" rx="15" fill="#3b3027" stroke="#ffb646"/><text x="15" y="135" fill="#ffe1a8">QUANTITY</text>
+      <rect x="150" y="92" width="130" height="72" rx="15" fill="#412438" stroke="#ff6c82"/><text x="157" y="135" fill="#ffd3da">CONSTRAINT</text>
+    </g>
+    <text x="30" y="345" fill="#b8cae1" font-family="Inter,Arial,sans-serif" font-size="17">activation + recurrent state</text>
+    <text x="30" y="374" fill="#7fa3c4" font-family="Inter,Arial,sans-serif" font-size="15">reused every token</text>
+  </g>
+
+  <g transform="translate(980 185)">
+    <rect width="350" height="410" rx="28" fill="#161f36" stroke="#7685ff" stroke-width="2"/>
+    <text x="30" y="52" fill="#9ca7ff" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2">DEVICE RESULT</text>
+    <text x="30" y="95" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="700">Measured, not estimated</text>
+    <g font-family="Inter,Arial,sans-serif">
+      <text x="30" y="165" fill="#61eaff" font-size="42" font-weight="700">39.45 ms</text><text x="30" y="192" fill="#9db3cf" font-size="16">per model step</text>
+      <text x="30" y="252" fill="#ffbd52" font-size="42" font-weight="700">4.77e−6</text><text x="30" y="279" fill="#9db3cf" font-size="16">maximum device/reference delta</text>
+      <text x="30" y="339" fill="#5be5c4" font-size="42" font-weight="700">0 bytes</text><text x="30" y="366" fill="#9db3cf" font-size="16">heap and PSRAM drift over 700 steps</text>
+    </g>
+  </g>
+
+  <path d="M430 390H510" stroke="#63e8ff" stroke-width="5" marker-end="url(#arr2)"/>
+  <text x="435" y="365" fill="#9fddeb" font-family="Inter,Arial,sans-serif" font-size="15">stream row</text>
+  <path d="M880 390H960" stroke="#63e8ff" stroke-width="5" marker-end="url(#arr2)"/>
+  <text x="887" y="365" fill="#9fddeb" font-family="Inter,Arial,sans-serif" font-size="15">emit token</text>
+  <rect x="386" y="623" width="628" height="42" rx="21" fill="#0e2834" stroke="#2fd5d0"/>
+  <text x="700" y="650" text-anchor="middle" fill="#d8fffb" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700">Fully local · deterministic artifact · no Wi-Fi · no cloud API</text>
+</svg>

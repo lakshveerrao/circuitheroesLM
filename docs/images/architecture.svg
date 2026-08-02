@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">circuitheroesLM inference architecture</title>
+  <desc id="desc">A fact card passes through the CHTK tokenizer, flash-streamed per-layer embeddings, four Engineering State Router lanes, a FactTape plan, and an exact-field verifier.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#111a35"/></linearGradient>
+    <linearGradient id="cyan" x1="0" x2="1"><stop stop-color="#17d9ff"/><stop offset="1" stop-color="#6f7cff"/></linearGradient>
+    <linearGradient id="warm" x1="0" x2="1"><stop stop-color="#ffbf4a"/><stop offset="1" stop-color="#ff5b65"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#66e5ff"/></marker>
+  </defs>
+  <rect width="1400" height="760" rx="32" fill="url(#bg)"/>
+  <g opacity=".12" stroke="#58cfff"><path d="M0 96H1400M0 190H1400M0 284H1400M0 378H1400M0 472H1400M0 566H1400M0 660H1400"/><path d="M100 0V760M300 0V760M500 0V760M700 0V760M900 0V760M1100 0V760M1300 0V760"/></g>
+  <text x="70" y="82" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="42" font-weight="700">One token. Four engineering states. Zero network calls.</text>
+  <text x="72" y="122" fill="#9bb4d4" font-family="Inter,Arial,sans-serif" font-size="20">Native grounded generation on a microcontroller</text>
+
+  <g transform="translate(70 185)">
+    <rect width="250" height="390" rx="24" fill="#0d2134" stroke="#2cbfe5" stroke-width="2"/>
+    <text x="28" y="50" fill="#63e8ff" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="2">LOCAL KNOWLEDGE</text>
+    <text x="28" y="92" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="700">Engineering fact card</text>
+    <g font-family="Inter,Arial,sans-serif" font-size="17">
+      <rect x="28" y="126" width="194" height="43" rx="10" fill="#12314b"/><text x="44" y="153" fill="#d8f8ff">name + family</text>
+      <rect x="28" y="180" width="194" height="43" rx="10" fill="#12314b"/><text x="44" y="207" fill="#d8f8ff">purpose + symbol</text>
+      <rect x="28" y="234" width="194" height="43" rx="10" fill="#12314b"/><text x="44" y="261" fill="#d8f8ff">behavior</text>
+      <rect x="28" y="288" width="194" height="43" rx="10" fill="#12314b"/><text x="44" y="315" fill="#d8f8ff">safety constraint</text>
+    </g>
+    <text x="28" y="365" fill="#7fa4c7" font-family="Inter,Arial,sans-serif" font-size="15">retrieved from local flash</text>
+  </g>
+
+  <path d="M330 380H408" stroke="#66e5ff" stroke-width="4" marker-end="url(#arrow)" filter="url(#glow)"/>
+  <g transform="translate(425 240)">
+    <rect width="210" height="275" rx="24" fill="#15203e" stroke="#697cff" stroke-width="2"/>
+    <text x="24" y="45" fill="#9ba5ff" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="2">CHTK</text>
+    <text x="24" y="83" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="700">Byte-BPE</text>
+    <text x="24" y="112" fill="#b8c7df" font-family="Inter,Arial,sans-serif" font-size="16">1,536-token vocabulary</text>
+    <g transform="translate(24 144)" fill="#263762">
+      <rect width="46" height="38" rx="8"/><rect x="55" width="46" height="38" rx="8"/><rect x="110" width="46" height="38" rx="8"/>
+      <rect y="48" width="72" height="38" rx="8"/><rect x="81" y="48" width="75" height="38" rx="8"/>
+    </g>
+    <text x="24" y="246" fill="#7fa4c7" font-family="Inter,Arial,sans-serif" font-size="15">native C tokenizer</text>
+  </g>
+
+  <path d="M645 380H708" stroke="#66e5ff" stroke-width="4" marker-end="url(#arrow)" filter="url(#glow)"/>
+  <g transform="translate(725 170)">
+    <rect width="390" height="420" rx="28" fill="#111b33" stroke="url(#cyan)" stroke-width="3"/>
+    <text x="30" y="49" fill="#65e8ff" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" letter-spacing="2">ENGINEERING STATE ROUTER</text>
+    <text x="30" y="88" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="700">Persistent state, layer by layer</text>
+    <rect x="30" y="112" width="330" height="52" rx="14" fill="#172b48" stroke="#6d7cff"/>
+    <text x="50" y="145" fill="#cdd2ff" font-family="Inter,Arial,sans-serif" font-size="17">flash-streamed per-layer embedding</text>
+    <g font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700">
+      <rect x="30" y="190" width="155" height="68" rx="16" fill="#10344a" stroke="#24cdec"/><text x="53" y="232" fill="#adf5ff">ENTITY</text>
+      <rect x="205" y="190" width="155" height="68" rx="16" fill="#1b2e53" stroke="#7785ff"/><text x="225" y="232" fill="#d9dcff">RELATION</text>
+      <rect x="30" y="278" width="155" height="68" rx="16" fill="#422d27" stroke="#ffb443"/><text x="47" y="320" fill="#ffe2ae">QUANTITY</text>
+      <rect x="205" y="278" width="155" height="68" rx="16" fill="#41233a" stroke="#ff647d"/><text x="218" y="320" fill="#ffd0d8">CONSTRAINT</text>
+    </g>
+    <path d="M106 258V278M282 258V278M185 224H205M185 312H205" stroke="#8feaff" stroke-width="3" opacity=".75"/>
+    <text x="30" y="386" fill="#9bb4d4" font-family="Inter,Arial,sans-serif" font-size="16">4 layers · width 96 · context 128</text>
+  </g>
+
+  <path d="M1125 380H1184" stroke="#66e5ff" stroke-width="4" marker-end="url(#arrow)" filter="url(#glow)"/>
+  <g transform="translate(1200 240)">
+    <rect width="150" height="275" rx="24" fill="#2a1d2b" stroke="#ff7d76" stroke-width="2"/>
+    <text x="22" y="44" fill="#ffc05e" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">FACTTAPE</text>
+    <text x="22" y="80" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">Plan</text>
+    <path d="M25 110H125M25 143H107M25 176H118" stroke="#ffbf4a" stroke-width="8" stroke-linecap="round" opacity=".8"/>
+    <rect x="22" y="202" width="106" height="43" rx="12" fill="#5a2b36"/>
+    <text x="37" y="229" fill="#ffd6c2" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700">VERIFY</text>
+  </g>
+
+  <g transform="translate(410 640)">
+    <rect width="580" height="72" rx="36" fill="#0d2a35" stroke="#38dcce" stroke-width="2"/>
+    <circle cx="43" cy="36" r="17" fill="#38dcce"/><path d="M34 36l7 7 13-16" fill="none" stroke="#052026" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="78" y="44" fill="#dffdfa" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="700">Grounded answer, quiz, or game mission — fully offline</text>
+  </g>
+</svg>
