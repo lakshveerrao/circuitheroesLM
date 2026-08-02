@@ -1,16 +1,21 @@
 # Circuit Heroes LM
 
+![Circuit Heroes](assets/circuit-heroes-logo.png)
+
 An open-source, electronics-centric TinyLM created by **Laksh** for fully
 offline inference on ESP devices.
 
 Circuit Heroes LM combines a compact generative model with a verified local
 component catalogue. The catalogue supplies exact names and facts; the model
-turns those facts into short beginner explanations, questions, and learning
-activities. No cloud API is required after installation.
+turns those facts into short beginner explanations, questions, and live game
+missions. No cloud API is required after installation.
 
 > Project status: active research preview. The portable runtime and dataset
-> pipeline work. The first electronics checkpoint was rejected because it
-> hallucinated component facts. It is not presented as a finished model. See
+> pipeline work. Two broad electronics checkpoints were rejected because they
+> hallucinated component facts. A new, narrow 52-component pilot passes its
+> deterministic in-domain checks, including 52 non-revealing Circuit Quest
+> clues, but is not a broad electronics foundation
+> model. See [pilot/README.md](pilot/README.md) and
 > [docs/BENCHMARKS.md](docs/BENCHMARKS.md).
 
 ## Why the factual catalogue matters
@@ -33,7 +38,9 @@ package, polarity, and limits do not depend on guessing.
 - `tools/`: configuration, dataset, tokenization, and release tools
 - `training/`: higher-compute grounded-model training configuration
 - `docs/`: architecture, hardware tiers, data, training, and release policy
-- `artifacts/`: accepted release artifacts only (currently empty by policy)
+- `pilot/`: bounded pilot facts, instructions, status, and limitations
+- `artifacts/`: locally exported development artifacts; no production release
+  is accepted yet
 
 ## Quick start
 
@@ -47,7 +54,20 @@ python3 tools/configure.py \
   --output generated/circuitlm_config.h
 ```
 
-Prepare the grounded instruction corpus:
+Build the bounded pilot corpus and generated firmware prompt header:
+
+```sh
+.venv/bin/python tools/build_pilot.py
+.venv/bin/python tools/tokenize_dataset.py \
+  --dataset generated/pilot \
+  --tokenizer model-tokenizer.json \
+  --output generated/pilot-tokens
+```
+
+The exact training, evaluation, and export commands are recorded in
+[`pilot/README.md`](pilot/README.md).
+
+To prepare the broader experimental corpus instead:
 
 ```sh
 python3 tools/prepare_dataset.py \
@@ -59,9 +79,8 @@ python3 tools/tokenize_dataset.py \
   --output generated/tokens
 ```
 
-Build a deterministic downloadable bundle after producing an accepted model.
-No weight bundle is currently published because both experimental checkpoints
-failed qualitative factuality tests:
+Build a deterministic downloadable bundle only after producing an accepted
+model. No production weight bundle is published yet:
 
 ```sh
 python3 tools/package_release.py \
@@ -88,6 +107,19 @@ with the KiCad library exception. See [AUTHORS.md](AUTHORS.md) and `licenses/`.
 
 ## License
 
-New project code is Apache-2.0. Third-party runtime code retains MIT terms.
-KiCad-derived catalogue data remains CC BY-SA 4.0 with its exception. Model
-weights will state their license in each release model card.
+Project code and released model weights use the MIT license. KiCad-derived
+catalogue and training data remain CC BY-SA 4.0 with the KiCad library
+exception. Third-party notices remain in `licenses/`.
+
+## Complete release map
+
+- [`models/`](models/README.md): PyTorch checkpoints, ESP32 INT4 weights,
+  golden output, hashes, and rejected research checkpoints
+- [`datasets/`](datasets/README.md): complete JSONL training, validation, and
+  test splits plus provenance and the hardware information layer
+- [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md): exact train, evaluate,
+  export, host verification, and ESP32 steps
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): PLE TinyLM and grounded
+  inference method
+- [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md): successes, failures, and measured
+  ESP32-S3 latency

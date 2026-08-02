@@ -21,14 +21,29 @@ games. The model must be paired with the factual electronics catalogue and an
 answer verifier. It is not suitable for safety-critical circuit design,
 mains-voltage advice, medical hardware, or unsupervised component selection.
 
+## Current pilot
+
+The `ple-quest-v0_2-s84` development checkpoint is a bounded demonstration:
+
+- 52 components from `pilot/hil_v0_1.json`;
+- four tasks per component: explanation, symbol, behavior, and mystery-game clue;
+- 4,097,312 parameters and a 2,124,620-byte INT4 artifact;
+- 208/208 canonical greedy generations passed the deterministic verifier;
+- local retrieval, generated response verification, and grounded fallback are
+  required parts of the runtime.
+
+That result measures the exact 52-component prompt contract. It is not an
+unseen-component benchmark, an expert factuality review, or proof of general
+hardware reasoning. The fact file is marked `engineering-review-required`.
+
 ## Current limitation
 
-The baseline checkpoint predates the grounded training pipeline. It proves
-local inference but does not prove broad electronics reasoning and is not
-published as an accepted model. Both custom electronics experiments were
-rejected after qualitative hallucination tests.
-Visible product answers must remain catalogue-grounded until a new checkpoint
-passes every release gate below.
+The pilot proves local, constrained generation for its fixed hardware
+information layer. It does not prove broad electronics reasoning and is not an
+accepted production model. Both earlier broad electronics experiments were
+rejected after qualitative hallucination tests. Visible product answers must
+remain catalogue-grounded until a future checkpoint passes every release gate
+below.
 
 ## CircuitLM 1.0 release gates
 

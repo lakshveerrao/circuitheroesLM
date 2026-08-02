@@ -5,7 +5,7 @@ description = "Offline electronics-centric TinyLM for ESP devices"
 readme = "README.md"
 requires-python = ">=3.12"
 authors = [{name = "Laksh"}]
-license = "Apache-2.0"
+license = "MIT"
 dependencies = [
   "numpy>=2.5.1",
   "tokenizers>=0.23.1",

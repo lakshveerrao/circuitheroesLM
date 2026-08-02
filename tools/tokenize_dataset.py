@@ -12,6 +12,8 @@ from tokenizers import Tokenizer
 
 
 def format_example(item: dict) -> tuple[str, str]:
+    if item.get("schema") == "circuitlm-pilot-instruction-v1":
+        return item["prompt"], " " + item["answer"]
     # The labels are deliberately visible tokens. At inference time the same
     # structure acts as a small hardware-reasoning plan without exposing a long
     # chain of thought to the learner.

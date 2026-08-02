@@ -1,0 +1,1675 @@
+{
+  "schema": "circuitlm-pilot-evaluation-v1",
+  "checkpoint": "runs/ple-quest-v0_2-s84-best.pt",
+  "device": "cpu",
+  "total": 208,
+  "passed": 208,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "component_index": 0,
+      "component": "Carbon-film resistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Carbon-film resistor limits electric current and creates controlled voltage drops."
+    },
+    {
+      "component_index": 0,
+      "component": "Carbon-film resistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Carbon-film resistor symbol looks like a resistor zigzag or rectangle between two wires."
+    },
+    {
+      "component_index": 0,
+      "component": "Carbon-film resistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Carbon-film resistor works like this: electrical energy is changed into a small amount of heat as current is limited."
+    },
+    {
+      "component_index": 0,
+      "component": "Carbon-film resistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that limits electric current and creates controlled voltage drops."
+    },
+    {
+      "component_index": 1,
+      "component": "Metal-film resistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Metal-film resistor limits current with stable and accurate resistance."
+    },
+    {
+      "component_index": 1,
+      "component": "Metal-film resistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Metal-film resistor symbol looks like the standard resistor zigzag or rectangle symbol."
+    },
+    {
+      "component_index": 1,
+      "component": "Metal-film resistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, a thin metal film resists charge flow and produces a predictable voltage drop."
+    },
+    {
+      "component_index": 1,
+      "component": "Metal-film resistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that limits current with stable and accurate resistance."
+    },
+    {
+      "component_index": 2,
+      "component": "Wirewound resistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Wirewound resistor. It handles more power while limiting current."
+    },
+    {
+      "component_index": 2,
+      "component": "Wirewound resistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Wirewound resistor symbol looks like the standard resistor symbol, sometimes marked as wirewound."
+    },
+    {
+      "component_index": 2,
+      "component": "Wirewound resistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, resistance wire turns electrical energy into heat."
+    },
+    {
+      "component_index": 2,
+      "component": "Wirewound resistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that handles more power while limiting current."
+    },
+    {
+      "component_index": 3,
+      "component": "Potentiometer",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Potentiometer lets a user adjust resistance or divide a voltage."
+    },
+    {
+      "component_index": 3,
+      "component": "Potentiometer",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Potentiometer symbol looks like a resistor symbol touched by a movable arrow called the wiper."
+    },
+    {
+      "component_index": 3,
+      "component": "Potentiometer",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Potentiometer works like this: turning its shaft moves the wiper along a resistive track."
+    },
+    {
+      "component_index": 3,
+      "component": "Potentiometer",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that lets a user adjust resistance or divide a voltage."
+    },
+    {
+      "component_index": 4,
+      "component": "NTC thermistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "NTC thermistor senses temperature because its resistance changes."
+    },
+    {
+      "component_index": 4,
+      "component": "NTC thermistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The NTC thermistor symbol looks like a resistor symbol crossed by a temperature mark."
+    },
+    {
+      "component_index": 4,
+      "component": "NTC thermistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A NTC thermistor works like this: its resistance decreases when its temperature rises."
+    },
+    {
+      "component_index": 4,
+      "component": "NTC thermistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that senses temperature because its resistance changes."
+    },
+    {
+      "component_index": 5,
+      "component": "Photoresistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Photoresistor senses light by changing resistance."
+    },
+    {
+      "component_index": 5,
+      "component": "Photoresistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Photoresistor symbol looks like a resistor inside a circle with arrows pointing toward it."
+    },
+    {
+      "component_index": 5,
+      "component": "Photoresistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, more light usually lowers its resistance."
+    },
+    {
+      "component_index": 5,
+      "component": "Photoresistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that senses light by changing resistance."
+    },
+    {
+      "component_index": 6,
+      "component": "Ceramic capacitor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Ceramic capacitor. It stores a small charge and filters fast electrical noise."
+    },
+    {
+      "component_index": 6,
+      "component": "Ceramic capacitor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Ceramic capacitor symbol looks like two equal parallel plates with a gap."
+    },
+    {
+      "component_index": 6,
+      "component": "Ceramic capacitor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Ceramic capacitor works like this: it charges and discharges quickly and may be connected either way around."
+    },
+    {
+      "component_index": 6,
+      "component": "Ceramic capacitor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that stores a small charge and filters fast electrical noise."
+    },
+    {
+      "component_index": 7,
+      "component": "Electrolytic capacitor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Electrolytic capacitor stores charge and smooths slower power-supply changes."
+    },
+    {
+      "component_index": 7,
+      "component": "Electrolytic capacitor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Electrolytic capacitor symbol looks like two capacitor plates with a plus sign marking the positive side."
+    },
+    {
+      "component_index": 7,
+      "component": "Electrolytic capacitor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, it stores more charge than many similarly sized capacitors."
+    },
+    {
+      "component_index": 7,
+      "component": "Electrolytic capacitor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that stores charge and smooths slower power-supply changes."
+    },
+    {
+      "component_index": 8,
+      "component": "Tantalum capacitor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Tantalum capacitor provides stable capacitance in a small package."
+    },
+    {
+      "component_index": 8,
+      "component": "Tantalum capacitor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Tantalum capacitor symbol looks like a polarized capacitor symbol with its positive terminal marked."
+    },
+    {
+      "component_index": 8,
+      "component": "Tantalum capacitor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, a tantalum dielectric stores charge in a compact part."
+    },
+    {
+      "component_index": 8,
+      "component": "Tantalum capacitor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that provides stable capacitance in a small package."
+    },
+    {
+      "component_index": 9,
+      "component": "Film capacitor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Film capacitor. It stores charge with low loss and good stability."
+    },
+    {
+      "component_index": 9,
+      "component": "Film capacitor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Film capacitor symbol looks like two equal capacitor plates with a gap."
+    },
+    {
+      "component_index": 9,
+      "component": "Film capacitor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, plastic film separates conducting layers that hold opposite charges."
+    },
+    {
+      "component_index": 9,
+      "component": "Film capacitor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that stores charge with low loss and good stability."
+    },
+    {
+      "component_index": 10,
+      "component": "Supercapacitor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Supercapacitor. It stores much more charge than an ordinary capacitor."
+    },
+    {
+      "component_index": 10,
+      "component": "Supercapacitor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Supercapacitor symbol looks like a polarized capacitor symbol, often labelled with capacitance and polarity."
+    },
+    {
+      "component_index": 10,
+      "component": "Supercapacitor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Supercapacitor works like this: it charges and discharges repeatedly between a capacitor and a small battery in behavior."
+    },
+    {
+      "component_index": 10,
+      "component": "Supercapacitor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that stores much more charge than an ordinary capacitor."
+    },
+    {
+      "component_index": 11,
+      "component": "Ferrite-core inductor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Ferrite-core inductor. It stores energy in a magnetic field and resists sudden current change."
+    },
+    {
+      "component_index": 11,
+      "component": "Ferrite-core inductor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a row of curved wire loops; that is the Ferrite-core inductor symbol."
+    },
+    {
+      "component_index": 11,
+      "component": "Ferrite-core inductor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, current through its coil builds a magnetic field in the ferrite core."
+    },
+    {
+      "component_index": 11,
+      "component": "Ferrite-core inductor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that stores energy in a magnetic field and resists sudden current change."
+    },
+    {
+      "component_index": 12,
+      "component": "Air-core inductor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Air-core inductor stores magnetic energy without a magnetic core."
+    },
+    {
+      "component_index": 12,
+      "component": "Air-core inductor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Air-core inductor symbol looks like a row of curved wire loops without core lines."
+    },
+    {
+      "component_index": 12,
+      "component": "Air-core inductor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Air-core inductor works like this: its coil creates a magnetic field mostly through air."
+    },
+    {
+      "component_index": 12,
+      "component": "Air-core inductor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that stores magnetic energy without a magnetic core."
+    },
+    {
+      "component_index": 13,
+      "component": "Transformer",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Transformer moves alternating-current energy between circuits and changes voltage."
+    },
+    {
+      "component_index": 13,
+      "component": "Transformer",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for two coils facing each other, often with core lines between them; that is the Transformer symbol."
+    },
+    {
+      "component_index": 13,
+      "component": "Transformer",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, changing current in one coil creates a changing magnetic field that induces voltage in the other."
+    },
+    {
+      "component_index": 13,
+      "component": "Transformer",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that moves alternating-current energy between circuits and changes voltage."
+    },
+    {
+      "component_index": 14,
+      "component": "Cartridge fuse",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Cartridge fuse. It opens a circuit when current stays dangerously high."
+    },
+    {
+      "component_index": 14,
+      "component": "Cartridge fuse",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Cartridge fuse symbol looks like a small rectangle placed in series with a wire."
+    },
+    {
+      "component_index": 14,
+      "component": "Cartridge fuse",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Cartridge fuse works like this: its thin internal link melts and stops current."
+    },
+    {
+      "component_index": 14,
+      "component": "Cartridge fuse",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that opens a circuit when current stays dangerously high."
+    },
+    {
+      "component_index": 15,
+      "component": "Resettable fuse",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Resettable fuse reduces current when it becomes too hot from an overload."
+    },
+    {
+      "component_index": 15,
+      "component": "Resettable fuse",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Resettable fuse symbol looks like a resistor-like protection symbol commonly labelled PTC."
+    },
+    {
+      "component_index": 15,
+      "component": "Resettable fuse",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Resettable fuse works like this: its resistance rises sharply during an overload and falls after cooling."
+    },
+    {
+      "component_index": 15,
+      "component": "Resettable fuse",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that reduces current when it becomes too hot from an overload."
+    },
+    {
+      "component_index": 16,
+      "component": "Rectifier diode",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Rectifier diode allows current mainly in one direction."
+    },
+    {
+      "component_index": 16,
+      "component": "Rectifier diode",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Rectifier diode symbol looks like a diode triangle-like wedge shape pointing toward a straight bar."
+    },
+    {
+      "component_index": 16,
+      "component": "Rectifier diode",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, it conducts when forward biased and blocks most reverse current."
+    },
+    {
+      "component_index": 16,
+      "component": "Rectifier diode",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that allows current mainly in one direction."
+    },
+    {
+      "component_index": 17,
+      "component": "Zener diode",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Zener diode holds an approximate voltage when used in reverse breakdown."
+    },
+    {
+      "component_index": 17,
+      "component": "Zener diode",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Zener diode symbol looks like a diode symbol with a bent cathode bar."
+    },
+    {
+      "component_index": 17,
+      "component": "Zener diode",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Zener diode works like this: it blocks reverse current until its Zener voltage is reached, then conducts."
+    },
+    {
+      "component_index": 17,
+      "component": "Zener diode",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that holds an approximate voltage when used in reverse breakdown."
+    },
+    {
+      "component_index": 18,
+      "component": "Schottky diode",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Schottky diode passes current in one direction with a relatively small voltage drop."
+    },
+    {
+      "component_index": 18,
+      "component": "Schottky diode",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Schottky diode symbol looks like a diode symbol with a hooked cathode marking."
+    },
+    {
+      "component_index": 18,
+      "component": "Schottky diode",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, a metal-semiconductor junction switches quickly."
+    },
+    {
+      "component_index": 18,
+      "component": "Schottky diode",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that passes current in one direction with a relatively small voltage drop."
+    },
+    {
+      "component_index": 19,
+      "component": "Light-emitting diode",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Light-emitting diode. It turns electrical energy into light."
+    },
+    {
+      "component_index": 19,
+      "component": "Light-emitting diode",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Light-emitting diode symbol looks like a diode symbol with two arrows pointing outward."
+    },
+    {
+      "component_index": 19,
+      "component": "Light-emitting diode",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Light-emitting diode works like this: forward current makes its semiconductor junction emit light."
+    },
+    {
+      "component_index": 19,
+      "component": "Light-emitting diode",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that turns electrical energy into light."
+    },
+    {
+      "component_index": 20,
+      "component": "Photodiode",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Photodiode. It turns light into a small electrical current."
+    },
+    {
+      "component_index": 20,
+      "component": "Photodiode",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Photodiode symbol looks like a diode symbol with arrows pointing inward."
+    },
+    {
+      "component_index": 20,
+      "component": "Photodiode",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, incoming light creates charge carriers in its junction."
+    },
+    {
+      "component_index": 20,
+      "component": "Photodiode",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that turns light into a small electrical current."
+    },
+    {
+      "component_index": 21,
+      "component": "NPN transistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A NPN transistor uses a small base current to control a larger collector current."
+    },
+    {
+      "component_index": 21,
+      "component": "NPN transistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The NPN transistor symbol looks like a three-terminal transistor whose emitter arrow points outward."
+    },
+    {
+      "component_index": 21,
+      "component": "NPN transistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A NPN transistor works like this: base current allows current to flow between collector and emitter."
+    },
+    {
+      "component_index": 21,
+      "component": "NPN transistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that uses a small base current to control a larger collector current."
+    },
+    {
+      "component_index": 22,
+      "component": "PNP transistor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A PNP transistor switches or amplifies using opposite polarities to an NPN transistor."
+    },
+    {
+      "component_index": 22,
+      "component": "PNP transistor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The PNP transistor symbol looks like a three-terminal transistor whose emitter arrow points outward."
+    },
+    {
+      "component_index": 22,
+      "component": "PNP transistor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, pulling its base below its emitter allows collector current."
+    },
+    {
+      "component_index": 22,
+      "component": "PNP transistor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that switches or amplifies using opposite polarities to an NPN transistor."
+    },
+    {
+      "component_index": 23,
+      "component": "N-channel MOSFET",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A N-channel MOSFET uses gate voltage to control current between drain and source."
+    },
+    {
+      "component_index": 23,
+      "component": "N-channel MOSFET",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The N-channel MOSFET symbol looks like a three-terminal field-effect transistor with an insulated gate."
+    },
+    {
+      "component_index": 23,
+      "component": "N-channel MOSFET",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, sufficient positive gate-to-source voltage forms a conducting channel."
+    },
+    {
+      "component_index": 23,
+      "component": "N-channel MOSFET",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that uses gate voltage to control current between drain and source."
+    },
+    {
+      "component_index": 24,
+      "component": "P-channel MOSFET",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "P-channel MOSFET switches a positive supply using gate voltage."
+    },
+    {
+      "component_index": 24,
+      "component": "P-channel MOSFET",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The P-channel MOSFET symbol looks like a MOSFET symbol with the P-channel arrow direction."
+    },
+    {
+      "component_index": 24,
+      "component": "P-channel MOSFET",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, pulling the gate below the source turns its channel on."
+    },
+    {
+      "component_index": 24,
+      "component": "P-channel MOSFET",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Mystery round! Pick the hero where pulling the gate below the source turns its channel on."
+    },
+    {
+      "component_index": 25,
+      "component": "IGBT",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A IGBT switches high voltage or current using an insulated control gate."
+    },
+    {
+      "component_index": 25,
+      "component": "IGBT",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The IGBT symbol looks like a power transistor symbol combining MOS gate and bipolar output features."
+    },
+    {
+      "component_index": 25,
+      "component": "IGBT",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, gate voltage controls a bipolar current path."
+    },
+    {
+      "component_index": 25,
+      "component": "IGBT",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Mystery round! Pick the hero where gate voltage controls a bipolar current path."
+    },
+    {
+      "component_index": 26,
+      "component": "SPST switch",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A SPST switch manually connects or disconnects one circuit path."
+    },
+    {
+      "component_index": 26,
+      "component": "SPST switch",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The SPST switch symbol looks like two contacts with one movable line between them."
+    },
+    {
+      "component_index": 26,
+      "component": "SPST switch",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, closing joins the contacts; opening separates them."
+    },
+    {
+      "component_index": 26,
+      "component": "SPST switch",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that manually connects or disconnects one circuit path."
+    },
+    {
+      "component_index": 27,
+      "component": "Momentary push button",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Momentary push button. It changes a circuit only while it is being pressed."
+    },
+    {
+      "component_index": 27,
+      "component": "Momentary push button",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Momentary push button symbol looks like switch contacts with a push actuator mark."
+    },
+    {
+      "component_index": 27,
+      "component": "Momentary push button",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Momentary push button works like this: a spring returns its contacts when released."
+    },
+    {
+      "component_index": 27,
+      "component": "Momentary push button",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that changes a circuit only while it is being pressed."
+    },
+    {
+      "component_index": 28,
+      "component": "Electromagnetic relay",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Electromagnetic relay uses a coil signal to move separate switch contacts."
+    },
+    {
+      "component_index": 28,
+      "component": "Electromagnetic relay",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Electromagnetic relay symbol looks like a coil drawn beside mechanically linked contacts."
+    },
+    {
+      "component_index": 28,
+      "component": "Electromagnetic relay",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, coil current creates a magnetic field that pulls the contact arm."
+    },
+    {
+      "component_index": 28,
+      "component": "Electromagnetic relay",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that uses a coil signal to move separate switch contacts."
+    },
+    {
+      "component_index": 29,
+      "component": "Optocoupler",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Optocoupler passes a signal using light while keeping circuits electrically separated."
+    },
+    {
+      "component_index": 29,
+      "component": "Optocoupler",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Optocoupler symbol looks like an LED facing a light sensor inside one outline."
+    },
+    {
+      "component_index": 29,
+      "component": "Optocoupler",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Optocoupler works like this: the input LED shines on an internal phototransistor or photodiode."
+    },
+    {
+      "component_index": 29,
+      "component": "Optocoupler",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that passes a signal using light while keeping circuits electrically separated."
+    },
+    {
+      "component_index": 30,
+      "component": "Operational amplifier",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Operational amplifier amplifies the difference between two input voltages."
+    },
+    {
+      "component_index": 30,
+      "component": "Operational amplifier",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a triangle with plus and minus inputs and one output; that is the Operational amplifier symbol."
+    },
+    {
+      "component_index": 30,
+      "component": "Operational amplifier",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Operational amplifier works like this: feedback makes it perform useful analogue operations."
+    },
+    {
+      "component_index": 30,
+      "component": "Operational amplifier",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that amplifies the difference between two input voltages."
+    },
+    {
+      "component_index": 31,
+      "component": "Voltage comparator",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Voltage comparator. It reports which of two input voltages is higher."
+    },
+    {
+      "component_index": 31,
+      "component": "Voltage comparator",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a triangle with plus and minus inputs and a digital-like output; that is the Voltage comparator symbol."
+    },
+    {
+      "component_index": 31,
+      "component": "Voltage comparator",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, its output changes state when the input order reverses."
+    },
+    {
+      "component_index": 31,
+      "component": "Voltage comparator",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that reports which of two input voltages is higher."
+    },
+    {
+      "component_index": 32,
+      "component": "555 timer",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a 555 timer. It creates delays, pulses, or repeating oscillations."
+    },
+    {
+      "component_index": 32,
+      "component": "555 timer",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The 555 timer symbol looks like an eight-pin block commonly labelled 555."
+    },
+    {
+      "component_index": 32,
+      "component": "555 timer",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A 555 timer works like this: internal comparators watch a timing capacitor and switch the output."
+    },
+    {
+      "component_index": 32,
+      "component": "555 timer",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that creates delays, pulses, or repeating oscillations."
+    },
+    {
+      "component_index": 33,
+      "component": "7805 voltage regulator",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a 7805 voltage regulator. It produces a regulated five-volt output from a higher input voltage."
+    },
+    {
+      "component_index": 33,
+      "component": "7805 voltage regulator",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The 7805 voltage regulator symbol looks like a three-pin regulator block marked input, ground, and output."
+    },
+    {
+      "component_index": 33,
+      "component": "7805 voltage regulator",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, it continuously adjusts an internal pass device to hold the output near five volts."
+    },
+    {
+      "component_index": 33,
+      "component": "7805 voltage regulator",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Mystery round! Pick the hero where it continuously adjusts an internal pass device to hold the output near five volts."
+    },
+    {
+      "component_index": 34,
+      "component": "LM317 voltage regulator",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A LM317 voltage regulator produces an adjustable regulated output voltage."
+    },
+    {
+      "component_index": 34,
+      "component": "LM317 voltage regulator",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The LM317 voltage regulator symbol looks like a three-pin block marked input, output, and adjust."
+    },
+    {
+      "component_index": 34,
+      "component": "LM317 voltage regulator",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A LM317 voltage regulator works like this: two external resistors set the feedback voltage."
+    },
+    {
+      "component_index": 34,
+      "component": "LM317 voltage regulator",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that produces an adjustable regulated output voltage."
+    },
+    {
+      "component_index": 35,
+      "component": "Buck converter",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Buck converter efficiently changes a higher direct voltage into a lower one."
+    },
+    {
+      "component_index": 35,
+      "component": "Buck converter",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Buck converter symbol looks like a switching power block associated with an inductor, diode or switches, and capacitor."
+    },
+    {
+      "component_index": 35,
+      "component": "Buck converter",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Buck converter works like this: rapid switching controls energy sent through an inductor to the output."
+    },
+    {
+      "component_index": 35,
+      "component": "Buck converter",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that efficiently changes a higher direct voltage into a lower one."
+    },
+    {
+      "component_index": 36,
+      "component": "Boost converter",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Boost converter changes a lower direct voltage into a higher one."
+    },
+    {
+      "component_index": 36,
+      "component": "Boost converter",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Boost converter symbol looks like a switching power block with an inductor and output diode or synchronous switch."
+    },
+    {
+      "component_index": 36,
+      "component": "Boost converter",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Boost converter works like this: an inductor stores energy and then releases it at a higher voltage."
+    },
+    {
+      "component_index": 36,
+      "component": "Boost converter",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that changes a lower direct voltage into a higher one."
+    },
+    {
+      "component_index": 37,
+      "component": "L298N motor controller",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A L298N motor controller controls the direction and speed of two small direct-current motors."
+    },
+    {
+      "component_index": 37,
+      "component": "L298N motor controller",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a multi-pin driver block with logic inputs and paired motor outputs; that is the L298N motor controller symbol."
+    },
+    {
+      "component_index": 37,
+      "component": "L298N motor controller",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A L298N motor controller works like this: internal transistor bridges reverse motor current direction and PWM can adjust a"
+    },
+    {
+      "component_index": 37,
+      "component": "L298N motor controller",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that controls the direction and speed of two small direct-current motors."
+    },
+    {
+      "component_index": 38,
+      "component": "AND gate",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A AND gate outputs one only when all required inputs are one."
+    },
+    {
+      "component_index": 38,
+      "component": "AND gate",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The AND gate symbol looks like a flat-left, rounded-right logic-gate shape."
+    },
+    {
+      "component_index": 38,
+      "component": "AND gate",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A AND gate works like this: it combines yes-or-no signals using the AND truth table."
+    },
+    {
+      "component_index": 38,
+      "component": "AND gate",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that outputs one only when all required inputs are one."
+    },
+    {
+      "component_index": 39,
+      "component": "NOT gate",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A NOT gate outputs the opposite logic state from its input."
+    },
+    {
+      "component_index": 39,
+      "component": "NOT gate",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a triangle with a small inversion circle on its output; that is the NOT gate symbol."
+    },
+    {
+      "component_index": 39,
+      "component": "NOT gate",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, a low input produces high output and a high input produces low output."
+    },
+    {
+      "component_index": 39,
+      "component": "NOT gate",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that outputs the opposite logic state from its input."
+    },
+    {
+      "component_index": 40,
+      "component": "D flip-flop",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "D flip-flop stores one digital bit when triggered by a clock edge."
+    },
+    {
+      "component_index": 40,
+      "component": "D flip-flop",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a rectangular logic block with D, clock, Q, and often inverted-Q pins; that is the D flip-flop symbol."
+    },
+    {
+      "component_index": 40,
+      "component": "D flip-flop",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, on the active clock edge, the D input is copied to Q."
+    },
+    {
+      "component_index": 40,
+      "component": "D flip-flop",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Mystery round! Pick the hero where on the active clock edge, the D input is copied to Q."
+    },
+    {
+      "component_index": 41,
+      "component": "Microcontroller",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Microcontroller runs instructions, reads inputs, and controls outputs."
+    },
+    {
+      "component_index": 41,
+      "component": "Microcontroller",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "Look for a rectangular integrated-circuit block with many named pins; that is the Microcontroller symbol."
+    },
+    {
+      "component_index": 41,
+      "component": "Microcontroller",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Microcontroller works like this: its processor executes code while peripherals handle timing, communication, and signals."
+    },
+    {
+      "component_index": 41,
+      "component": "Microcontroller",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that runs instructions, reads inputs, and controls outputs."
+    },
+    {
+      "component_index": 42,
+      "component": "Quartz crystal",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Quartz crystal provides a stable oscillation frequency for clocks."
+    },
+    {
+      "component_index": 42,
+      "component": "Quartz crystal",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Quartz crystal symbol looks like a small rectangle between two capacitor-like plates."
+    },
+    {
+      "component_index": 42,
+      "component": "Quartz crystal",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Quartz crystal works like this: quartz mechanically vibrates at a precise resonant frequency."
+    },
+    {
+      "component_index": 42,
+      "component": "Quartz crystal",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that provides a stable oscillation frequency for clocks."
+    },
+    {
+      "component_index": 43,
+      "component": "Hall-effect sensor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Hall-effect sensor. It detects a magnetic field and produces an electrical signal."
+    },
+    {
+      "component_index": 43,
+      "component": "Hall-effect sensor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Hall-effect sensor symbol looks like a sensor block marked with magnetic-field direction or Hall notation."
+    },
+    {
+      "component_index": 43,
+      "component": "Hall-effect sensor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, a magnetic field pushes charge sideways inside the sensing material."
+    },
+    {
+      "component_index": 43,
+      "component": "Hall-effect sensor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that detects a magnetic field and produces an electrical signal."
+    },
+    {
+      "component_index": 44,
+      "component": "Temperature sensor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Temperature sensor. It turns temperature into a voltage, resistance, or digital reading."
+    },
+    {
+      "component_index": 44,
+      "component": "Temperature sensor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Temperature sensor symbol looks like a sensor block associated with a thermometer mark."
+    },
+    {
+      "component_index": 44,
+      "component": "Temperature sensor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, a temperature-sensitive element changes an electrical property."
+    },
+    {
+      "component_index": 44,
+      "component": "Temperature sensor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that turns temperature into a voltage, resistance, or digital reading."
+    },
+    {
+      "component_index": 45,
+      "component": "Ultrasonic distance sensor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a Ultrasonic distance sensor. It measures distance using sound above human hearing."
+    },
+    {
+      "component_index": 45,
+      "component": "Ultrasonic distance sensor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Ultrasonic distance sensor symbol looks like a sensor block with transmit and receive transducers."
+    },
+    {
+      "component_index": 45,
+      "component": "Ultrasonic distance sensor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, it times how long an ultrasonic echo takes to return."
+    },
+    {
+      "component_index": 45,
+      "component": "Ultrasonic distance sensor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that measures distance using sound above human hearing."
+    },
+    {
+      "component_index": 46,
+      "component": "Rotary encoder",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "Rotary encoder reports turning direction and movement as pulses."
+    },
+    {
+      "component_index": 46,
+      "component": "Rotary encoder",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Rotary encoder symbol looks like a shaft or knob connected to two phase-shifted signal contacts."
+    },
+    {
+      "component_index": 46,
+      "component": "Rotary encoder",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Rotary encoder works like this: two outputs pulse in a sequence that reveals direction."
+    },
+    {
+      "component_index": 46,
+      "component": "Rotary encoder",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that reports turning direction and movement as pulses."
+    },
+    {
+      "component_index": 47,
+      "component": "Battery",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Battery provides direct voltage from stored chemical energy."
+    },
+    {
+      "component_index": 47,
+      "component": "Battery",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Battery symbol looks like alternating long and short parallel lines marked positive and negative."
+    },
+    {
+      "component_index": 47,
+      "component": "Battery",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Battery works like this: chemical reactions push charge through an external circuit."
+    },
+    {
+      "component_index": 47,
+      "component": "Battery",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that provides direct voltage from stored chemical energy."
+    },
+    {
+      "component_index": 48,
+      "component": "Board connector",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Board connector joins power or signals between wires and circuit boards."
+    },
+    {
+      "component_index": 48,
+      "component": "Board connector",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Board connector symbol looks like a group of numbered contacts inside a connector outline."
+    },
+    {
+      "component_index": 48,
+      "component": "Board connector",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Board connector works like this: matching metal contacts make removable electrical paths."
+    },
+    {
+      "component_index": 48,
+      "component": "Board connector",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that joins power or signals between wires and circuit boards."
+    },
+    {
+      "component_index": 49,
+      "component": "Solderless breadboard",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Solderless breadboard lets parts and jumper wires form temporary circuits without solder."
+    },
+    {
+      "component_index": 49,
+      "component": "Solderless breadboard",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Solderless breadboard symbol looks like it normally has no single circuit symbol because it is a construction tool."
+    },
+    {
+      "component_index": 49,
+      "component": "Solderless breadboard",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Solderless breadboard works like this: hidden metal clips connect groups of holes in rows and power rails."
+    },
+    {
+      "component_index": 49,
+      "component": "Solderless breadboard",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that lets parts and jumper wires form temporary circuits without solder."
+    },
+    {
+      "component_index": 50,
+      "component": "DC motor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "This is a DC motor. It turns direct-current electrical energy into rotation."
+    },
+    {
+      "component_index": 50,
+      "component": "DC motor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The DC motor symbol looks like a circle marked M with two electrical terminals."
+    },
+    {
+      "component_index": 50,
+      "component": "DC motor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "Inside its job, current in coils interacts with magnetic fields to create torque."
+    },
+    {
+      "component_index": 50,
+      "component": "DC motor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that turns direct-current electrical energy into rotation."
+    },
+    {
+      "component_index": 51,
+      "component": "Servo motor",
+      "task": "explain",
+      "passed": true,
+      "failures": [],
+      "answer": "A Servo motor moves its shaft toward a commanded angle."
+    },
+    {
+      "component_index": 51,
+      "component": "Servo motor",
+      "task": "symbol",
+      "passed": true,
+      "failures": [],
+      "answer": "The Servo motor symbol looks like a motor or actuator block with power, ground, and control connections."
+    },
+    {
+      "component_index": 51,
+      "component": "Servo motor",
+      "task": "behavior",
+      "passed": true,
+      "failures": [],
+      "answer": "A Servo motor works like this: internal feedback compares shaft position with command pulses."
+    },
+    {
+      "component_index": 51,
+      "component": "Servo motor",
+      "task": "game",
+      "passed": true,
+      "failures": [],
+      "answer": "Circuit Quest: choose the part that moves its shaft toward a commanded angle."
+    }
+  ]
+}
