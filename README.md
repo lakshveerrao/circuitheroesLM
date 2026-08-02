@@ -22,11 +22,12 @@ engineering knowledge; the learned model turns grounded records into language.
 ## Current status
 
 The architecture specification, native tokenizer, host reference model,
-engineering corpus builder, answer-only training loop, and deterministic tests
-are implemented. The first 200-step random-initialized smoke run reduced
-validation loss from 7.28 to 4.88. This proves the native path trains; it does
-not yet prove useful generation. No production weights are claimed until the
-originality, factuality, quantization, and ESP32 release gates pass.
+engineering corpus builder, answer-only training loop, generation evaluator,
+and deterministic tests are implemented. The first 800-step candidate trained,
+but was rejected after producing memorized components instead of grounding on
+its supplied fact card. This is recorded publicly in `experiments/`. No weights
+are released and quantization is deliberately blocked until a candidate passes
+held-out engineering-family generation.
 
 Read [`docs/NATIVE_ARCHITECTURE.md`](docs/NATIVE_ARCHITECTURE.md) and
 [`docs/ORIGINALITY_POLICY.md`](docs/ORIGINALITY_POLICY.md) before making claims

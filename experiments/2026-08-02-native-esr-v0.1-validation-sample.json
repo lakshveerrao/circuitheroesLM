@@ -1,0 +1,153 @@
+{
+  "schema": "circuitheroeslm-native-evaluation-v1",
+  "project": "circuitheroesLM",
+  "checkpoint": "runs/native-esr-v0.1-800-best.pt",
+  "split": "validation",
+  "total": 12,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "by_task": {
+    "explain": {
+      "passed": 0,
+      "total": 3
+    },
+    "game": {
+      "passed": 0,
+      "total": 3
+    },
+    "symbol": {
+      "passed": 0,
+      "total": 1
+    },
+    "behavior": {
+      "passed": 0,
+      "total": 2
+    },
+    "identify": {
+      "passed": 0,
+      "total": 3
+    }
+  },
+  "results": [
+    {
+      "component_id": "pnp_bjt",
+      "family": "Bipolar junction transistor",
+      "task": "explain",
+      "expected": "PNP transistor switches or amplifies using opposite polarities to an NPN transistor.",
+      "generated": "Film capacitor stores charge with low loss and good stability.",
+      "tokens": 20,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "buck_converter",
+      "family": "Step-down switching converter",
+      "task": "game",
+      "expected": "Choose the part that efficiently changes a higher direct voltage into a lower one.",
+      "generated": "Choose the part that stores magnetic energy without a magnetic core.",
+      "tokens": 11,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "p_channel_mosfet",
+      "family": "Voltage-controlled transistor",
+      "task": "game",
+      "expected": "Choose the part that switches a positive supply using gate voltage.",
+      "generated": "Choose the part that opens a circuit when current stays dangerously high.",
+      "tokens": 7,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "n_channel_mosfet",
+      "family": "Voltage-controlled transistor",
+      "task": "explain",
+      "expected": "N-channel MOSFET uses gate voltage to control current between drain and source.",
+      "generated": "Photoresistor senses light by changing resistance.",
+      "tokens": 16,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "op_amp",
+      "family": "High-gain differential amplifier",
+      "task": "symbol",
+      "expected": "A triangle with plus and minus inputs and one output.",
+      "generated": "A diode symbol with a bent cathode bar.",
+      "tokens": 10,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "n_channel_mosfet",
+      "family": "Voltage-controlled transistor",
+      "task": "behavior",
+      "expected": "Sufficient positive gate-to-source voltage forms a conducting channel.",
+      "generated": "More light usually lowers its resistance.",
+      "tokens": 11,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "pnp_bjt",
+      "family": "Bipolar junction transistor",
+      "task": "identify",
+      "expected": "PNP transistor.",
+      "generated": "Air-core inductor stores magnetic energy without a magnetic core.",
+      "tokens": 15,
+      "passed": false,
+      "reason": "identity"
+    },
+    {
+      "component_id": "photoresistor",
+      "family": "Light-sensitive resistor",
+      "task": "identify",
+      "expected": "Photoresistor.",
+      "generated": "NOT gate outputs the opposite logic state from its input.",
+      "tokens": 13,
+      "passed": false,
+      "reason": "identity"
+    },
+    {
+      "component_id": "film_capacitor",
+      "family": "Non-polarized capacitor",
+      "task": "game",
+      "expected": "Choose the part that stores charge with low loss and good stability.",
+      "generated": "Choose the part that joins power or signals between wires and circuit boards.",
+      "tokens": 7,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "air_core_inductor",
+      "family": "Inductor",
+      "task": "behavior",
+      "expected": "Its coil creates a magnetic field mostly through air.",
+      "generated": "Pulling its base below its emitter allows collector current.",
+      "tokens": 13,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "buck_converter",
+      "family": "Step-down switching converter",
+      "task": "identify",
+      "expected": "Buck converter.",
+      "generated": "Boost converter changes a lower direct voltage into a higher one.",
+      "tokens": 12,
+      "passed": false,
+      "reason": "identity"
+    },
+    {
+      "component_id": "zener_diode",
+      "family": "Voltage-reference diode",
+      "task": "explain",
+      "expected": "Zener diode holds an approximate voltage when used in reverse breakdown.",
+      "generated": "Solderless breadboard lets parts and jumper wires form temporary circuits without solder.",
+      "tokens": 17,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    }
+  ]
+}

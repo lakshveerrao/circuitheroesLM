@@ -14,3 +14,14 @@ The monotonic validation improvement establishes that the independently
 implemented ESR model, tokenizer, engineering corpus and answer-only objective
 form a working training path. It is not a model-quality release. Generation,
 held-out-family factuality, quantization and ESP32 inference remain open gates.
+
+## 800-step candidate verdict
+
+The longer run reached best validation loss 3.542 at step 575, then overfit.
+A 12-example validation generation sample and a 12-example held-out-family
+sample both scored 0/12. Outputs were fluent but substituted memorized training
+components for the supplied fact card. The checkpoint is rejected.
+
+This failure blocks export, quantization, and ESP32 integration. The next
+candidate requires a larger paraphrased engineering corpus and an architecture
+or objective with demonstrably stronger fact-card conditioning/copy behavior.
