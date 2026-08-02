@@ -1,0 +1,813 @@
+{
+  "schema": "circuitheroeslm-chlm-v1-manifest",
+  "format": "CHLM",
+  "version": 1,
+  "bytes": 614848,
+  "payload_crc32": "255191f8",
+  "config": {
+    "vocab_size": 1536,
+    "width": 96,
+    "layers": 4,
+    "lanes": 4,
+    "state_width": 32,
+    "mixer_width": 192,
+    "context": 128,
+    "norm_epsilon": 1e-06
+  },
+  "tensors": [
+    {
+      "name": "blocks.0.down.weight",
+      "hash": "3410d631",
+      "dtype": 2,
+      "shape": [
+        96,
+        192
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.0.fact_output.weight",
+      "hash": "e3c522f1",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.0.fact_router.bias",
+      "hash": "5b340834",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.fact_router.weight",
+      "hash": "f6c69849",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.0.gate.bias",
+      "hash": "74ed0cbd",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.gate.weight",
+      "hash": "497b4208",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.0.post_norm.scale",
+      "hash": "6750a5b6",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.pre_norm.scale",
+      "hash": "aec44c55",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.proposal.bias",
+      "hash": "1fc9a87e",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.proposal.weight",
+      "hash": "a3e1b543",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.0.recurrent_scale",
+      "hash": "67eebb00",
+      "dtype": 2,
+      "shape": [
+        4,
+        32
+      ],
+      "data_bytes": 128,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.0.router.bias",
+      "hash": "5a8513bf",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.router.weight",
+      "hash": "335a8962",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.0.state_output.weight",
+      "hash": "3e11e9bc",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.0.value.bias",
+      "hash": "d8145915",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.value.weight",
+      "hash": "c7a0be50",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.0.write.bias",
+      "hash": "5ab55e97",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.0.write.weight",
+      "hash": "33478bca",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.1.down.weight",
+      "hash": "00e72a72",
+      "dtype": 2,
+      "shape": [
+        96,
+        192
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.1.fact_output.weight",
+      "hash": "22c83abc",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.1.fact_router.bias",
+      "hash": "b053c3d1",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.fact_router.weight",
+      "hash": "08349d4c",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.1.gate.bias",
+      "hash": "588d2b9e",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.gate.weight",
+      "hash": "f1f34063",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.1.post_norm.scale",
+      "hash": "ad727fb1",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.pre_norm.scale",
+      "hash": "33e49f08",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.proposal.bias",
+      "hash": "fcc057d9",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.proposal.weight",
+      "hash": "59355984",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.1.recurrent_scale",
+      "hash": "c5558baf",
+      "dtype": 2,
+      "shape": [
+        4,
+        32
+      ],
+      "data_bytes": 128,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.1.router.bias",
+      "hash": "73e227bc",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.router.weight",
+      "hash": "63422761",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.1.state_output.weight",
+      "hash": "72ffeb13",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.1.value.bias",
+      "hash": "877041b8",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.value.weight",
+      "hash": "f6b70bed",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.1.write.bias",
+      "hash": "8abe5b8e",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.1.write.weight",
+      "hash": "048f2c73",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.2.down.weight",
+      "hash": "b0e6a25f",
+      "dtype": 2,
+      "shape": [
+        96,
+        192
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.2.fact_output.weight",
+      "hash": "a9eebb8f",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.2.fact_router.bias",
+      "hash": "6f6ae952",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.fact_router.weight",
+      "hash": "71d61877",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.2.gate.bias",
+      "hash": "4cc4e763",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.gate.weight",
+      "hash": "14c92c36",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.2.post_norm.scale",
+      "hash": "5d55f110",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.pre_norm.scale",
+      "hash": "c36f3bbf",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.proposal.bias",
+      "hash": "26c25018",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.proposal.weight",
+      "hash": "6e49684d",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.2.recurrent_scale",
+      "hash": "8ae32afe",
+      "dtype": 2,
+      "shape": [
+        4,
+        32
+      ],
+      "data_bytes": 128,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.2.router.bias",
+      "hash": "b9dbc18d",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.router.weight",
+      "hash": "5201f578",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.2.state_output.weight",
+      "hash": "2db3220a",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.2.value.bias",
+      "hash": "f3612d0f",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.value.weight",
+      "hash": "9fc7dfd2",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.2.write.bias",
+      "hash": "6cad36dd",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.2.write.weight",
+      "hash": "5cfbd828",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.3.down.weight",
+      "hash": "57b23ce0",
+      "dtype": 2,
+      "shape": [
+        96,
+        192
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.3.fact_output.weight",
+      "hash": "3c1b4472",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.3.fact_router.bias",
+      "hash": "ba202437",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.fact_router.weight",
+      "hash": "c55c446a",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.3.gate.bias",
+      "hash": "960c6a54",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.gate.weight",
+      "hash": "cfac0769",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.3.post_norm.scale",
+      "hash": "9b7de63b",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.pre_norm.scale",
+      "hash": "256acad2",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.proposal.bias",
+      "hash": "b7784783",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.proposal.weight",
+      "hash": "26be3656",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "blocks.3.recurrent_scale",
+      "hash": "1ac96155",
+      "dtype": 2,
+      "shape": [
+        4,
+        32
+      ],
+      "data_bytes": 128,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.3.router.bias",
+      "hash": "397a5af2",
+      "dtype": 1,
+      "shape": [
+        4
+      ],
+      "data_bytes": 16,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.router.weight",
+      "hash": "a3e6e317",
+      "dtype": 2,
+      "shape": [
+        4,
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 16
+    },
+    {
+      "name": "blocks.3.state_output.weight",
+      "hash": "0853dc11",
+      "dtype": 2,
+      "shape": [
+        96,
+        128
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 384
+    },
+    {
+      "name": "blocks.3.value.bias",
+      "hash": "8dcbe022",
+      "dtype": 1,
+      "shape": [
+        192
+      ],
+      "data_bytes": 768,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.value.weight",
+      "hash": "6bc4bda7",
+      "dtype": 2,
+      "shape": [
+        192,
+        96
+      ],
+      "data_bytes": 18432,
+      "scale_bytes": 768
+    },
+    {
+      "name": "blocks.3.write.bias",
+      "hash": "8cefb80c",
+      "dtype": 1,
+      "shape": [
+        128
+      ],
+      "data_bytes": 512,
+      "scale_bytes": 0
+    },
+    {
+      "name": "blocks.3.write.weight",
+      "hash": "c47bb591",
+      "dtype": 2,
+      "shape": [
+        128,
+        96
+      ],
+      "data_bytes": 12288,
+      "scale_bytes": 512
+    },
+    {
+      "name": "embedding.weight",
+      "hash": "93227924",
+      "dtype": 2,
+      "shape": [
+        1536,
+        96
+      ],
+      "data_bytes": 147456,
+      "scale_bytes": 6144
+    },
+    {
+      "name": "final_norm.scale",
+      "hash": "873a612a",
+      "dtype": 1,
+      "shape": [
+        96
+      ],
+      "data_bytes": 384,
+      "scale_bytes": 0
+    },
+    {
+      "name": "output_bias",
+      "hash": "d541adf0",
+      "dtype": 1,
+      "shape": [
+        1536
+      ],
+      "data_bytes": 6144,
+      "scale_bytes": 0
+    }
+  ],
+  "float_vs_row_int8_max_logit_delta": 0.05883726477622986,
+  "float_vs_row_int8_mean_logit_delta": 0.006883634719997644,
+  "sha256": "6ec1c54939cc8cfb4b9138254bc3508a9fc1a1f9bcc2d74d0a9db1bc97d7be07"
+}

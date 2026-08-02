@@ -20,6 +20,7 @@ The test proves bounded task generalization when exact facts are supplied by an
 attributed record and resolved through FactTape. It does not prove open-domain
 electronics reasoning or correctness of unreviewed source facts.
 
-`model.pt` is the float PyTorch research checkpoint. No ESP32 binary is present
-yet because quantization and native C-runtime verification are still open.
-
+`model.pt` is the float PyTorch research checkpoint. `model.chlm` is the native
+614,848-byte row-INT8 reference export. INT8 retained 864/864 held-out verifier
+passes; maximum/mean host logit delta was 0.05884/0.006884. Native C-runtime and
+ESP32 verification remain open.

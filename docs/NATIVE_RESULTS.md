@@ -26,3 +26,14 @@ retrieved engineering record.
   constraint and game tasks.
 
 This opens the quantization gate. It does not open the ESP32 release gate.
+
+## Native row-INT8 export
+
+- CHLM v1 artifact size: 614,848 bytes;
+- SHA-256: `6ec1c54939cc8cfb4b9138254bc3508a9fc1a1f9bcc2d74d0a9db1bc97d7be07`;
+- maximum float/INT8 host logit delta: 0.05884;
+- mean float/INT8 host logit delta: 0.006884;
+- quantized held-out-family evaluation: 864/864 passed.
+
+This opens the native C-runtime gate. It does not yet prove the serialized
+artifact executes correctly on ESP32 hardware.
