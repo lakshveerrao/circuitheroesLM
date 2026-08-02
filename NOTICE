@@ -1,7 +1,8 @@
 Circuit Heroes LM
 Copyright 2026 Laksh
 
-Includes software adapted from slvDev/esp32-ai, licensed under the MIT License.
+Includes the PLE model/export foundation and portable C inference runtime
+adapted from slvDev/esp32-ai, licensed under the MIT License.
 See licenses/slvdev-esp32-ai-MIT.txt.
 
 Includes a transformed catalogue derived from the KiCad official symbol

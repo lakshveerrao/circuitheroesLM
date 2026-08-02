@@ -10,6 +10,22 @@ component catalogue. The catalogue supplies exact names and facts; the model
 turns those facts into short beginner explanations, questions, and live game
 missions. No cloud API is required after installation.
 
+## What is original—and what is upstream
+
+**Circuit Heroes LM is our electronics model and product, but its low-level PLE
+reference implementation is not clean-room code.** We created the electronics
+datasets and HIL, task design, trained checkpoints and weights, grounded answer
+verifier, 8,000-part catalogue integration, Circuit Quest game behavior,
+ESP32-S3 product firmware, UI/audio integration, and hardware evaluation.
+
+We did **not** reuse slvDev's trained weights or TinyStories training data.
+However, the PLE model/training/export foundation and portable C inference
+runtime were adapted from [`slvDev/esp32-ai`](https://github.com/slvDev/esp32-ai)
+under MIT. Per-Layer Embeddings originate in Google Gemma research. Removing
+that attribution would be technically and legally incorrect. See
+[`docs/ORIGINALITY.md`](docs/ORIGINALITY.md) for the source audit and exact
+boundary.
+
 > Project status: active research preview. The portable runtime and dataset
 > pipeline work. Two broad electronics checkpoints were rejected because they
 > hallucinated component facts. A new, narrow 52-component pilot passes its
@@ -121,5 +137,7 @@ exception. Third-party notices remain in `licenses/`.
   export, host verification, and ESP32 steps
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): PLE TinyLM and grounded
   inference method
+- [`docs/ORIGINALITY.md`](docs/ORIGINALITY.md): exact upstream/original-work
+  boundary and source audit
 - [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md): successes, failures, and measured
   ESP32-S3 latency
