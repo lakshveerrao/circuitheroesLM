@@ -37,3 +37,14 @@ This opens the quantization gate. It does not open the ESP32 release gate.
 
 This opens the native C-runtime gate. It does not yet prove the serialized
 artifact executes correctly on ESP32 hardware.
+
+## Native C host verifier
+
+- strict C11 build with warnings-as-errors: pass;
+- C vs quantized-PyTorch maximum logit delta: `2.38419e-6`;
+- mean logit delta: `4.66059e-7`;
+- AddressSanitizer and UndefinedBehaviorSanitizer: pass;
+- model/payload/tensor bounds and CRC checks: enabled;
+- non-finite kernel values: fail closed.
+
+This opens the ESP32 runtime port gate. Device execution remains unverified.
