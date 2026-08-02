@@ -1,0 +1,157 @@
+{
+  "schema": "circuitheroeslm-native-evaluation-v1",
+  "project": "circuitheroesLM",
+  "checkpoint": "runs/native-esr-v0.1-800-best.pt",
+  "split": "test-heldout-family",
+  "total": 12,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "by_task": {
+    "behavior": {
+      "passed": 0,
+      "total": 1
+    },
+    "constraint": {
+      "passed": 0,
+      "total": 3
+    },
+    "symbol": {
+      "passed": 0,
+      "total": 2
+    },
+    "explain": {
+      "passed": 0,
+      "total": 3
+    },
+    "identify": {
+      "passed": 0,
+      "total": 2
+    },
+    "game": {
+      "passed": 0,
+      "total": 1
+    }
+  },
+  "results": [
+    {
+      "component_id": "transformer",
+      "family": "Magnetically coupled coils",
+      "task": "behavior",
+      "expected": "Changing current in one coil creates a changing magnetic field that induces voltage in the other.",
+      "generated": "It continuously adjusts an internal pass device to hold the output near five volts.",
+      "tokens": 25,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "supercapacitor",
+      "family": "High-capacitance polarized capacitor",
+      "task": "constraint",
+      "expected": "Observe polarity and its low maximum cell voltage.",
+      "generated": "Protect the gate from static electricity and excessive voltage.",
+      "tokens": 19,
+      "passed": false,
+      "reason": "grounded-overlap-1"
+    },
+    {
+      "component_id": "carbon_film_resistor",
+      "family": "Resistor",
+      "task": "symbol",
+      "expected": "A resistor zigzag or rectangle between two wires.",
+      "generated": "A diode symbol with a bent cathode bar.",
+      "tokens": 10,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "ntc_thermistor",
+      "family": "Temperature-sensitive resistor",
+      "task": "constraint",
+      "expected": "Self-heating can make a reading inaccurate.",
+      "generated": "Use a driver and flyback path because a motor can draw high current and create voltage spikes.",
+      "tokens": 21,
+      "passed": false,
+      "reason": "grounded-overlap-1"
+    },
+    {
+      "component_id": "electrolytic_capacitor",
+      "family": "Polarized capacitor",
+      "task": "explain",
+      "expected": "Electrolytic capacitor stores charge and smooths slower power-supply changes.",
+      "generated": "Boost converter changes a lower direct voltage into a higher one.",
+      "tokens": 12,
+      "passed": false,
+      "reason": "grounded-overlap-1"
+    },
+    {
+      "component_id": "and_gate",
+      "family": "Digital logic gate",
+      "task": "constraint",
+      "expected": "Unused digital inputs must not be left floating.",
+      "generated": "Optocoupler.",
+      "tokens": 7,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "tantalum_capacitor",
+      "family": "Polarized capacitor",
+      "task": "symbol",
+      "expected": "A polarized capacitor symbol with its positive terminal marked.",
+      "generated": "A switching power block with an inductor and output diode or synchronous switch.",
+      "tokens": 15,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "tantalum_capacitor",
+      "family": "Polarized capacitor",
+      "task": "explain",
+      "expected": "Tantalum capacitor provides stable capacitance in a small package.",
+      "generated": "Boost converter changes a lower direct voltage into a higher one.",
+      "tokens": 12,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "regulator_lm317",
+      "family": "Adjustable linear voltage regulator",
+      "task": "explain",
+      "expected": "LM317 voltage regulator produces an adjustable regulated output voltage.",
+      "generated": "Ultrasonic distance sensor measures distance using sound above human hearing.",
+      "tokens": 10,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    },
+    {
+      "component_id": "regulator_lm317",
+      "family": "Adjustable linear voltage regulator",
+      "task": "identify",
+      "expected": "LM317 voltage regulator.",
+      "generated": "Potentiometer.",
+      "tokens": 6,
+      "passed": false,
+      "reason": "identity"
+    },
+    {
+      "component_id": "carbon_film_resistor",
+      "family": "Resistor",
+      "task": "identify",
+      "expected": "Carbon-film resistor.",
+      "generated": "Rotary encoder reports turning direction and movement as pulses.",
+      "tokens": 9,
+      "passed": false,
+      "reason": "identity"
+    },
+    {
+      "component_id": "and_gate",
+      "family": "Digital logic gate",
+      "task": "game",
+      "expected": "Choose the part that outputs one only when all required inputs are one.",
+      "generated": "Choose the part that stores energy in a magnetic field and resists sudden current change.",
+      "tokens": 6,
+      "passed": false,
+      "reason": "grounded-overlap-0"
+    }
+  ]
+}

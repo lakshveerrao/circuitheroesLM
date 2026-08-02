@@ -1,0 +1,37 @@
+{
+  "schema": "circuitheroeslm-native-corpus-v1",
+  "project": "circuitheroesLM",
+  "source": "data/engineering_hil_v0.1.json",
+  "source_license": "CC0-1.0",
+  "review_status": "engineering-review-required",
+  "components": 52,
+  "tasks": [
+    "explain",
+    "identify",
+    "symbol",
+    "behavior",
+    "constraint",
+    "game"
+  ],
+  "heldout_families": [
+    "Adjustable linear voltage regulator",
+    "Digital logic gate",
+    "Electrochemical energy source",
+    "High-capacitance polarized capacitor",
+    "Light-producing diode",
+    "Magnetically coupled coils",
+    "Polarized capacitor",
+    "Resistor",
+    "Temperature-sensitive resistor"
+  ],
+  "counts": {
+    "train": 2560,
+    "validation": 320,
+    "test-heldout-family": 864
+  },
+  "sha256": {
+    "train.jsonl": "01bc7267cdf207cefaff76344b00b64c664ebe491d82424ae71a486b4df046e5",
+    "validation.jsonl": "f26b6596037acefe106d44e2f4edcb34a0866ab422890d5721e17fa0ed5b6ff8",
+    "test-heldout-family.jsonl": "d7009af00de2deb54e19123f4ab47669a40798950d50516913aa73b2be3aabac"
+  }
+}

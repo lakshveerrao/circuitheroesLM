@@ -1,0 +1,12 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+build/
+build-*/
+firmware/**/build/
+firmware/**/build-*/
+firmware/**/sdkconfig
+runs/
+generated/
+artifacts/

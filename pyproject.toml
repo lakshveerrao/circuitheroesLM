@@ -1,0 +1,15 @@
+[project]
+name = "circuitheroeslm"
+version = "0.2.0.dev0"
+description = "Native electronics-centric language model for offline ESP32 inference"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Laksh"}]
+dependencies = ["numpy>=1.26", "torch>=2.2"]
+
+[project.urls]
+Repository = "https://github.com/lakshveerrao/circuitheroesLM"
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
