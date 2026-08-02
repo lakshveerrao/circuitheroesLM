@@ -22,3 +22,10 @@ def test_serialized_tokenizer_is_deterministic():
         restored = EngineeringTokenizer.load(path)
         assert restored.encode(texts[0]) == first.encode(texts[0])
 
+
+def test_engineering_segments_use_reserved_ids():
+    tokenizer = EngineeringTokenizer.train(["<fact>name=resistor<ask>task=explain<answer>"] * 4, 290)
+    tokens = tokenizer.encode("<fact>name=resistor<ask>task=explain<answer>")
+    assert tokens[0] == 3
+    assert 4 in tokens
+    assert tokens[-1] == 5

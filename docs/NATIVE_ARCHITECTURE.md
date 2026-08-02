@@ -34,16 +34,23 @@ mixed = down(silu(gate(x)) * value(x))
 x_new = x + state_output + mixed
 ```
 
-Each layer keeps only `4 * state_width` recurrent values. Generation cost and
-state memory do not grow with context length.
+At the `<ask>` boundary, each layer copies its working lanes into a protected
+fact latch. Later question and answer tokens update working state while the
+fact latch remains available through an independent router. `<fact>` resets
+both states for a new record. Each layer therefore keeps exactly
+`2 * 4 * state_width` recurrent values; memory still does not grow with context.
 
 ## Grounded engineering memory
 
 Exact names, pin facts, ratings, units, and connection constraints are stored
 as attributed local fact cards. Retrieval is deterministic and outside the
 neural weights. Fact cards are serialized into the prompt using explicit
-fields. The model learns explanation and relation language; it is not expected
-to guess absent datasheet facts.
+fields. The model emits typed FactTape operations such as `<copy_name>` and
+`<copy_constraint>` inside its response plan. The runtime resolves those
+operations from the retrieved record, so exact engineering facts never depend
+on a tiny model memorizing or compressing arbitrary datasheet strings. The
+model learns task selection, explanation structure and relation language; it
+is not expected to guess absent facts.
 
 ## Pilot configuration
 
@@ -79,4 +86,3 @@ is introduced only after float/INT8 host and device goldens agree.
 - 100 consecutive device generations without crash or memory growth;
 - zero network calls in the firmware demonstration;
 - source audit passes the originality policy.
-

@@ -6,9 +6,14 @@ from collections import Counter
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import re
 
 
-SPECIAL_TOKENS = ("<pad>", "<bos>", "<eos>", "<fact>", "<ask>", "<answer>", "<unknown>")
+SPECIAL_TOKENS = (
+    "<pad>", "<bos>", "<eos>", "<fact>", "<ask>", "<answer>", "<unknown>",
+    "<copy_name>", "<copy_family>", "<copy_purpose>", "<copy_symbol>",
+    "<copy_behavior>", "<copy_constraint>",
+)
 
 
 @dataclass(frozen=True)
@@ -39,7 +44,15 @@ class EngineeringTokenizer:
         return [self.byte_offset + byte for byte in text.encode("utf-8")]
 
     def encode_text(self, text: str) -> list[int]:
-        tokens = self._base(text)
+        special_pattern = "(" + "|".join(re.escape(token) for token in SPECIAL_TOKENS) + ")"
+        tokens: list[int] = []
+        for segment in re.split(special_pattern, text):
+            if not segment:
+                continue
+            if segment in SPECIAL_TOKENS:
+                tokens.append(SPECIAL_TOKENS.index(segment))
+            else:
+                tokens.extend(self._base(segment))
         for merge in self.merges:
             merged: list[int] = []
             index = 0
@@ -76,12 +89,13 @@ class EngineeringTokenizer:
         if target_vocab < minimum:
             raise ValueError(f"target vocabulary must be at least {minimum}")
         tokenizer = cls()
-        sequences = [tokenizer._base(text) for text in texts if text]
+        sequences = [tokenizer.encode_text(text) for text in texts if text]
         next_id = minimum
         while next_id < target_vocab:
             counts: Counter[tuple[int, int]] = Counter()
             for sequence in sequences:
-                counts.update(zip(sequence, sequence[1:]))
+                counts.update(pair for pair in zip(sequence, sequence[1:])
+                              if pair[0] >= tokenizer.byte_offset and pair[1] >= tokenizer.byte_offset)
             if not counts:
                 break
             best_count = max(counts.values())
@@ -127,4 +141,3 @@ class EngineeringTokenizer:
         if tokenizer.vocab_size != document["vocab_size"]:
             raise ValueError("tokenizer vocabulary size mismatch")
         return tokenizer
-

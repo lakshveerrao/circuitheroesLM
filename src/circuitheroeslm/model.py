@@ -54,25 +54,31 @@ class EngineeringStateLayer(nn.Module):
         self.recurrent_scale = nn.Parameter(torch.zeros(k, s))
         self.router = nn.Linear(d, k)
         self.state_output = nn.Linear(k * s, d, bias=False)
+        self.fact_router = nn.Linear(d, k)
+        self.fact_output = nn.Linear(k * s, d, bias=False)
         self.post_norm = RootMeanSquareNorm(d, config.norm_epsilon)
         self.gate = nn.Linear(d, config.mixer_width)
         self.value = nn.Linear(d, config.mixer_width)
         self.down = nn.Linear(config.mixer_width, d, bias=False)
 
-    def step(self, token: Tensor, state: Tensor) -> tuple[Tensor, Tensor]:
+    def step(self, token: Tensor, state: Tensor, latch: Tensor) -> tuple[Tensor, Tensor]:
+        working, fact = state[:, 0], state[:, 1]
         normalized = self.pre_norm(token)
         proposal = self.proposal(normalized).view(-1, self.lanes, self.state_width)
-        proposal = torch.tanh(proposal + self.recurrent_scale * state)
+        proposal = torch.tanh(proposal + self.recurrent_scale * working)
         write = torch.sigmoid(self.write(normalized).view_as(proposal))
-        next_state = state + write * (proposal - state)
+        next_working = working + write * (proposal - working)
 
         route = torch.softmax(self.router(normalized), dim=-1).unsqueeze(-1)
-        routed = (next_state * route).reshape(token.shape[0], -1)
-        token = token + self.state_output(routed)
+        routed = (next_working * route).reshape(token.shape[0], -1)
+        fact_route = torch.softmax(self.fact_router(normalized), dim=-1).unsqueeze(-1)
+        fact_routed = (fact * fact_route).reshape(token.shape[0], -1)
+        token = token + self.state_output(routed) + self.fact_output(fact_routed)
 
         mixed_input = self.post_norm(token)
         mixed = F.silu(self.gate(mixed_input)) * self.value(mixed_input)
-        return token + self.down(mixed), next_state
+        next_fact = torch.where(latch, next_working, fact)
+        return token + self.down(mixed), torch.stack((next_working, next_fact), dim=1)
 
 
 class EngineeringStateRouterLM(nn.Module):
@@ -98,7 +104,7 @@ class EngineeringStateRouterLM(nn.Module):
         nn.init.zeros_(self.output_bias)
 
     def empty_state(self, batch: int, *, device=None, dtype=None) -> tuple[Tensor, ...]:
-        shape = (batch, self.config.lanes, self.config.state_width)
+        shape = (batch, 2, self.config.lanes, self.config.state_width)
         return tuple(torch.zeros(shape, device=device, dtype=dtype) for _ in self.blocks)
 
     def step(self, token_ids: Tensor, state: tuple[Tensor, ...] | None = None) -> tuple[Tensor, tuple[Tensor, ...]]:
@@ -109,9 +115,12 @@ class EngineeringStateRouterLM(nn.Module):
             state = self.empty_state(token.shape[0], device=token.device, dtype=token.dtype)
         if len(state) != len(self.blocks):
             raise ValueError("state layer count does not match model")
+        reset = (token_ids == 3).view(-1, 1, 1, 1)
+        latch = (token_ids == 4).view(-1, 1, 1)
         next_states = []
         for block, block_state in zip(self.blocks, state):
-            token, block_state = block.step(token, block_state)
+            block_state = torch.where(reset, torch.zeros_like(block_state), block_state)
+            token, block_state = block.step(token, block_state, latch)
             next_states.append(block_state)
         token = self.final_norm(token)
         logits = F.linear(token, self.embedding.weight, self.output_bias)

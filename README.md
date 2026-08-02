@@ -22,12 +22,12 @@ engineering knowledge; the learned model turns grounded records into language.
 ## Current status
 
 The architecture specification, native tokenizer, host reference model,
-engineering corpus builder, answer-only training loop, generation evaluator,
-and deterministic tests are implemented. The first 800-step candidate trained,
-but was rejected after producing memorized components instead of grounding on
-its supplied fact card. This is recorded publicly in `experiments/`. No weights
-are released and quantization is deliberately blocked until a candidate passes
-held-out engineering-family generation.
+Engineering FactTape, corpus builder, answer-only training loop, generation
+evaluator, and deterministic tests are implemented. Candidate v0.3 passed all
+864 held-out-family checks across six tasks. Float weights and the exact
+tokenizer are published as a research checkpoint. Quantized and ESP32 release
+status remains blocked until native export, C numerical goldens and device
+stability gates pass.
 
 Read [`docs/NATIVE_ARCHITECTURE.md`](docs/NATIVE_ARCHITECTURE.md) and
 [`docs/ORIGINALITY_POLICY.md`](docs/ORIGINALITY_POLICY.md) before making claims

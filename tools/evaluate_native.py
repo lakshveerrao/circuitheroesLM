@@ -65,10 +65,10 @@ def main() -> None:
         rows = rows[:args.limit]
     results = []
     for index, row in enumerate(rows):
-        generated, token_ids = greedy_generate(model, tokenizer, row["prompt"])
+        generated, token_ids = greedy_generate(model, tokenizer, row["prompt"], fact_fields=facts(row["prompt"]))
         passed, reason = verify(row, generated)
         results.append({"component_id": row["component_id"], "family": row["family"], "task": row["task"],
-                        "expected": row["answer"], "generated": generated, "tokens": len(token_ids),
+                        "expected": row.get("rendered_answer", row["answer"]), "generated": generated, "tokens": len(token_ids),
                         "passed": passed, "reason": reason})
         print(f"{index+1}/{len(rows)} {row['task']} {'PASS' if passed else 'FAIL'}: {generated}")
     task_counts = Counter(row["task"] for row in rows)
@@ -86,4 +86,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
