@@ -2,22 +2,31 @@
 
 # circuitheroesLM
 
-### An electronics-native language model built to think where the hardware lives.
+## A real engineering language model. On an **$8-class chip.** Fully offline.
 
-**Fully offline · ESP32-S3 measured · Open weights · Native C runtime · Created by Lakshveer Rao**
+**1.16M learned parameters · 1.17 MiB · 25.35 model steps/s · zero cloud calls**
 
-![circuitheroesLM hero](docs/images/circuitheroeslm-hero.png)
+**Open weights · Native C · Measured on real ESP32-S3 silicon · Created by Lakshveer Rao**
+
+![circuitheroesLM running locally on an ESP32-S3](docs/images/circuitheroeslm-8-dollar-chip.png)
 
 </div>
 
-circuitheroesLM is an open research stack for compact, grounded electronics
-intelligence on microcontrollers. The model, tokenizer, quantizer, binary
-format, native runtime, training pipeline, evaluation gates, weights, and
-device probe are all published in this repository.
+The trained neural model, tokenizer, quantized weights, grounded engineering
+knowledge, and native C runtime execute on the microcontroller itself. No
+Wi-Fi, cloud API, phone, or remote model is required for inference.
 
-The pilot is intentionally small enough to inspect and reproduce, yet complete
-enough to execute real learned inference on a 240 MHz ESP32-S3 with no Wi-Fi,
-cloud API, or remote model.
+circuitheroesLM is an open research stack for compact electronics intelligence
+on microcontrollers. Its architecture, dataset pipeline, tokenizer, quantizer,
+binary format, training code, weights, native runtime, evaluation gates, and
+device firmware are published together so the entire result can be inspected,
+reproduced, and extended.
+
+> **The headline is literal:** the v0.4 model performed learned inference on a
+> real 240 MHz ESP32-S3 N16R8. An ESP32-S3-WROOM-1-N16R8 module was listed at
+> [$6.74 for one unit](https://www.mouser.com/en/ProductDetail/Espressif-Systems/ESP32-S3-WROOM-1-N16R8?qs=Li%2BoUPsLEnvQc9gW6AMhZg%3D%3D)
+> when checked on 3 August 2026, which is why this repository uses “$8-class.”
+> The complete touchscreen learning device costs more than the compute module.
 
 > **Why this matters:** hardware learning tools should still explain, quiz, and
 > reason when the internet is absent. circuitheroesLM explores an architecture
