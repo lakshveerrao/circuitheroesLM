@@ -1,0 +1,623 @@
+#!/usr/bin/env python3
+"""PBL — a dependency-free terminal product for CircuitHeroesLM boards."""
+
+from __future__ import annotations
+
+import argparse
+import glob
+import json
+import os
+from pathlib import Path
+import platform
+import shlex
+import shutil
+import subprocess
+import sys
+import time
+from typing import Any, Dict, List, Optional, Sequence
+
+
+ROOT = Path(__file__).resolve().parent
+STATE_DIR = ROOT / ".pbl"
+CONFIG_PATH = STATE_DIR / "config.json"
+CATALOG_PATH = ROOT / "pbl_cli" / "test_codes.json"
+VERSION = "0.1.0"
+INSTALL_ALIASES = (
+    "pbl--help", "pbl--run", "pbl--build", "pbl--upload", "pbl--monitor",
+    "pbl--detect-port", "pbl--test-codes", "pbl--configure", "pbl--select",
+    "pbl--doctor",
+)
+
+RESET = "\033[0m"
+BOLD = "\033[1m"
+DIM = "\033[2m"
+CYAN = "\033[38;5;45m"
+BLUE = "\033[38;5;39m"
+GREEN = "\033[38;5;84m"
+YELLOW = "\033[38;5;220m"
+RED = "\033[38;5;203m"
+
+DEFAULT_CONFIG: Dict[str, Any] = {
+    "version": 1,
+    "processor": "esp32s3",
+    "board": "waveshare-s3-touch-amoled-1.8-auto",
+    "display": "waveshare-amoled-1.8-touch",
+    "input": "capacitive-touch",
+    "microphone": "es8311-onboard",
+    "speaker": "es8311-onboard",
+    "port": "auto",
+    "monitor_baud": 115200,
+    "selected_test": "native-ai-probe",
+}
+
+CHOICES = {
+    "processor": [
+        ("esp32s3", "ESP32-S3"),
+        ("esp32p4", "ESP32-P4"),
+        ("esp32c6", "ESP32-C6"),
+        ("esp32c3", "ESP32-C3"),
+        ("esp32s2", "ESP32-S2"),
+        ("esp32", "ESP32"),
+    ],
+    "board": [
+        ("waveshare-s3-touch-amoled-1.8-auto", "Waveshare 1.8 AMOLED (auto revision)"),
+        ("waveshare-s3-touch-amoled-1.8-original", "Waveshare 1.8 AMOLED original"),
+        ("waveshare-s3-touch-amoled-1.8-v2", "Waveshare 1.8 AMOLED V2"),
+        ("generic-esp32", "Generic ESP32 family board"),
+        ("custom", "Custom board"),
+    ],
+    "display": [
+        ("waveshare-amoled-1.8-touch", "Waveshare 368 x 448 AMOLED touch"),
+        ("ssd1306-128x64-i2c", "SSD1306 128 x 64 I2C OLED"),
+        ("st7789-spi", "ST7789 SPI display"),
+        ("none", "No display"),
+        ("custom", "Custom display"),
+    ],
+    "input": [
+        ("capacitive-touch", "Capacitive touch"),
+        ("buttons", "Buttons"),
+        ("rotary-encoder", "Rotary encoder"),
+        ("none", "No input"),
+        ("custom", "Custom input"),
+    ],
+    "microphone": [
+        ("es8311-onboard", "Onboard microphone through ES8311"),
+        ("inmp441-i2s", "INMP441 I2S microphone"),
+        ("modulino-mic", "Modulino microphone"),
+        ("none", "No microphone"),
+        ("custom", "Custom microphone"),
+    ],
+    "speaker": [
+        ("es8311-onboard", "Onboard ES8311 speaker output"),
+        ("max98357a-i2s", "MAX98357A I2S speaker"),
+        ("mini-speaker", "Mini speaker"),
+        ("none", "No speaker"),
+        ("custom", "Custom speaker"),
+    ],
+}
+
+
+def color(text: str, code: str) -> str:
+    return f"{code}{text}{RESET}" if sys.stdout.isatty() else text
+
+
+def heading(text: str) -> None:
+    print(color(text, BOLD + CYAN))
+
+
+def load_config() -> Dict[str, Any]:
+    config = dict(DEFAULT_CONFIG)
+    try:
+        saved = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+        if isinstance(saved, dict):
+            config.update(saved)
+    except FileNotFoundError:
+        pass
+    except (json.JSONDecodeError, OSError) as error:
+        print(color(f"Warning: cannot read {CONFIG_PATH}: {error}", YELLOW), file=sys.stderr)
+    return config
+
+
+def save_config(config: Dict[str, Any]) -> None:
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    temporary = CONFIG_PATH.with_suffix(".tmp")
+    temporary.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+    temporary.replace(CONFIG_PATH)
+
+
+def load_catalog() -> List[Dict[str, Any]]:
+    payload = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    return list(payload["tests"])
+
+
+def find_test(test_id: str) -> Dict[str, Any]:
+    for item in load_catalog():
+        if item["id"] == test_id:
+            return item
+    raise SystemExit(f"Unknown test code: {test_id}. Run 'pbl test-codes' to see choices.")
+
+
+def detect_ports() -> List[str]:
+    patterns = [
+        "/dev/cu.usbmodem*", "/dev/cu.usbserial*", "/dev/cu.SLAB*",
+        "/dev/cu.wchusbserial*", "/dev/ttyACM*", "/dev/ttyUSB*",
+    ]
+    ports: List[str] = []
+    for pattern_value in patterns:
+        ports.extend(glob.glob(pattern_value))
+    if platform.system() == "Windows":
+        ports.extend(f"COM{number}" for number in range(1, 33))
+    return sorted(set(ports), key=lambda value: ("usbmodem" not in value.lower(), value))
+
+
+def selected_port(config: Dict[str, Any], required: bool = True) -> Optional[str]:
+    configured = str(config.get("port", "auto"))
+    if configured != "auto":
+        return configured
+    ports = detect_ports()
+    if ports:
+        return ports[0]
+    if required:
+        raise SystemExit("No serial device detected. Connect the board or run 'pbl configure'.")
+    return None
+
+
+def idf_path() -> Optional[Path]:
+    candidates = [
+        os.environ.get("IDF_PATH"),
+        str(Path.home() / "esp" / "esp-idf"),
+        str(Path.home() / "esp-idf"),
+    ]
+    for candidate in candidates:
+        if candidate and (Path(candidate) / "export.sh").is_file():
+            return Path(candidate).resolve()
+    return None
+
+
+def certificate_file() -> Optional[Path]:
+    configured = os.environ.get("SSL_CERT_FILE")
+    if configured and Path(configured).is_file():
+        return Path(configured)
+    roots = [Path.home() / "Library" / "Python", Path.home() / ".local" / "lib"]
+    for root in roots:
+        if root.exists():
+            matches = sorted(root.glob("**/site-packages/certifi/cacert.pem"), reverse=True)
+            if matches:
+                return matches[0]
+    return None
+
+
+def shell_command(arguments: Sequence[str]) -> List[str]:
+    path = idf_path()
+    if path is None:
+        raise SystemExit(
+            "ESP-IDF was not found. Install it once, then run 'pbl doctor'.\n"
+            "Expected location: ~/esp/esp-idf (or set IDF_PATH)."
+        )
+    exports = []
+    cert = certificate_file()
+    if cert:
+        exports.append(f"export SSL_CERT_FILE={shlex.quote(str(cert))}")
+    exports.append(f"source {shlex.quote(str(path / 'export.sh'))} >/dev/null")
+    command = " && ".join(exports + [shlex.join([str(value) for value in arguments])])
+    return ["zsh", "-c", command]
+
+
+def run_process(arguments: Sequence[str], cwd: Path, dry_run: bool = False) -> int:
+    command = shell_command(arguments)
+    print(color("→ ", BLUE) + shlex.join([str(value) for value in arguments]))
+    print(color("  in ", DIM) + str(cwd))
+    if dry_run:
+        return 0
+    return subprocess.run(command, cwd=str(cwd), check=False).returncode
+
+
+def project_for(item: Dict[str, Any]) -> Path:
+    project = (ROOT / item["project"]).resolve()
+    if not project.is_dir():
+        raise SystemExit(f"Test project is not installed: {project}")
+    return project
+
+
+def build_dir_for(item: Dict[str, Any]) -> Path:
+    project_name = Path(item["project"]).name
+    return (STATE_DIR / "build" / project_name).resolve()
+
+
+def preserve_partial_build(item: Dict[str, Any]) -> None:
+    build_dir = build_dir_for(item)
+    if not build_dir.exists() or (build_dir / "CMakeCache.txt").is_file():
+        return
+    recovery = STATE_DIR / "recovered-builds"
+    recovery.mkdir(parents=True, exist_ok=True)
+    destination = recovery / f"{item['id']}-{int(time.time())}"
+    build_dir.replace(destination)
+    print(color(f"Preserved incomplete build at {destination}", YELLOW))
+
+
+def idf_build_arguments(item: Dict[str, Any], config: Dict[str, Any]) -> List[str]:
+    arguments = ["idf.py", "-B", str(build_dir_for(item))]
+    if "mode" in item:
+        arguments.extend(["-D", f"PBL_TEST_MODE={item['mode']}"])
+    if not (build_dir_for(item) / "CMakeCache.txt").is_file():
+        arguments.extend(["set-target", str(config["processor"])])
+    arguments.append("build")
+    return arguments
+
+
+def compatibility(item: Dict[str, Any], config: Dict[str, Any]) -> str:
+    processors = item.get("processors", [])
+    boards = item.get("boards", [])
+    if processors and config["processor"] not in processors:
+        return "processor mismatch"
+    if boards and config["board"] not in boards and "*" not in boards:
+        return "board mismatch"
+    return "ready"
+
+
+def command_build(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    item = find_test(args.test or config["selected_test"])
+    state = compatibility(item, config)
+    if state != "ready" and not args.force:
+        raise SystemExit(f"{item['name']} is not compatible with this profile: {state}. Use --force to override.")
+    if not args.dry_run:
+        preserve_partial_build(item)
+    heading(f"Building · {item['name']}")
+    return run_process(idf_build_arguments(item, config), project_for(item), args.dry_run)
+
+
+def command_upload(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    item = find_test(args.test or config["selected_test"])
+    state = compatibility(item, config)
+    if state != "ready" and not args.force:
+        raise SystemExit(f"{item['name']} is not compatible with this profile: {state}. Use --force to override.")
+    port = args.port or selected_port(config)
+    heading(f"Uploading · {item['name']} · {port}")
+    project = project_for(item)
+    build_dir = build_dir_for(item)
+    if not args.dry_run:
+        preserve_partial_build(item)
+    if not getattr(args, "skip_build", False):
+        result = run_process(idf_build_arguments(item, config), project, args.dry_run)
+        if result:
+            return result
+    result = run_process(["idf.py", "-B", str(build_dir), "-p", str(port), "flash"], project, args.dry_run)
+    if result or not item.get("model_flash"):
+        return result
+    model = (ROOT / item["model_flash"]["file"]).resolve()
+    address = item["model_flash"]["address"]
+    return run_process(
+        ["esptool.py", "--chip", config["processor"], "--port", str(port), "--baud", "921600",
+         "write_flash", address, str(model)],
+        project,
+        args.dry_run,
+    )
+
+
+def command_monitor(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    item = find_test(args.test or config["selected_test"])
+    port = args.port or selected_port(config)
+    heading(f"Monitoring · {item['name']} · {port}")
+    return run_process(
+        ["idf.py", "-B", str(build_dir_for(item)), "-p", str(port), "monitor"],
+        project_for(item),
+        args.dry_run,
+    )
+
+
+def command_run(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    item = find_test(args.test or config["selected_test"])
+    if not args.yes and not args.dry_run and sys.stdin.isatty():
+        print(f"PBL will replace the firmware on {selected_port(config)} with {item['name']}.")
+        if input("Continue? [y/N] ").strip().lower() not in {"y", "yes"}:
+            print("Cancelled; the device was not changed.")
+            return 0
+    result = command_build(args, config)
+    if result:
+        return result
+    args.skip_build = True
+    result = command_upload(args, config)
+    if result:
+        return result
+    return command_monitor(args, config)
+
+
+def command_ports(config: Dict[str, Any]) -> int:
+    heading("Connected serial devices")
+    ports = detect_ports()
+    if not ports:
+        print(color("No likely ESP serial ports found.", YELLOW))
+        return 1
+    configured = selected_port(config, required=False)
+    for index, port in enumerate(ports, 1):
+        selected = "  ← selected" if port == configured else ""
+        print(f"  {index:>2}. {port}{color(selected, GREEN)}")
+    return 0
+
+
+def show_config(config: Dict[str, Any]) -> None:
+    heading("Hardware profile")
+    for key in ("processor", "board", "display", "input", "microphone", "speaker", "port", "selected_test"):
+        print(f"  {key.replace('_', ' ').title():<16} {config[key]}")
+
+
+def choose(label: str, options: Sequence[Sequence[str]], current: str) -> str:
+    print(color(f"\n{label}", BOLD))
+    for number, (value, description) in enumerate(options, 1):
+        marker = "●" if value == current else "○"
+        print(f"  {number:>2}. {marker} {description} {color('[' + value + ']', DIM)}")
+    while True:
+        answer = input(f"Choose 1-{len(options)} [keep current]: ").strip()
+        if not answer:
+            return current
+        if answer.isdigit() and 1 <= int(answer) <= len(options):
+            return options[int(answer) - 1][0]
+        print(color("Please enter one of the displayed numbers.", YELLOW))
+
+
+def command_configure(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    if args.show:
+        show_config(config)
+        return 0
+    heading("PBL Hardware Configurator")
+    print("Choose the hardware you actually have. PBL uses this to hide unsafe or incompatible tests.")
+    for key in ("processor", "board", "display", "input", "microphone", "speaker"):
+        config[key] = choose(key.replace("_", " ").title(), CHOICES[key], str(config[key]))
+    ports = detect_ports()
+    port_options = [("auto", "Automatically use the first connected ESP board")]
+    port_options.extend((port, port) for port in ports)
+    port_options.append(("manual", "Enter a serial port manually"))
+    selected = choose("Serial port", port_options, str(config.get("port", "auto")))
+    if selected == "manual":
+        selected = input("Serial port: ").strip() or "auto"
+    config["port"] = selected
+    save_config(config)
+    print(color(f"\nSaved {CONFIG_PATH}", GREEN))
+    show_config(config)
+    return 0
+
+
+def print_test_codes(config: Dict[str, Any]) -> None:
+    heading("PBL test-code library")
+    print(f"{'ID':<25} {'Hardware':<25} {'Status':<20} Description")
+    print("─" * 110)
+    for item in load_catalog():
+        marker = "●" if item["id"] == config["selected_test"] else " "
+        status = compatibility(item, config)
+        status_color = GREEN if status == "ready" else YELLOW
+        print(f"{marker} {item['id']:<23} {item['hardware']:<25} {color(status, status_color):<20} {item['description']}")
+
+
+def command_select(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    catalog = load_catalog()
+    if args.test:
+        selected = find_test(args.test)
+    else:
+        print_test_codes(config)
+        compatible = [item for item in catalog if compatibility(item, config) == "ready"]
+        print("\nCompatible choices:")
+        for number, item in enumerate(compatible, 1):
+            print(f"  {number:>2}. {item['name']} [{item['id']}]")
+        answer = input("Select test number: ").strip()
+        if not answer.isdigit() or not (1 <= int(answer) <= len(compatible)):
+            raise SystemExit("No test selected.")
+        selected = compatible[int(answer) - 1]
+    state = compatibility(selected, config)
+    if state != "ready" and not args.force:
+        raise SystemExit(f"Cannot select {selected['name']}: {state}. Use --force to override.")
+    config["selected_test"] = selected["id"]
+    save_config(config)
+    print(color(f"Selected: {selected['name']}", GREEN))
+    print("Run it with: pbl run")
+    return 0
+
+
+def command_doctor(config: Dict[str, Any]) -> int:
+    heading("PBL Doctor")
+    checks = []
+    checks.append(("Python", sys.version.split()[0], sys.version_info >= (3, 9)))
+    path = idf_path()
+    checks.append(("ESP-IDF", str(path) if path else "not found", path is not None))
+    checks.append(("C compiler", shutil.which("cc") or "not found", shutil.which("cc") is not None))
+    ports = detect_ports()
+    checks.append(("ESP serial port", ", ".join(ports) if ports else "not found", bool(ports)))
+    checks.append(("Test catalog", f"{len(load_catalog())} tests", CATALOG_PATH.is_file()))
+    for name, detail, passed in checks:
+        symbol = color("PASS", GREEN) if passed else color("CHECK", YELLOW)
+        print(f"  {symbol:<14} {name:<18} {detail}")
+    print()
+    show_config(config)
+    return 0 if all(passed for _, _, passed in checks[:2]) else 1
+
+
+def command_install(args: argparse.Namespace) -> int:
+    destination_dir = Path.home() / ".local" / "bin"
+    destination = destination_dir / "pbl"
+    destination_dir.mkdir(parents=True, exist_ok=True)
+    already_installed = False
+    if destination.exists() or destination.is_symlink():
+        if destination.resolve() == Path(__file__).resolve():
+            already_installed = True
+        elif not args.force:
+            raise SystemExit(f"{destination} already exists. Re-run with --force to replace that one link.")
+        elif not destination.is_symlink():
+            raise SystemExit(f"Refusing to replace regular file {destination}; move it manually first.")
+        else:
+            destination.unlink()
+    if not already_installed:
+        destination.symlink_to(Path(__file__).resolve())
+    print(color(f"Installed command: {destination}", GREEN))
+    installed_aliases = 0
+    for alias_name in INSTALL_ALIASES:
+        alias = destination_dir / alias_name
+        if alias.exists() or alias.is_symlink():
+            if alias.resolve() != Path(__file__).resolve():
+                print(color(f"Kept existing command: {alias}", YELLOW))
+            continue
+        alias.symlink_to(Path(__file__).resolve())
+        installed_aliases += 1
+    print(f"Installed {installed_aliases} compact pbl--command aliases.")
+    if str(destination_dir) not in os.environ.get("PATH", "").split(os.pathsep):
+        print("Add this once to your shell profile:")
+        print('  export PATH="$HOME/.local/bin:$PATH"')
+    print("Then open a new terminal and run: pbl")
+    return 0
+
+
+def dashboard(config: Dict[str, Any]) -> int:
+    while True:
+        os.system("clear" if os.name != "nt" else "cls")
+        port = selected_port(config, required=False) or "not connected"
+        selected = find_test(config["selected_test"])
+        print(color("╭──────────────────────────────────────────────────────────────────────╮", CYAN))
+        print(color("│", CYAN) + color("  PBL · POCKET BOARD LAB", BOLD) + "                                             " + color("│", CYAN))
+        print(color("│", CYAN) + "  CircuitHeroesLM hardware and local-AI console                    " + color("│", CYAN))
+        print(color("├──────────────────────────────────────────────────────────────────────┤", CYAN))
+        print(color("│", CYAN) + f"  BOARD  {config['board'][:33]:<33} PORT  {port[-22:]:<22} " + color("│", CYAN))
+        print(color("│", CYAN) + f"  TEST   {selected['name'][:54]:<54}           " + color("│", CYAN))
+        print(color("├──────────────────────────────────────────────────────────────────────┤", CYAN))
+        print(color("│", CYAN) + "   1  ▶ Run selected test       5  ◉ Serial monitor                 " + color("│", CYAN))
+        print(color("│", CYAN) + "   2  ◆ Select test code        6  ⌁ Detect port                    " + color("│", CYAN))
+        print(color("│", CYAN) + "   3  ⚙ Configure hardware      7  ✓ Doctor                         " + color("│", CYAN))
+        print(color("│", CYAN) + "   4  ⇧ Upload selected test     8  ? Help                           " + color("│", CYAN))
+        print(color("│", CYAN) + "   Q  Quit                                                           " + color("│", CYAN))
+        print(color("╰──────────────────────────────────────────────────────────────────────╯", CYAN))
+        answer = input(color("Choose › ", BOLD)).strip().lower()
+        if answer in {"q", "quit", "exit"}:
+            return 0
+        actions = {
+            "1": lambda: command_run(arg_namespace(yes=False), config),
+            "2": lambda: command_select(arg_namespace(test=None), config),
+            "3": lambda: command_configure(arg_namespace(show=False), config),
+            "4": lambda: command_upload(arg_namespace(), config),
+            "5": lambda: command_monitor(arg_namespace(), config),
+            "6": lambda: command_ports(config),
+            "7": lambda: command_doctor(config),
+            "8": lambda: print_help(build_parser()),
+        }
+        action = actions.get(answer)
+        if action:
+            try:
+                action()
+            except (KeyboardInterrupt, SystemExit) as error:
+                print(color(str(error) or "Cancelled.", YELLOW))
+            input("\nPress Enter to return to PBL...")
+
+
+def arg_namespace(**values: Any) -> argparse.Namespace:
+    defaults = {"test": None, "port": None, "dry_run": False, "force": False, "yes": False, "show": False}
+    defaults.update(values)
+    return argparse.Namespace(**defaults)
+
+
+def add_test_options(parser: argparse.ArgumentParser, run: bool = False) -> None:
+    parser.add_argument("test", nargs="?", help="test-code ID (defaults to selected test)")
+    parser.add_argument("--port", help="serial port; overrides saved auto-detection")
+    parser.add_argument("--dry-run", action="store_true", help="print commands without executing them")
+    parser.add_argument("--force", action="store_true", help="override hardware-profile compatibility")
+    if run:
+        parser.add_argument("-y", "--yes", action="store_true", help="upload without confirmation")
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="pbl", add_help=False)
+    parser.add_argument("-h", "--help", action="store_true")
+    parser.add_argument("--version", action="store_true")
+    subparsers = parser.add_subparsers(dest="command")
+    subparsers.add_parser("help", add_help=False)
+    subparsers.add_parser("dashboard", add_help=False)
+    subparsers.add_parser("detect-port", aliases=["ports"], add_help=False)
+    subparsers.add_parser("test-codes", aliases=["tests"], add_help=False)
+    subparsers.add_parser("doctor", add_help=False)
+    configure = subparsers.add_parser("configure", aliases=["config"], add_help=False)
+    configure.add_argument("--show", action="store_true")
+    select_parser = subparsers.add_parser("select", add_help=False)
+    select_parser.add_argument("test", nargs="?")
+    select_parser.add_argument("--force", action="store_true")
+    install_parser = subparsers.add_parser("install", add_help=False)
+    install_parser.add_argument("--force", action="store_true")
+    for name in ("build", "upload", "monitor"):
+        child = subparsers.add_parser(name, add_help=False)
+        add_test_options(child)
+    run_parser = subparsers.add_parser("run", add_help=False)
+    add_test_options(run_parser, run=True)
+    return parser
+
+
+def print_help(parser: argparse.ArgumentParser) -> None:
+    heading("PBL · Pocket Board Lab")
+    print("A zero-extra-package terminal product for CircuitHeroesLM and ESP boards.\n")
+    print("  pbl                         open the interactive dashboard")
+    print("  pbl configure               choose processor, display, touch, mic and speaker")
+    print("  pbl test-codes              show the hardware test-code library")
+    print("  pbl select [test]           select a test firmware")
+    print("  pbl detect-port             find a connected board")
+    print("  pbl run [test]              build, upload and monitor")
+    print("  pbl build [test]            compile only")
+    print("  pbl upload [test]           upload only")
+    print("  pbl monitor [test]          open serial monitor")
+    print("  pbl doctor                  check the local development environment")
+    print("  pbl install                 install the global pbl command without pip")
+    print("\nOption-style forms also work: pbl --run, pbl --upload, pbl --detect-port.")
+    print("Use --dry-run with build/run/upload/monitor to preview every command.")
+
+
+def normalized_arguments(arguments: Sequence[str]) -> List[str]:
+    values = list(arguments)
+    aliases = {
+        "--run": "run", "--build": "build", "--upload": "upload",
+        "--monitor": "monitor", "--detect-port": "detect-port",
+        "--test-codes": "test-codes", "--configure": "configure",
+        "--select": "select", "--doctor": "doctor",
+    }
+    if values and values[0] in aliases:
+        values[0] = aliases[values[0]]
+    return values
+
+
+def main(arguments: Optional[Sequence[str]] = None) -> int:
+    raw_values = list(sys.argv[1:] if arguments is None else arguments)
+    invoked_as = Path(sys.argv[0]).name
+    if arguments is None and invoked_as.startswith("pbl--"):
+        raw_values.insert(0, "--" + invoked_as[len("pbl--"):])
+    values = normalized_arguments(raw_values)
+    parser = build_parser()
+    args = parser.parse_args(values)
+    config = load_config()
+    if args.version:
+        print(f"PBL {VERSION}")
+        return 0
+    if args.help or args.command == "help":
+        print_help(parser)
+        return 0
+    if args.command in (None, "dashboard"):
+        if not sys.stdin.isatty():
+            print_help(parser)
+            return 0
+        return dashboard(config)
+    if args.command in {"detect-port", "ports"}:
+        return command_ports(config)
+    if args.command in {"test-codes", "tests"}:
+        print_test_codes(config)
+        return 0
+    if args.command in {"configure", "config"}:
+        return command_configure(args, config)
+    if args.command == "select":
+        return command_select(args, config)
+    if args.command == "doctor":
+        return command_doctor(config)
+    if args.command == "install":
+        return command_install(args)
+    commands = {
+        "build": command_build, "upload": command_upload,
+        "monitor": command_monitor, "run": command_run,
+    }
+    return commands[args.command](args, config)
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except KeyboardInterrupt:
+        print("\nCancelled.", file=sys.stderr)
+        raise SystemExit(130)

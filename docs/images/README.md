@@ -10,6 +10,7 @@ repository.
 | `architecture.svg` | hand-authored vector diagram | ESR grounded inference path |
 | `memory-map.svg` | hand-authored vector diagram | ESP32-S3 flash/RAM execution model |
 | `training-pipeline.svg` | hand-authored vector diagram | data-to-device release gates |
+| `genesis-timeline.svg` | hand-authored vector diagram | Circuit Heroes project lineage |
 
 The raster images were generated with OpenAI's built-in image-generation tool
 on 2026-08-03 using original prompts written for this project. They contain no
