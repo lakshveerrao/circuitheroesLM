@@ -10,3 +10,6 @@ firmware/**/sdkconfig
 runs/
 generated/
 artifacts/
+.pbl/
+firmware/**/build*/
+managed_components/

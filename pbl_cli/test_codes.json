@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "tests": [
+    {
+      "id": "native-ai-probe",
+      "name": "CircuitHeroesLM native AI probe",
+      "hardware": "ESP32-S3 N16R8",
+      "description": "Golden vectors, speed, memory stability and grounded local generation.",
+      "project": "firmware/esp32_native_probe",
+      "processors": ["esp32s3"],
+      "boards": ["*"],
+      "model_flash": {
+        "address": "0x310000",
+        "file": "models/native-esr-ple-v0.4/model.chlm"
+      }
+    },
+    {
+      "id": "board-full-lab",
+      "name": "Interactive full-board laboratory",
+      "hardware": "AMOLED + touch + audio",
+      "description": "Product-style screen with touch, microphone capture and safe playback.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 0,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "display-color-grid",
+      "name": "AMOLED color and geometry test",
+      "hardware": "368 x 448 AMOLED",
+      "description": "Checks color order, panel bounds, alignment, brightness and text rendering.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 1,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "touch-tracker",
+      "name": "Capacitive touch tracker",
+      "hardware": "AMOLED touch",
+      "description": "Draws every touch and confirms coordinates across the full panel.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 2,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "speaker-gentle-tone",
+      "name": "Safe speaker test",
+      "hardware": "ES8311 speaker",
+      "description": "Plays a short low-volume tone only after a screen tap; never loops a beep.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 3,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "microphone-meter",
+      "name": "Live microphone level meter",
+      "hardware": "ES8311 microphone",
+      "description": "Shows live input level without recording or sending audio anywhere.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 4,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "audio-record-playback",
+      "name": "Microphone record and playback",
+      "hardware": "ES8311 mic + speaker",
+      "description": "Tap to record three seconds, then safely play the captured voice once.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 5,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "agent-hardware-screen",
+      "name": "CircuitHeroes agent hardware screen",
+      "hardware": "AMOLED + touch + audio",
+      "description": "A UI integration example with one-shot prompt, listen and response states.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 6,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "i2c-device-map",
+      "name": "I2C peripheral map",
+      "hardware": "Waveshare onboard I2C",
+      "description": "Reports detected onboard peripheral addresses and board revision clues.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 7,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "memory-health",
+      "name": "SRAM and PSRAM health",
+      "hardware": "ESP32-S3 PSRAM",
+      "description": "Shows internal heap and PSRAM capacity and runs a non-destructive allocation test.",
+      "project": "firmware/pbl_waveshare_lab",
+      "mode": 8,
+      "processors": ["esp32s3"],
+      "boards": ["waveshare-s3-touch-amoled-1.8-auto", "waveshare-s3-touch-amoled-1.8-original", "waveshare-s3-touch-amoled-1.8-v2"]
+    },
+    {
+      "id": "chip-information",
+      "name": "Processor and flash information",
+      "hardware": "ESP32 family",
+      "description": "Prints chip, cores, revision, flash and runtime memory information.",
+      "project": "firmware/pbl_system_probe",
+      "processors": ["esp32s3", "esp32p4", "esp32c6", "esp32c3", "esp32s2", "esp32"],
+      "boards": ["*"]
+    },
+    {
+      "id": "serial-heartbeat",
+      "name": "Serial heartbeat starter",
+      "hardware": "ESP32 family",
+      "description": "Smallest reusable ESP-IDF example with a once-per-second status message.",
+      "project": "firmware/pbl_system_probe",
+      "processors": ["esp32s3", "esp32p4", "esp32c6", "esp32c3", "esp32s2", "esp32"],
+      "boards": ["*"]
+    }
+  ]
+}

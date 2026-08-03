@@ -45,6 +45,66 @@ recorded measurements from the connected device, not simulator estimates.
 The complete evidence is in
 [`docs/NATIVE_RESULTS.md`](docs/NATIVE_RESULTS.md).
 
+## Start with PBL — no pip or UV required
+
+**PBL (Pocket Board Lab)** is the product interface for this repository. It is
+a dependency-free terminal dashboard built with Python's standard library. It
+detects connected ESP boards, remembers the user's hardware, builds the right
+firmware, uploads it, writes model partitions when required, and opens the
+serial monitor.
+
+```sh
+./pbl
+```
+
+That opens the interactive terminal dashboard. Nothing has to be installed.
+To make `pbl` available everywhere as a normal command, use the optional
+one-time, pip-free installer:
+
+```sh
+./pbl install
+export PATH="$HOME/.local/bin:$PATH"
+pbl
+```
+
+The most useful direct commands are:
+
+```sh
+pbl configure               # processor, board, display, input, mic, speaker
+pbl detect-port             # find the connected ESP board
+pbl test-codes              # browse the hardware/AI example library
+pbl select board-full-lab   # remember a test code
+pbl run                     # build + upload + monitor
+```
+
+Option-style commands are accepted too: `pbl --run`, `pbl --upload`,
+`pbl --detect-port`, `pbl --configure`, and `pbl --test-codes`. Use
+`pbl doctor` to check Python, ESP-IDF, the compiler, the test catalog, and the
+connected serial device from one screen. The pip-free installer also provides
+the compact aliases requested for scripting: `pbl--run`, `pbl--upload`,
+`pbl--detect-port`, `pbl--configure`, and `pbl--test-codes`.
+
+![PBL terminal workflow](docs/images/pbl-terminal.svg)
+
+### Included test-code library
+
+PBL ships with 12 discoverable examples rather than a serial-only model probe:
+
+- native CircuitHeroesLM numerical, speed, memory, tokenizer, and generation
+  validation;
+- interactive full-board AMOLED, touch, microphone, and speaker laboratory;
+- display color/alignment and full-panel touch tracking;
+- a silent-until-tapped, low-volume speaker check;
+- a live microphone level meter;
+- three-second local record and one-time playback;
+- a Circuit Heroes agent UI hardware bridge;
+- I2C/BSP, SRAM/PSRAM, chip/flash, and serial heartbeat checks.
+
+The Waveshare examples support both the original SH8601/FT3168 board and the
+V2 CO5300/CST820 board through the official managed BSP. PBL marks examples
+that do not match the configured processor or board and requires an explicit
+override before building them.
+
 ## What is genuinely new here
 
 circuitheroesLM combines several ideas into a microcontroller-first engineering
@@ -149,7 +209,10 @@ Each candidate directory includes:
 - evaluation outputs;
 - SHA-256 checksums.
 
-## Reproduce it
+## Reproduce the research pipeline
+
+PBL is the recommended interface for normal board use. The commands below are
+the lower-level research workflow for training, evaluation and runtime work.
 
 ### 1. Run the tests
 
@@ -187,6 +250,9 @@ src/circuitheroeslm/          ESR model, tokenizer, CHLM format, generation
 tools/                        dataset build, training, export, evaluation
 native_runtime/               portable C11 tokenizer, inference, generation
 firmware/esp32_native_probe/  ESP-IDF hardware validation firmware
+firmware/pbl_waveshare_lab/   display, touch, mic and speaker test firmware
+firmware/pbl_system_probe/    portable chip and serial starter firmware
+pbl + pbl_cli/                dependency-free product CLI and test registry
 data/                         reviewed Engineering HIL pilot
 models/                       weights, tokenizers, manifests, checksums
 evaluations/                  float and quantized held-out results
