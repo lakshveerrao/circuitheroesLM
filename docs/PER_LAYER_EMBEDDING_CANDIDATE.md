@@ -1,15 +1,15 @@
 # Per-layer embedding candidate
 
-## Attribution and boundary
+## Method attribution
 
 Google describes Per-Layer Embeddings (PLE) in Gemma 3n as layer-specific
 embedding parameters that can be generated or cached outside the core working
 memory and added as layers execute:
 <https://ai.google.dev/gemma/docs/gemma-3n>.
 
-circuitheroesLM does not claim to have invented PLE and is not Gemma. The new
-candidate independently implements the published idea for the ESR architecture;
-it does not copy Gemma weights, source code, runtime code or model format.
+circuitheroesLM adapts the published PLE idea to the ESR architecture and its
+CHLM microcontroller runtime. Google is credited for introducing the method in
+the Gemma 3n documentation.
 
 ## ESP32 adaptation
 

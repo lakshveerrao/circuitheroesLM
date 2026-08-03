@@ -1,106 +1,239 @@
+<div align="center">
+
 # circuitheroesLM
 
-**circuitheroesLM is a native, electronics-centric language model designed for
-fully offline inference on ESP32-class microcontrollers.**
+### An electronics-native language model built to think where the hardware lives.
 
-This branch starts from the repository's original one-file `main` history. It
-does not contain or import the earlier slvDev-based prototype runtime, model,
-exporter, tokenizer, model format, or weights.
+**Fully offline · ESP32-S3 measured · Open weights · Native C runtime · Created by Lakshveer Rao**
 
-## What it is
+![circuitheroesLM hero](docs/images/circuitheroeslm-hero.png)
 
-circuitheroesLM is trained to model engineering language and relationships:
-components, subtypes, symbols, pins, units, connections, topology, behavior,
-constraints, failure modes, explanations, questions, and game missions. It is
-not initialized from TinyStories or another pretrained language model.
+</div>
 
-The native architecture is the **Engineering State Router (ESR)**: an
-attention-free recurrent decoder with four persistent engineering state lanes
-and a compact gated channel mixer. Retrieved fact cards provide attributed
-engineering knowledge; the learned model turns grounded records into language.
+circuitheroesLM is an open research stack for compact, grounded electronics
+intelligence on microcontrollers. The model, tokenizer, quantizer, binary
+format, native runtime, training pipeline, evaluation gates, weights, and
+device probe are all published in this repository.
 
-```mermaid
-flowchart LR
-  F["Attributed engineering fact card"] --> T["Native CHTK byte-BPE"]
-  T --> E["Tied token embedding"]
-  E --> P["Optional flash-streamed layer embedding"]
-  P --> R["ESR: entity, relation, quantity, constraint lanes"]
-  R --> G["Generated FactTape plan"]
-  G --> V["Exact-field verifier and renderer"]
-  V --> A["Offline answer or game mission"]
+The pilot is intentionally small enough to inspect and reproduce, yet complete
+enough to execute real learned inference on a 240 MHz ESP32-S3 with no Wi-Fi,
+cloud API, or remote model.
+
+> **Why this matters:** hardware learning tools should still explain, quiz, and
+> reason when the internet is absent. circuitheroesLM explores an architecture
+> designed around flash bandwidth, tiny recurrent state, verified local facts,
+> and the actual memory hierarchy of an embedded device.
+
+## The result, at a glance
+
+| What was measured | v0.4 result |
+| --- | ---: |
+| Model architecture | Engineering State Router + per-layer embeddings |
+| Parameters | 1,163,648 |
+| Quantized CHLM artifact | 1,229,312 bytes (1.17 MiB) |
+| ESP32-S3 model step | 39.45 ms |
+| Compute rate | 25.35 steps/s |
+| Device/reference maximum delta | `4.76837e-6` |
+| Device numerical run | 100 sequences / 700 steps |
+| Heap drift across run | 0 bytes |
+| PSRAM drift across run | 0 bytes |
+| Grounded on-device answer | 4.608 s end to end |
+| Held-out task gates | 864/864 float + 864/864 row-INT8 |
+
+Test board: ESP32-S3 N16R8, 240 MHz, 16 MB flash, 8 MB PSRAM. These are
+recorded measurements from the connected device, not simulator estimates.
+The complete evidence is in
+[`docs/NATIVE_RESULTS.md`](docs/NATIVE_RESULTS.md).
+
+## What is genuinely new here
+
+circuitheroesLM combines several ideas into a microcontroller-first engineering
+system:
+
+1. **Engineering State Router (ESR).** An attention-free recurrent decoder with
+   four persistent state lanes—entity, relation, quantity, and constraint—so
+   the hot thinking state stays compact.
+2. **Flash-streamed per-layer embeddings.** Layer-specific token knowledge is
+   read a row at a time from mapped model flash instead of becoming a permanent
+   RAM burden.
+3. **Grounded neural planning.** The learned model produces a compact FactTape
+   plan; an exact-field verifier renders names, symbols, behavior, and safety
+   facts from the retrieved local record.
+4. **An embedded-native artifact chain.** CHTK tokenization, row-INT8 CHLM
+   weights, CRC-checked tensor metadata, C11 inference, and ESP-IDF firmware are
+   designed and tested together.
+5. **Reproducible claims.** Float, quantized Python, native C, sanitizer, and
+   real-device gates are included alongside the weights that produced the
+   numbers.
+
+The innovation is the measured system design: useful engineering generation
+under microcontroller constraints, with the generative and factual parts
+separated so a tiny model can be creative without fabricating a pin name or
+safety constraint.
+
+![circuitheroesLM architecture](docs/images/architecture.svg)
+
+## How a response is made
+
+1. A reviewed engineering record is retrieved from local storage.
+2. The native CHTK byte-BPE tokenizer converts the card and request into tokens.
+3. Each ESR layer receives its token embedding plus that layer's flash-streamed
+   embedding row.
+4. Four recurrent lanes track the component, relationship, quantity, and
+   constraint information needed for the next token.
+5. The model generates FactTape control tokens for an explanation, symbol clue,
+   behavior lesson, safety rule, quiz, or game mission.
+6. The verifier copies exact grounded fields into the final response.
+
+This creates a practical division of labor: the neural model learns language
+structure and task behavior; the local knowledge card supplies exact
+engineering truth.
+
+## Built for ESP32 memory, not resized for it
+
+![ESP32-S3 memory flow](docs/images/memory-map.svg)
+
+The v0.4 CHLM file stays in its model partition. Quantized rows are read from
+mapped flash as inference needs them, while activations and four recurrent
+states occupy the fast working path. The implementation does not need to stage
+the entire model in PSRAM.
+
+The current downloadable artifact:
+
+```text
+models/native-esr-ple-v0.4/model.chlm
+SHA-256 023af982de1a56bd35b34e4d6f9faaa115ed1554b2c113ded11cd3b7b83f2ac2
 ```
 
-The neural model chooses language structure and task behavior. Exact names,
-symbols, behavior descriptions and safety constraints come from the retrieved
-local fact card, which prevents a tiny model from inventing absent ratings or
-pin facts.
+## Engineering data, made inspectable
 
-## Current status
+![Engineering knowledge becomes local intelligence](docs/images/engineering-knowledge-world.png)
 
-The independently implemented v0.3 baseline is complete from training through
-ESP32 execution. It passed 864/864 held-out-family checks in float32 and
-row-INT8, strict C and sanitizer goldens, and 100 consecutive sequences on a
-real ESP32-S3 N16R8. The device produced a complete grounded answer with the
-native CHTK tokenizer and FactTape renderer, fully offline.
+The current Engineering HIL pilot contains **52 reviewed component records**
+across **45 component families**. Every record uses eight explicit fields:
 
-Measured on the connected 240 MHz ESP32-S3: 39.42 ms/model step (25.37
-steps/s), maximum reference error `2.38419e-6`, and no heap change across 700
-steps. The end-to-end prompt plus six-token answer took 4.605 s.
+- stable ID and human-readable name;
+- engineering family;
+- purpose;
+- schematic-symbol description;
+- operating behavior;
+- safety or selection constraint;
+- retrieval anchors.
 
-This is a bounded engineering pilot with 52 records, not yet a general-purpose
-or "perfect" electronics model. A separately versioned per-layer-embedding
-candidate is being evaluated; v0.3 remains preserved until another candidate
-beats its published gates.
+From each fact card, the pipeline creates six learning modes: **explain,
+identify, symbol, behavior, constraint, and game**. Dataset records, review
+status, manifests, generation contracts, and evaluation outputs remain visible
+instead of being hidden behind a training service.
 
-## Downloadable artifacts
+The pilot proves the complete method; it does not yet claim broad coverage of
+all electronics. The next scale target is a much larger, license-reviewed
+corpus spanning components, modules, pins, circuits, measurements, debugging,
+power electronics, robotics, embedded systems, and safe connection patterns.
 
-| Candidate | Purpose | Parameters | CHLM size | Device step |
+![Training and release pipeline](docs/images/training-pipeline.svg)
+
+## Download the model
+
+| Release candidate | Role | Parameters | CHLM bytes | Board result |
 | --- | --- | ---: | ---: | ---: |
-| `native-esr-facttape-v0.3` | smallest proven baseline | 573,824 | 614,848 B | 39.42 ms |
-| `native-esr-ple-v0.4` | best measured validation loss | 1,163,648 | 1,229,312 B | 39.45 ms |
+| [`native-esr-ple-v0.4`](models/native-esr-ple-v0.4) | best measured pilot | 1,163,648 | 1,229,312 | 39.45 ms/step |
+| [`native-esr-facttape-v0.3`](models/native-esr-facttape-v0.3) | compact preserved baseline | 573,824 | 614,848 | 39.42 ms/step |
 
-Each model directory contains float weights, native row-INT8 weights, tokenizer
-JSON, native CHTK tokenizer, training and corpus manifests, a device golden and
-SHA-256 checksums. v0.4 independently adapts the per-layer-embedding principle
-published for [Google Gemma 3n](https://ai.google.dev/gemma/docs/gemma-3n); it
-is not Gemma and uses no Gemma weights or runtime code.
+Each candidate directory includes:
 
-## Reproduce on a host
+- PyTorch weights (`model.pt`);
+- native row-INT8 weights (`model.chlm`);
+- tokenizer JSON and native CHTK binary;
+- corpus and training manifests;
+- device golden tensors;
+- evaluation outputs;
+- SHA-256 checksums.
+
+## Reproduce it
+
+### 1. Run the tests
 
 ```sh
 uv run --with pytest pytest -q
+```
+
+### 2. Build and verify the native C runtime
+
+```sh
 cc -std=c11 -O3 -Wall -Wextra -Werror \
-  native_runtime/chlm.c native_runtime/host_verify.c -lm -o /tmp/chlm-verify
-/tmp/chlm-verify models/native-esr-ple-v0.4/model.chlm \
+  native_runtime/chlm.c native_runtime/host_verify.c -lm \
+  -o /tmp/chlm-verify
+
+/tmp/chlm-verify \
+  models/native-esr-ple-v0.4/model.chlm \
   models/native-esr-ple-v0.4/model.chlm.golden.bin
 ```
 
-Run complete local tokenization and grounded generation with the commands in
-[`native_runtime/README.md`](native_runtime/README.md). The ESP32-S3 build,
-partition map and exact flashing sequence are in the hardware probe guide.
+### 3. Run complete native tokenization and grounded generation
 
-## What may be claimed
+Follow [`native_runtime/README.md`](native_runtime/README.md) for the CHTK +
+CHLM generation command.
 
-It is accurate to say that circuitheroesLM is independently implemented,
-trained from random initialization on its declared engineering corpus, and runs
-fully offline on the tested ESP32-S3. It is not accurate to call it Gemma, a
-general electronics expert, infinitely knowledgeable, or perfect. Scaling the
-reviewed fact corpus and adding harder independent evaluations remain active
-work.
+### 4. Build, flash, and measure the ESP32-S3
 
-Read [`docs/NATIVE_ARCHITECTURE.md`](docs/NATIVE_ARCHITECTURE.md) and
-[`docs/ORIGINALITY_POLICY.md`](docs/ORIGINALITY_POLICY.md) before making claims
-about the project. Reproduce the board result with
+The exact ESP-IDF project, model partition, flash commands, serial protocol,
+and pass marker are in
 [`firmware/esp32_native_probe/README.md`](firmware/esp32_native_probe/README.md).
 
-## Name
+## Repository map
 
-The product and model name is exactly **circuitheroesLM**. Lowercase package
-identifiers use `circuitheroeslm` only where tooling requires it.
+```text
+src/circuitheroeslm/          ESR model, tokenizer, CHLM format, generation
+tools/                        dataset build, training, export, evaluation
+native_runtime/               portable C11 tokenizer, inference, generation
+firmware/esp32_native_probe/  ESP-IDF hardware validation firmware
+data/                         reviewed Engineering HIL pilot
+models/                       weights, tokenizers, manifests, checksums
+evaluations/                  float and quantized held-out results
+docs/                         architecture, formats, results, methodology
+```
 
-## License
+## Research honesty
 
-Project implementation: MIT. Attributed datasets keep their own licenses and
-notices. Established mathematical ideas are cited; the project does not claim
-to have invented recurrent networks, tokenization, quantization, or language
-modelling as general concepts.
+circuitheroesLM v0.4 is a successful **engineering pilot**, not a finished
+general electronics expert. It has a small reviewed corpus, a short context,
+and a deliberately constrained grounded renderer. “AI-powered” here means a
+trained neural model is genuinely executing on the ESP32-S3; it does not mean
+that the pilot already knows every component or can replace engineering review.
+
+The strongest claim we make today is concrete: **an original
+electronics-focused model stack was trained from random initialization,
+quantized into its own embedded format, executed through its native C runtime,
+and validated end to end on a real ESP32-S3—fully offline.**
+
+## Method attribution
+
+The per-layer-embedding direction is inspired by the technique published by
+Google for [Gemma 3n](https://ai.google.dev/gemma/docs/gemma-3n). In
+circuitheroesLM it is adapted to a small ESR decoder and streamed from mapped
+microcontroller flash. Dataset sources and licenses are tracked in the corpus
+manifests and [`licenses/`](licenses/); the current engineering fact review
+includes KiCad-derived reference work under its published terms.
+
+Established ideas such as recurrent neural networks, byte-pair tokenization,
+and integer quantization retain their normal research lineage. Project code and
+original assets are released under the repository license.
+
+## Roadmap
+
+- scale from 52 pilot records to thousands of reviewed engineering facts;
+- add pins, packages, ratings, connection graphs, and circuit-level tasks;
+- benchmark retrieval, generation quality, latency, power, and failure modes;
+- add ESP32-P4, ESP32-C6, ESP32-C3, and display/audio board profiles where the
+  model size and peripherals permit;
+- train larger teacher models and distill stronger embedded candidates;
+- ship a versioned model registry and downloadable release bundles;
+- integrate the model into the Circuit Heroes offline learning game.
+
+## Author and license
+
+Created by **Lakshveer Rao** as the open foundation for Circuit Heroes and
+future offline engineering-learning products.
+
+Project implementation: MIT. Dataset and reference materials retain their
+respective licenses and notices.

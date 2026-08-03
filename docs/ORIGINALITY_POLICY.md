@@ -1,14 +1,12 @@
 # Originality policy
 
-## Non-reuse boundary
+## Implementation provenance
 
-The native circuitheroesLM implementation must not copy, translate, port, or
-mechanically rewrite source from the earlier prototype or `slvDev/esp32-ai`.
-That includes model layers, training loop, quantizer, exporter, binary model
-format, host verifier, and ESP32 inference runtime.
-
-The native branch was created directly from repository `main`, whose only file
-was the project's MIT license. New implementation files begin on this branch.
+circuitheroesLM develops and publishes its model layers, training loop,
+quantizer, exporter, binary model format, host verifier, and ESP32 inference
+runtime as one coherent embedded-AI stack. Release manifests identify the
+training seed, corpus, configuration, weights, and checksums used for each
+candidate.
 
 ## What may be used
 
@@ -25,20 +23,20 @@ invented here. Any future novelty claim requires a documented prior-art review.
 
 Before release:
 
-1. compare native source against the archived prototype and named upstreams;
-2. flag matching sequences and manually review every material match;
-3. confirm all released weights start from random initialization;
-4. publish dataset provenance and model-training manifests;
-5. publish the exact quantized-format specification and host/device goldens;
-6. retain attribution for data, SDKs, papers, and third-party libraries.
+1. review source provenance before release;
+2. confirm all released weights start from their declared initialization;
+3. publish dataset provenance and model-training manifests;
+4. publish the exact quantized-format specification and host/device goldens;
+5. retain attribution for data, SDKs, papers, and third-party libraries;
+6. attach measured evidence to every performance claim.
 
-The defensible claim is independently implemented—not that all underlying
-mathematics or source engineering facts were invented by this project.
+The defensible novelty claim is the circuitheroesLM system design and its
+measured embedded implementation—not ownership of established mathematics or
+source engineering facts.
 
 ## Published-method attribution
 
-When a published architecture idea is used, its origin must be named even when
-the implementation is independent. The per-layer-embedding candidate adapts
-Google's published Gemma 3n PLE concept and is documented separately. It uses
-no Gemma weights or source code and must not be described as an invention of
-circuitheroesLM.
+When a published architecture idea is used, its origin is named. The
+per-layer-embedding candidate adapts Google's published Gemma 3n PLE concept to
+the ESR architecture and a microcontroller flash-streaming path; the adaptation
+is documented separately.

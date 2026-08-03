@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="640" viewBox="0 0 1400 640" role="img" aria-labelledby="title desc">
+  <title id="title">circuitheroesLM training and release pipeline</title>
+  <desc id="desc">Reviewed engineering facts become six learning tasks, train an ESR model from random initialization, export to row-INT8 CHLM, pass host tests, then pass ESP32 device tests.</desc>
+  <defs>
+    <linearGradient id="bg3"><stop stop-color="#081221"/><stop offset="1" stop-color="#13162b"/></linearGradient>
+    <linearGradient id="bar3" x1="0" x2="1"><stop stop-color="#22d7f2"/><stop offset=".5" stop-color="#7a84ff"/><stop offset="1" stop-color="#ff6f7f"/></linearGradient>
+    <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#74e9ff"/></marker>
+  </defs>
+  <rect width="1400" height="640" rx="32" fill="url(#bg3)"/>
+  <rect x="70" y="120" width="1260" height="8" rx="4" fill="url(#bar3)"/>
+  <text x="70" y="74" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="42" font-weight="700">From engineering truth to a flashable model</text>
+
+  <g font-family="Inter,Arial,sans-serif">
+    <g transform="translate(70 175)">
+      <rect width="210" height="330" rx="25" fill="#0d2938" stroke="#24d4ed" stroke-width="2"/>
+      <circle cx="42" cy="46" r="22" fill="#24d4ed"/><text x="42" y="54" text-anchor="middle" fill="#05202a" font-size="22" font-weight="800">1</text>
+      <text x="28" y="94" fill="#fff" font-size="25" font-weight="700">Review facts</text>
+      <text x="28" y="130" fill="#9eb9d0" font-size="16">52 pilot records</text>
+      <text x="28" y="158" fill="#9eb9d0" font-size="16">45 component families</text>
+      <text x="28" y="186" fill="#9eb9d0" font-size="16">8 grounded fields</text>
+      <path d="M28 224H180M28 252H150M28 280H168" stroke="#3e7d92" stroke-width="9" stroke-linecap="round"/>
+    </g>
+    <path d="M290 340H330" stroke="#74e9ff" stroke-width="4" marker-end="url(#arr3)"/>
+    <g transform="translate(345 175)">
+      <rect width="210" height="330" rx="25" fill="#17223d" stroke="#7184ff" stroke-width="2"/>
+      <circle cx="42" cy="46" r="22" fill="#7184ff"/><text x="42" y="54" text-anchor="middle" fill="#0c1530" font-size="22" font-weight="800">2</text>
+      <text x="28" y="94" fill="#fff" font-size="25" font-weight="700">Build tasks</text>
+      <g fill="#cdd4ff" font-size="16"><text x="28" y="137">explain · identify</text><text x="28" y="167">symbol · behavior</text><text x="28" y="197">constraint · game</text></g>
+      <rect x="28" y="229" width="154" height="54" rx="12" fill="#26365f"/><text x="45" y="262" fill="#eef0ff" font-size="17" font-weight="700">FactTape targets</text>
+    </g>
+    <path d="M565 340H605" stroke="#74e9ff" stroke-width="4" marker-end="url(#arr3)"/>
+    <g transform="translate(620 175)">
+      <rect width="210" height="330" rx="25" fill="#222039" stroke="#ac75f5" stroke-width="2"/>
+      <circle cx="42" cy="46" r="22" fill="#ac75f5"/><text x="42" y="54" text-anchor="middle" fill="#21102e" font-size="22" font-weight="800">3</text>
+      <text x="28" y="94" fill="#fff" font-size="25" font-weight="700">Train ESR</text>
+      <text x="28" y="133" fill="#cbb6e9" font-size="16">random initialization</text>
+      <text x="28" y="161" fill="#cbb6e9" font-size="16">1,163,648 parameters</text>
+      <text x="28" y="189" fill="#cbb6e9" font-size="16">500 pilot steps</text>
+      <path d="M30 280 C62 260 72 206 104 220 S148 167 182 180" fill="none" stroke="#c888ff" stroke-width="6"/>
+      <text x="28" y="310" fill="#8f7ea8" font-size="14">best val loss 0.2635</text>
+    </g>
+    <path d="M840 340H880" stroke="#74e9ff" stroke-width="4" marker-end="url(#arr3)"/>
+    <g transform="translate(895 175)">
+      <rect width="210" height="330" rx="25" fill="#38222d" stroke="#ff7b7f" stroke-width="2"/>
+      <circle cx="42" cy="46" r="22" fill="#ff7b7f"/><text x="42" y="54" text-anchor="middle" fill="#35131d" font-size="22" font-weight="800">4</text>
+      <text x="28" y="94" fill="#fff" font-size="25" font-weight="700">Quantize</text>
+      <text x="28" y="133" fill="#f3bec6" font-size="16">row-INT8 weights</text>
+      <text x="28" y="161" fill="#f3bec6" font-size="16">CHLM + CHTK</text>
+      <text x="28" y="189" fill="#f3bec6" font-size="16">CRC + SHA-256</text>
+      <rect x="28" y="229" width="154" height="70" rx="14" fill="#562e3b"/><text x="105" y="258" text-anchor="middle" fill="#fff1ed" font-size="24" font-weight="800">1.17 MiB</text><text x="105" y="282" text-anchor="middle" fill="#e9b7bd" font-size="14">flash artifact</text>
+    </g>
+    <path d="M1115 340H1155" stroke="#74e9ff" stroke-width="4" marker-end="url(#arr3)"/>
+    <g transform="translate(1170 175)">
+      <rect width="160" height="330" rx="25" fill="#12352f" stroke="#45e0ba" stroke-width="2"/>
+      <circle cx="42" cy="46" r="22" fill="#45e0ba"/><text x="42" y="54" text-anchor="middle" fill="#08251e" font-size="22" font-weight="800">5</text>
+      <text x="24" y="94" fill="#fff" font-size="25" font-weight="700">Gate</text>
+      <text x="24" y="133" fill="#aee8d8" font-size="15">864/864 float</text>
+      <text x="24" y="161" fill="#aee8d8" font-size="15">864/864 INT8</text>
+      <text x="24" y="189" fill="#aee8d8" font-size="15">strict C11</text>
+      <text x="24" y="217" fill="#aee8d8" font-size="15">ASAN/UBSAN</text>
+      <text x="24" y="245" fill="#aee8d8" font-size="15">ESP32 probe</text>
+      <circle cx="80" cy="288" r="25" fill="#45e0ba"/><path d="M68 289l9 9 17-21" fill="none" stroke="#092c23" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="700" y="578" text-anchor="middle" fill="#d6e4f3" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700">Every published artifact is reproducible, checksummed, host-verified, and device-measured.</text>
+</svg>

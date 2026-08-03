@@ -1,9 +1,9 @@
 # circuitheroesLM ESR + layer embeddings v0.4
 
-Best measured candidate trained from random initialization with the independent
+Best measured candidate trained from random initialization with the
 circuitheroesLM implementation. It adds a flash-streamed, layer-specific token
-embedding table to ESR. The published idea is attributed to Gemma 3n PLE; this
-is not a Gemma model and contains no Gemma weights or source code.
+embedding table to ESR. The published PLE method is attributed to Google Gemma
+3n; circuitheroesLM adapts it to ESR and mapped microcontroller flash.
 
 | Field | Value |
 | --- | ---: |
