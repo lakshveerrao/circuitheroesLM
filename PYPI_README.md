@@ -13,6 +13,12 @@ PBL provides an arrow-key terminal for board detection, hardware profiles,
 display/touch/microphone/speaker tests, firmware upload, serial monitoring and
 the circuitheroesLM native ESP32-S3 pilot.
 
+PBL 0.3 adds **Import Git test code**. Paste a public HTTPS Git link and PBL
+shallow-clones it, verifies repository limits, paths, symbolic links, ESP-IDF
+structure and risky build hooks, matches it to the chosen processor, board and
+display, and registers the exact verified commit as a selectable third-party
+test.
+
 - no Git clone;
 - no UV environment;
 - no Arduino CLI;
