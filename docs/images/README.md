@@ -6,6 +6,7 @@ repository.
 | Asset | Type | Purpose |
 | --- | --- | --- |
 | `circuitheroeslm-hero.png` | generated raster artwork | ESP32-centered repository hero |
+| `circuitheroeslm-8-dollar-chip.png` | generated raster artwork | primary $8-class ESP32-S3 hero and social preview |
 | `engineering-knowledge-world.png` | generated raster artwork | engineering-data and learning vision |
 | `architecture.svg` | hand-authored vector diagram | ESR grounded inference path |
 | `memory-map.svg` | hand-authored vector diagram | ESP32-S3 flash/RAM execution model |
@@ -22,6 +23,10 @@ source files and can be edited directly.
 - **Hero:** a cinematic, technically credible ESP32-S3 surrounded by real
   electronics components and glowing neural signal paths; deep navy, cyan,
   amber, and red; no text, logo, watermark, cloud, or server imagery.
+- **$8-class chip hero:** a wide macro product view of a pocket ESP32-S3 as the
+  computation center, surrounded by plausible sensors, motor hardware,
+  waveforms, and local neural signal paths; no text, logos, cloud, or generic
+  AI brain imagery.
 - **Engineering knowledge:** reviewed components, symbols, circuits, waveforms,
   and modules becoming a compact neural lattice and then local device lessons;
   no text, logo, watermark, cloud, or server imagery.
