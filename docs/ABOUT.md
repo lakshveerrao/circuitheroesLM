@@ -53,15 +53,16 @@ language-model experimentation alone. It grew from repeated contact with real
 motors, sensors, controllers, vehicles, manufacturing tools, and the problems
 that appear when software meets electricity.
 
-The current [Lakshveer.com](https://lakshveer.com/) portfolio reports:
+Combining the [Lakshveer.com](https://lakshveer.com/) portfolio with the
+creator's latest update, the current builder record is:
 
-| Builder record | Portfolio figure |
+| Builder record | Current figure |
 | --- | ---: |
 | Projects documented | 169+ |
 | Products shipped | 2 |
 | Workshops conducted | 4+ |
 | Grants and scholarships | ₹1.4 lakh+ |
-| Immersive company visits | 25+ across four cities |
+| Immersive company visits | 50+ across four cities |
 
 Its project areas include obstacle-avoiding vehicles, gesture-controlled and
 GPS-guided robotic cars, computer-vision systems, TinyML, embedded controllers,
@@ -69,11 +70,12 @@ sensors, actuators, and digital fabrication. The learning visits span hardware
 manufacturing, PCB production, drones, semiconductors, robotics, electric
 vehicles, prototyping, IoT, and TinyML.
 
-These figures are portfolio-reported and will evolve as the work continues.
-They are included because they explain important design decisions in this
-repository: hardware truth is grounded, safety constraints are explicit,
-device measurements are published, and the model is expected to run on the
-same class of small boards used to build real projects.
+These figures will evolve as the work continues. The 50+ visit total is the
+creator's latest figure and may be newer than the number currently indexed
+from the personal website. They are included because they explain important
+design decisions in this repository: hardware truth is grounded, safety
+constraints are explicit, device measurements are published, and the model is
+expected to run on the same class of small boards used to build real projects.
 
 ## From builds to a local engineering model
 
