@@ -72,6 +72,7 @@ ESP-IDF toolchain underneath. Arduino CLI is not required.
 | `pbl configure --show` | Show the saved profile |
 | `pbl detect-port` | Find likely connected ESP serial ports |
 | `pbl test-codes` | Show examples and compatibility |
+| `pbl import-git [URL]` | Verify and add a public Git ESP-IDF project |
 | `pbl select TEST` | Save the default example |
 | `pbl build [TEST]` | Compile, without touching the device |
 | `pbl upload [TEST]` | Incrementally build and flash |
@@ -124,7 +125,40 @@ the test catalog clearly labels compatible examples.
 - The native AI test automatically writes its matching CHLM artifact to the
   model partition after flashing the application.
 
-## Adding a test code
+## Importing a Git test code
+
+Choose **Import Git test code** in the dashboard or run:
+
+```sh
+pbl import-git https://github.com/owner/esp-idf-project.git
+```
+
+PBL performs a shallow clone without submodules and does not execute imported
+code during verification. It rejects embedded credentials, unsafe paths,
+symbolic links, oversized repositories, ambiguous ESP-IDF project roots and
+common executable or networked CMake hooks. A passing project is pinned to its
+Git commit and matched to the current processor, board and display profile.
+
+Static inspection cannot prove arbitrary third-party build code harmless, so
+PBL labels imports as third-party and asks again before the first build/run.
+Imported projects live in the user's PBL data directory rather than inside the
+installed package, so upgrades do not erase them.
+
+Repositories can provide optional metadata in `pbl-test.json`:
+
+```json
+{
+  "schema": 1,
+  "name": "My display test",
+  "description": "Draws a safe color grid.",
+  "project_subdir": "firmware",
+  "processors": ["esp32s3"],
+  "boards": ["custom"],
+  "displays": ["st7789-spi"]
+}
+```
+
+## Bundling an official test code
 
 Add an ESP-IDF project under `firmware/`, then register it in
 `pbl_cli/test_codes.json`. Each record declares its ID, display name, hardware

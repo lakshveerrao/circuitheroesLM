@@ -7,29 +7,39 @@ import argparse
 from collections import deque
 from contextlib import contextmanager
 import glob
+import hashlib
 import json
 import os
 from pathlib import Path
 import platform
 import queue
+import re
 import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 from typing import Any, Dict, List, Optional, Sequence
+from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parent
-STATE_DIR = ROOT / ".pbl"
+STATE_DIR = Path(os.environ.get("PBL_STATE_DIR", str(ROOT / ".pbl"))).expanduser().resolve()
 CONFIG_PATH = STATE_DIR / "config.json"
 CATALOG_PATH = ROOT / "pbl_cli" / "test_codes.json"
-VERSION = "0.2.1"
+VERSION = "0.3.0"
+if platform.system() == "Windows":
+    USER_DATA_DIR = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "ProjectsByLaksh" / "PBL"
+else:
+    USER_DATA_DIR = Path(os.environ.get("XDG_DATA_HOME", str(Path.home() / ".local" / "share"))) / "projects-by-laksh" / "pbl"
+IMPORTS_DIR = USER_DATA_DIR / "git-tests"
+IMPORTED_CATALOG_PATH = USER_DATA_DIR / "imported-tests.json"
 INSTALL_ALIASES = (
     "pbl--help", "pbl--run", "pbl--build", "pbl--upload", "pbl--monitor",
     "pbl--detect-port", "pbl--test-codes", "pbl--configure", "pbl--select",
-    "pbl--doctor",
+    "pbl--doctor", "pbl--import-git",
 )
 
 RESET = "\033[0m"
@@ -183,7 +193,117 @@ def save_config(config: Dict[str, Any]) -> None:
 
 def load_catalog() -> List[Dict[str, Any]]:
     payload = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
-    return list(payload["tests"])
+    tests = list(payload["tests"])
+    try:
+        imported = json.loads(IMPORTED_CATALOG_PATH.read_text(encoding="utf-8"))
+        if isinstance(imported, dict) and isinstance(imported.get("tests"), list):
+            tests.extend(item for item in imported["tests"] if isinstance(item, dict))
+    except FileNotFoundError:
+        pass
+    except (json.JSONDecodeError, OSError) as error:
+        print(color(f"Warning: cannot read imported tests: {error}", YELLOW), file=sys.stderr)
+    return tests
+
+
+def save_imported_catalog(tests: Sequence[Dict[str, Any]]) -> None:
+    USER_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    temporary = IMPORTED_CATALOG_PATH.with_suffix(".tmp")
+    temporary.write_text(json.dumps({"schema": 1, "tests": list(tests)}, indent=2) + "\n", encoding="utf-8")
+    temporary.replace(IMPORTED_CATALOG_PATH)
+
+
+def imported_tests() -> List[Dict[str, Any]]:
+    try:
+        payload = json.loads(IMPORTED_CATALOG_PATH.read_text(encoding="utf-8"))
+        return list(payload.get("tests", [])) if isinstance(payload, dict) else []
+    except FileNotFoundError:
+        return []
+
+
+def safe_slug(value: str) -> str:
+    cleaned = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+    return cleaned[:40] or "git-test"
+
+
+def validate_git_url(value: str) -> str:
+    parsed = urlparse(value.strip())
+    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+        raise SystemExit("Use a public HTTPS Git URL without embedded usernames, passwords or tokens.")
+    if parsed.hostname in {"localhost", "127.0.0.1", "::1"}:
+        raise SystemExit("Localhost Git URLs are not accepted by the importer.")
+    return value.strip()
+
+
+def repository_files(root: Path) -> List[Path]:
+    files: List[Path] = []
+    total_size = 0
+    for path in root.rglob("*"):
+        if ".git" in path.parts:
+            continue
+        if path.is_symlink():
+            raise SystemExit(f"Verification stopped: symbolic link found at {path.relative_to(root)}.")
+        if not path.is_file():
+            continue
+        size = path.stat().st_size
+        if size > 32 * 1024 * 1024:
+            raise SystemExit(f"Verification stopped: {path.name} is larger than 32 MB.")
+        total_size += size
+        files.append(path)
+        if len(files) > 10000 or total_size > 128 * 1024 * 1024:
+            raise SystemExit("Verification stopped: repository exceeds the 10,000-file or 128-MB safety limit.")
+    return files
+
+
+def locate_idf_project(root: Path, requested: Optional[str] = None) -> Path:
+    if requested:
+        candidate = (root / requested).resolve()
+        try:
+            candidate.relative_to(root.resolve())
+        except ValueError as error:
+            raise SystemExit("Project subdirectory must stay inside the cloned repository.") from error
+        candidates = [candidate]
+    else:
+        candidates = []
+        for cmake in root.rglob("CMakeLists.txt"):
+            if ".git" in cmake.parts or len(cmake.relative_to(root).parts) > 5:
+                continue
+            text_value = cmake.read_text(encoding="utf-8", errors="ignore")
+            if re.search(r"\bproject\s*\(", text_value, re.IGNORECASE):
+                candidates.append(cmake.parent)
+        if root in candidates:
+            candidates = [root]
+    candidates = list(dict.fromkeys(path.resolve() for path in candidates))
+    if len(candidates) != 1 or not (candidates[0] / "CMakeLists.txt").is_file():
+        choices = ", ".join(str(path.relative_to(root)) or "." for path in candidates[:6])
+        hint = f" Detected: {choices}." if choices else ""
+        raise SystemExit("PBL needs exactly one ESP-IDF project. Use --project-subdir when needed." + hint)
+    top_level = (candidates[0] / "CMakeLists.txt").read_text(encoding="utf-8", errors="ignore").lower()
+    if "idf_path" not in top_level or "project.cmake" not in top_level:
+        raise SystemExit("The selected directory is CMake, but not a standard ESP-IDF project.")
+    return candidates[0]
+
+
+def verify_build_files(root: Path, files: Sequence[Path]) -> List[str]:
+    risky_patterns = {
+        "execute_process(": "CMake execute_process",
+        "add_custom_command(": "CMake custom command",
+        "externalproject_add(": "CMake ExternalProject",
+        "fetchcontent_declare(": "CMake network dependency",
+        "curl ": "curl shell command",
+        "wget ": "wget shell command",
+    }
+    findings: List[str] = []
+    scan_suffixes = {".cmake", ".py", ".sh", ".bash", ".zsh", ".ps1"}
+    for path in files:
+        if path.name != "CMakeLists.txt" and path.suffix.lower() not in scan_suffixes:
+            continue
+        if path.stat().st_size > 512 * 1024:
+            continue
+        content = path.read_text(encoding="utf-8", errors="ignore").lower()
+        for needle, label in risky_patterns.items():
+            if needle in content:
+                findings.append(f"{path.relative_to(root)}: {label}")
+    return findings
 
 
 def find_test(test_id: str) -> Dict[str, Any]:
@@ -191,6 +311,126 @@ def find_test(test_id: str) -> Dict[str, Any]:
         if item["id"] == test_id:
             return item
     raise SystemExit(f"Unknown test code: {test_id}. Run 'pbl test-codes' to see choices.")
+
+
+def manifest_list(manifest: Dict[str, Any], key: str, fallback: str) -> List[str]:
+    value = manifest.get(key)
+    if value is None:
+        return [fallback]
+    if not isinstance(value, list) or not value or not all(isinstance(item, str) and item for item in value):
+        raise SystemExit(f"pbl-test.json field '{key}' must be a non-empty list of strings.")
+    return list(value)
+
+
+def command_import_git(args: argparse.Namespace, config: Dict[str, Any]) -> int:
+    heading("Import Git test code")
+    print("PBL clones and inspects the repository without running its code.")
+    raw_url = args.url or input("Public HTTPS Git link: ").strip()
+    url = validate_git_url(raw_url)
+    existing = next((item for item in imported_tests() if item.get("source_url") == url), None)
+    if existing:
+        config["selected_test"] = existing["id"]
+        save_config(config)
+        print(color(f"Already verified and imported: {existing['name']}", GREEN))
+        print("Selected it for the current hardware profile.")
+        return 0
+    git = shutil.which("git")
+    if not git:
+        raise SystemExit("Git is required for importing. Install Git and run this button again.")
+    IMPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    repository_name = safe_slug(Path(urlparse(url).path).name.removesuffix(".git"))
+    import_id = f"git-{repository_name}-{hashlib.sha256(url.encode()).hexdigest()[:8]}"
+    destination = IMPORTS_DIR / import_id
+    if destination.exists():
+        destination = IMPORTS_DIR / f"{import_id}-{int(time.time())}"
+        import_id = destination.name
+
+    with tempfile.TemporaryDirectory(prefix="verify-", dir=str(IMPORTS_DIR)) as temporary:
+        staging = (Path(temporary) / "repository").resolve()
+        print(color("  ➜ Cloning a shallow, non-recursive copy...", BLUE))
+        clone_environment = dict(os.environ)
+        clone_environment["GIT_TERMINAL_PROMPT"] = "0"
+        with muted_build_keyboard():
+            clone = subprocess.run(
+                [git, "clone", "--depth", "1", "--no-recurse-submodules", "--progress", url, str(staging)],
+                env=clone_environment,
+                check=False,
+            )
+        if clone.returncode:
+            raise SystemExit("Git could not clone that public repository. Check the link and repository access.")
+
+        print(color("  ➜ Verifying structure, size, links and build hooks...", BLUE))
+        files = repository_files(staging)
+        manifest_path = staging / "pbl-test.json"
+        manifest: Dict[str, Any] = {}
+        if manifest_path.is_file():
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError as error:
+                raise SystemExit(f"pbl-test.json is not valid JSON: {error}") from error
+            if not isinstance(manifest, dict) or manifest.get("schema", 1) != 1:
+                raise SystemExit("pbl-test.json must be a schema-1 JSON object.")
+        requested_subdir = args.project_subdir or manifest.get("project_subdir")
+        project = locate_idf_project(staging, requested_subdir)
+        findings = verify_build_files(staging, files)
+        if findings:
+            print(color("Verification blocked potentially executable build hooks:", RED))
+            for finding in findings[:10]:
+                print("  - " + finding)
+            raise SystemExit("Repository was not imported. Review those hooks before using this firmware.")
+
+        commit = subprocess.run(
+            [git, "-C", str(staging), "rev-parse", "HEAD"],
+            text=True, capture_output=True, check=False,
+        ).stdout.strip()
+        processors = manifest_list(manifest, "processors", args.processor or str(config["processor"]))
+        known_processors = {value for value, _ in CHOICES["processor"]}
+        if any(value not in known_processors for value in processors):
+            raise SystemExit("pbl-test.json contains an unsupported ESP processor name.")
+        boards = manifest_list(manifest, "boards", args.board or str(config["board"]))
+        displays = manifest_list(manifest, "displays", args.display or str(config["display"]))
+        name = str(args.name or manifest.get("name") or repository_name.replace("-", " ").title())[:80]
+        description = str(manifest.get("description") or f"Verified ESP-IDF test imported from {urlparse(url).hostname}.")[:160]
+        project_relative = project.relative_to(staging.resolve())
+
+        print(color("\nVerification passed", GREEN + BOLD))
+        print(f"  Project     {project_relative or Path('.')} (ESP-IDF)")
+        print(f"  Files       {len(files)}")
+        print(f"  Commit      {commit[:12]}")
+        print(f"  Processor   {', '.join(processors)}")
+        print(f"  Board       {', '.join(boards)}")
+        print(f"  Display     {', '.join(displays)}")
+        print(color("  Note        A clean static check cannot prove third-party build code is harmless.", YELLOW))
+        if not args.yes and sys.stdin.isatty():
+            if input("Add this verified test to PBL? [y/N] ").strip().lower() not in {"y", "yes"}:
+                print("Cancelled; nothing was registered.")
+                return 0
+
+        staging.replace(destination)
+
+    relative_project = Path(import_id) / project_relative
+    item: Dict[str, Any] = {
+        "id": import_id,
+        "name": name,
+        "hardware": f"{boards[0]} + {displays[0]}",
+        "description": description,
+        "project": str(relative_project),
+        "processors": processors,
+        "boards": boards,
+        "displays": displays,
+        "origin": "git-import",
+        "source_url": url,
+        "source_commit": commit,
+        "verified": True,
+    }
+    catalog = imported_tests()
+    catalog.append(item)
+    save_imported_catalog(catalog)
+    config["selected_test"] = import_id
+    save_config(config)
+    print(color(f"\nAdded and selected: {name}", GREEN + BOLD))
+    print("Use Run selected experience when you are ready to build and upload it.")
+    return 0
 
 
 def detect_ports() -> List[str]:
@@ -388,14 +628,19 @@ def run_process(arguments: Sequence[str], cwd: Path, dry_run: bool = False, task
 
 
 def project_for(item: Dict[str, Any]) -> Path:
-    project = (ROOT / item["project"]).resolve()
+    base = IMPORTS_DIR if item.get("origin") == "git-import" else ROOT
+    project = (base / item["project"]).resolve()
+    try:
+        project.relative_to(base.resolve())
+    except ValueError as error:
+        raise SystemExit("Test project path escapes its managed PBL directory.") from error
     if not project.is_dir():
         raise SystemExit(f"Test project is not installed: {project}")
     return project
 
 
 def build_dir_for(item: Dict[str, Any]) -> Path:
-    project_name = Path(item["project"]).name
+    project_name = safe_slug(str(item["id"])) if item.get("origin") == "git-import" else Path(item["project"]).name
     return (STATE_DIR / "build" / project_name).resolve()
 
 
@@ -423,26 +668,49 @@ def idf_build_arguments(item: Dict[str, Any], config: Dict[str, Any]) -> List[st
 def compatibility(item: Dict[str, Any], config: Dict[str, Any]) -> str:
     processors = item.get("processors", [])
     boards = item.get("boards", [])
+    displays = item.get("displays", [])
     if processors and config["processor"] not in processors:
         return "processor mismatch"
     if boards and config["board"] not in boards and "*" not in boards:
         return "board mismatch"
+    if displays and config["display"] not in displays and "*" not in displays:
+        return "display mismatch"
     return "ready"
+
+
+def confirm_imported_build(item: Dict[str, Any], args: argparse.Namespace) -> bool:
+    if item.get("origin") != "git-import" or getattr(args, "yes", False) or args.dry_run or getattr(args, "third_party_confirmed", False):
+        return True
+    if not sys.stdin.isatty():
+        raise SystemExit("Third-party Git tests require --yes when no interactive terminal is available.")
+    print(color("Third-party Git test", YELLOW + BOLD))
+    print(f"Source: {item.get('source_url', 'unknown')}")
+    print("ESP-IDF/CMake build files can execute commands on this computer during compilation.")
+    if input("Build this verified snapshot? [y/N] ").strip().lower() not in {"y", "yes"}:
+        print("Cancelled; no code was built or uploaded.")
+        return False
+    args.third_party_confirmed = True
+    return True
 
 
 def command_build(args: argparse.Namespace, config: Dict[str, Any]) -> int:
     item = find_test(args.test or config["selected_test"])
+    if not confirm_imported_build(item, args):
+        return 0
     state = compatibility(item, config)
     if state != "ready" and not args.force:
         raise SystemExit(f"{item['name']} is not compatible with this profile: {state}. Use --force to override.")
     if not args.dry_run:
         preserve_partial_build(item)
     heading(f"Building · {item['name']}")
-    return run_process(idf_build_arguments(item, config), project_for(item), args.dry_run, "building official firmware")
+    task = "building verified Git firmware" if item.get("origin") == "git-import" else "building official firmware"
+    return run_process(idf_build_arguments(item, config), project_for(item), args.dry_run, task)
 
 
 def command_upload(args: argparse.Namespace, config: Dict[str, Any]) -> int:
     item = find_test(args.test or config["selected_test"])
+    if not confirm_imported_build(item, args):
+        return 0
     state = compatibility(item, config)
     if state != "ready" and not args.force:
         raise SystemExit(f"{item['name']} is not compatible with this profile: {state}. Use --force to override.")
@@ -453,7 +721,8 @@ def command_upload(args: argparse.Namespace, config: Dict[str, Any]) -> int:
     if not args.dry_run:
         preserve_partial_build(item)
     if not getattr(args, "skip_build", False):
-        result = run_process(idf_build_arguments(item, config), project, args.dry_run, "preparing official firmware")
+        task = "preparing verified Git firmware" if item.get("origin") == "git-import" else "preparing official firmware"
+        result = run_process(idf_build_arguments(item, config), project, args.dry_run, task)
         if result:
             return result
     flash_arguments = ["idf.py", "-B", str(build_dir), "-p", str(port), "-b", "921600", "flash"]
@@ -490,6 +759,8 @@ def command_monitor(args: argparse.Namespace, config: Dict[str, Any]) -> int:
 
 def command_run(args: argparse.Namespace, config: Dict[str, Any]) -> int:
     item = find_test(args.test or config["selected_test"])
+    if not confirm_imported_build(item, args):
+        return 0
     if not args.yes and not args.dry_run and sys.stdin.isatty():
         print(f"PBL will replace the firmware on {selected_port(config)} with {item['name']}.")
         if input("Continue? [y/N] ").strip().lower() not in {"y", "yes"}:
@@ -610,6 +881,7 @@ def command_doctor(config: Dict[str, Any]) -> int:
     path = idf_path()
     checks.append(("ESP-IDF", str(path) if path else "not found", path is not None))
     checks.append(("C compiler", shutil.which("cc") or "not found", shutil.which("cc") is not None))
+    checks.append(("Git importer", shutil.which("git") or "not found", shutil.which("git") is not None))
     ports = detect_ports()
     checks.append(("ESP serial port", ", ".join(ports) if ports else "not found", bool(ports)))
     checks.append(("Test catalog", f"{len(load_catalog())} tests", CATALOG_PATH.is_file()))
@@ -659,6 +931,7 @@ def dashboard(config: Dict[str, Any]) -> int:
     menu = [
         ("▶  Run selected experience", lambda: command_run(arg_namespace(yes=False), config)),
         ("◆  Select test code", lambda: command_select(arg_namespace(test=None), config)),
+        ("＋  Import Git test code", lambda: command_import_git(arg_namespace(url=None), config)),
         ("⚙  Configure hardware", lambda: command_configure(arg_namespace(show=False), config)),
         ("⇧  Upload selected test", lambda: command_upload(arg_namespace(), config)),
         ("◉  Serial monitor", lambda: command_monitor(arg_namespace(), config)),
@@ -694,7 +967,7 @@ def dashboard(config: Dict[str, Any]) -> int:
         if answer in {"down", "s", "j"}:
             selected_index = (selected_index + 1) % len(menu)
             continue
-        if answer.isdigit() and 1 <= int(answer) <= 8:
+        if answer.isdigit() and 1 <= int(answer) <= min(9, len(menu)):
             selected_index = int(answer) - 1
             answer = "enter"
         if answer in {"q", "escape"} or (answer in {"enter", "right", "d", " "} and menu[selected_index][1] is None):
@@ -710,7 +983,11 @@ def dashboard(config: Dict[str, Any]) -> int:
 
 
 def arg_namespace(**values: Any) -> argparse.Namespace:
-    defaults = {"test": None, "port": None, "dry_run": False, "force": False, "yes": False, "show": False}
+    defaults = {
+        "test": None, "port": None, "dry_run": False, "force": False,
+        "yes": False, "show": False, "url": None, "project_subdir": None,
+        "processor": None, "board": None, "display": None, "name": None,
+    }
     defaults.update(values)
     return argparse.Namespace(**defaults)
 
@@ -741,6 +1018,14 @@ def build_parser() -> argparse.ArgumentParser:
     select_parser.add_argument("--force", action="store_true")
     install_parser = subparsers.add_parser("install", add_help=False)
     install_parser.add_argument("--force", action="store_true")
+    importer = subparsers.add_parser("import-git", aliases=["import"], add_help=False)
+    importer.add_argument("url", nargs="?")
+    importer.add_argument("--project-subdir")
+    importer.add_argument("--processor")
+    importer.add_argument("--board")
+    importer.add_argument("--display")
+    importer.add_argument("--name")
+    importer.add_argument("-y", "--yes", action="store_true")
     for name in ("build", "upload", "monitor"):
         child = subparsers.add_parser(name, add_help=False)
         add_test_options(child)
@@ -755,6 +1040,7 @@ def print_help(parser: argparse.ArgumentParser) -> None:
     print("  pbl                         open the interactive dashboard")
     print("  pbl configure               choose processor, display, touch, mic and speaker")
     print("  pbl test-codes              show the hardware test-code library")
+    print("  pbl import-git [URL]         verify and add a public Git ESP-IDF test")
     print("  pbl select [test]           select a test firmware")
     print("  pbl detect-port             find a connected board")
     print("  pbl run [test]              build, upload and monitor")
@@ -773,7 +1059,7 @@ def normalized_arguments(arguments: Sequence[str]) -> List[str]:
         "--run": "run", "--build": "build", "--upload": "upload",
         "--monitor": "monitor", "--detect-port": "detect-port",
         "--test-codes": "test-codes", "--configure": "configure",
-        "--select": "select", "--doctor": "doctor",
+        "--select": "select", "--doctor": "doctor", "--import-git": "import-git",
     }
     if values and values[0] in aliases:
         values[0] = aliases[values[0]]
@@ -813,6 +1099,8 @@ def main(arguments: Optional[Sequence[str]] = None) -> int:
         return command_doctor(config)
     if args.command == "install":
         return command_install(args)
+    if args.command in {"import-git", "import"}:
+        return command_import_git(args, config)
     commands = {
         "build": command_build, "upload": command_upload,
         "monitor": command_monitor, "run": command_run,
