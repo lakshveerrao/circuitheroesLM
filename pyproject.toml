@@ -1,15 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "circuitheroeslm"
-version = "0.2.0.dev0"
-description = "Native electronics-centric language model for offline ESP32 inference"
-readme = "README.md"
-requires-python = ">=3.11"
+name = "pbl-lm"
+version = "0.2.0"
+description = "Projects by Laksh terminal for CircuitHeroesLM, boards, and local AI"
+readme = "PYPI_README.md"
+requires-python = ">=3.9"
 license = "MIT"
-authors = [{name = "Laksh"}]
-dependencies = ["numpy>=1.26", "torch>=2.2"]
+authors = [{name = "Lakshveer Rao"}]
+keywords = ["esp32", "tinyml", "embedded-ai", "electronics", "circuitheroeslm"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Education",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = []
+
+[project.optional-dependencies]
+model = ["numpy>=1.26", "torch>=2.2"]
 
 [project.urls]
+Homepage = "https://www.circuitheroes.com/"
 Repository = "https://github.com/lakshveerrao/circuitheroesLM"
+Documentation = "https://github.com/lakshveerrao/circuitheroesLM/blob/main/docs/PBL.md"
+
+[project.scripts]
+pbl = "pbl_lm.cli:main"
+pbl-lm = "pbl_lm.cli:main"
+
+[tool.setuptools]
+packages = ["pbl_lm", "circuitheroeslm"]
+
+[tool.setuptools.package-dir]
+circuitheroeslm = "src/circuitheroeslm"
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]

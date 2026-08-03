@@ -85,6 +85,17 @@ serial monitor.
 
 ### Zero-clone install
 
+Recommended:
+
+```sh
+pip install pbl-lm
+pbl
+```
+
+The PyPI distribution is named `pbl-lm`; it installs the command `pbl`.
+
+Alternative standard-library bootstrap:
+
 macOS, Linux, and Ubuntu Touch:
 
 ```sh
