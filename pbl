@@ -357,7 +357,7 @@ def command_upload(args: argparse.Namespace, config: Dict[str, Any]) -> int:
     state = compatibility(item, config)
     if state != "ready" and not args.force:
         raise SystemExit(f"{item['name']} is not compatible with this profile: {state}. Use --force to override.")
-    port = args.port or selected_port(config)
+    port = args.port or selected_port(config, required=not args.dry_run) or "<auto-detect>"
     heading(f"Uploading · {item['name']} · {port}")
     project = project_for(item)
     build_dir = build_dir_for(item)
@@ -390,7 +390,7 @@ def command_upload(args: argparse.Namespace, config: Dict[str, Any]) -> int:
 
 def command_monitor(args: argparse.Namespace, config: Dict[str, Any]) -> int:
     item = find_test(args.test or config["selected_test"])
-    port = args.port or selected_port(config)
+    port = args.port or selected_port(config, required=not args.dry_run) or "<auto-detect>"
     heading(f"Monitoring · {item['name']} · {port}")
     return run_process(
         ["idf.py", "-B", str(build_dir_for(item)), "-p", str(port), "monitor"],

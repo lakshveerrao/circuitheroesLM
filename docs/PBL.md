@@ -7,6 +7,19 @@ application instead of a collection of long build commands.
 
 ### Zero-clone install
 
+Recommended on every system with Python:
+
+```sh
+pip install pbl-lm
+pbl
+```
+
+The distribution name is `pbl-lm`, while the installed product command is
+simply `pbl`. The alias `pbl-lm` is also installed for environments where an
+older unrelated `pbl` command already exists.
+
+Alternative standard-library bootstrap:
+
 No Git checkout, pip, UV, Arduino CLI, or manual file copying is required.
 The official bootstrap transfers the PBL program once, installs it in the
 user's own application directory, and then opens with the normal `pbl`
