@@ -7,8 +7,8 @@ from pbl_lm.cli import ARCHIVE_URL, _safe_relative
 
 class PblLmPackageTests(unittest.TestCase):
     def test_version_matches_release_tag(self):
-        self.assertEqual(__version__, "0.2.0")
-        self.assertTrue(ARCHIVE_URL.endswith("/pbl-v0.2.0.zip"))
+        self.assertEqual(__version__, "0.2.1")
+        self.assertTrue(ARCHIVE_URL.endswith("/pbl-v0.2.1.zip"))
 
     def test_archive_paths_are_scoped_and_safe(self):
         self.assertEqual(_safe_relative("repo/pbl", "repo"), Path("pbl"))
