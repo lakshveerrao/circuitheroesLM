@@ -77,17 +77,41 @@ The complete evidence is in
 
 ## Start with PBL — no pip or UV required
 
-**PBL (Pocket Board Lab)** is the product interface for this repository. It is
+**PBL (Projects by Laksh)** is the product interface for this repository. It is
 a dependency-free terminal dashboard built with Python's standard library. It
 detects connected ESP boards, remembers the user's hardware, builds the right
 firmware, uploads it, writes model partitions when required, and opens the
 serial monitor.
+
+### Zero-clone install
+
+macOS, Linux, and Ubuntu Touch:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/lakshveerrao/circuitheroesLM/main/install-pbl.py | python3
+pbl
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/lakshveerrao/circuitheroesLM/main/install-pbl.py | py -3 -
+pbl
+```
+
+This performs the unavoidable first transfer automatically. Users do not clone
+Git, manage a repository, run pip, copy files, or use Arduino CLI. After that,
+`pbl` opens the Projects by Laksh terminal from anywhere.
+
+### Repository edition
 
 ```sh
 ./pbl
 ```
 
 That opens the interactive terminal dashboard. Nothing has to be installed.
+The dashboard uses arrow keys or W/S plus Enter, and works with standard
+terminal keypads on macOS, Linux, Windows and Ubuntu Touch.
 To make `pbl` available everywhere as a normal command, use the optional
 one-time, pip-free installer:
 
@@ -109,8 +133,8 @@ pbl run                     # build + upload + monitor
 
 Option-style commands are accepted too: `pbl --run`, `pbl --upload`,
 `pbl --detect-port`, `pbl --configure`, and `pbl --test-codes`. Use
-`pbl doctor` to check Python, ESP-IDF, the compiler, the test catalog, and the
-connected serial device from one screen. The pip-free installer also provides
+`pbl doctor` to check Python, firmware tools, the compiler, the test catalog,
+and the connected serial device from one screen. The pip-free installer also provides
 the compact aliases requested for scripting: `pbl--run`, `pbl--upload`,
 `pbl--detect-port`, `pbl--configure`, and `pbl--test-codes`.
 

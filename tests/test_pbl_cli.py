@@ -23,15 +23,15 @@ class PblCliTests(unittest.TestCase):
     def test_help_needs_no_optional_packages(self):
         result = run_pbl("--help")
         self.assertEqual(result.returncode, 0)
-        self.assertIn("Pocket Board Lab", result.stdout)
+        self.assertIn("Projects by Laksh", result.stdout)
+        self.assertNotIn("Pocket Board Lab", result.stdout)
         self.assertIn("pbl configure", result.stdout)
 
     def test_option_style_command_aliases_work(self):
         result = run_pbl("--run", "native-ai-probe", "--dry-run", "--yes")
         self.assertEqual(result.returncode, 0)
-        self.assertIn("idf.py", result.stdout)
-        self.assertIn("write_flash", result.stdout)
-        self.assertIn("monitor", result.stdout)
+        self.assertIn("Firmware tools", result.stdout)
+        self.assertNotIn("idf.py", result.stdout)
 
     def test_catalog_projects_exist(self):
         catalog = json.loads((ROOT / "pbl_cli" / "test_codes.json").read_text())
@@ -45,6 +45,7 @@ class PblCliTests(unittest.TestCase):
         self.assertIn("microphone-meter", result.stdout)
         self.assertIn("agent-hardware-screen", result.stdout)
         self.assertIn("native-ai-probe", result.stdout)
+
 
 
 if __name__ == "__main__":
