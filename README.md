@@ -24,6 +24,27 @@ cloud API, or remote model.
 > designed around flash bandwidth, tiny recurrent state, verified local facts,
 > and the actual memory hierarchy of an embedded device.
 
+## The genesis: a seven-year-old's card game
+
+![From cards to local engineering AI](docs/images/genesis-timeline.svg)
+
+circuitheroesLM did not begin as a conventional language-model project. Its
+starting point was **Circuit Heroes**, the physical electronics-learning card
+game Lakshveer Rao designed and began putting into the world at age seven. The
+cards made processors, sensors, drivers, outputs, displays, power, and real
+circuit relationships playable before a child needed a workbench.
+
+That first idea became a wider learning ecosystem: public game showcases,
+builds made by children, several deck and game formats, and—according to the
+current Circuit Heroes product site—more than 300 families reached worldwide.
+circuitheroesLM carries the same idea into its next form: a tiny, downloadable
+engineering model that can teach and create activities directly on pocket
+hardware, without sending a child's questions to the cloud.
+
+Read [the full Circuit Heroes origin story](docs/ABOUT.md), explore the
+[Circuit Heroes website](https://www.circuitheroes.com/), or continue below
+for the measured model architecture and reproducible device evidence.
+
 ## The result, at a glance
 
 | What was measured | v0.4 result |
@@ -299,7 +320,9 @@ original assets are released under the repository license.
 ## Author and license
 
 Created by **Lakshveer Rao** as the open foundation for Circuit Heroes and
-future offline engineering-learning products.
+future offline engineering-learning products. The project continues a journey
+that began when Laksh designed the first Circuit Heroes electronics-learning
+card game at age seven. See [`docs/ABOUT.md`](docs/ABOUT.md).
 
 Project implementation: MIT. Dataset and reference materials retain their
 respective licenses and notices.
