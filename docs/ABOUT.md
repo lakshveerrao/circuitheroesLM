@@ -45,6 +45,36 @@ The editions differ, but the learning principle is consistent:
 
 This is the educational DNA inherited by circuitheroesLM.
 
+## The builder practice behind the model
+
+Laksh's personal portfolio describes his approach in three words: **“Builds to
+learn.”** The phrase matters here because circuitheroesLM did not emerge from
+language-model experimentation alone. It grew from repeated contact with real
+motors, sensors, controllers, vehicles, manufacturing tools, and the problems
+that appear when software meets electricity.
+
+The current [Lakshveer.com](https://lakshveer.com/) portfolio reports:
+
+| Builder record | Portfolio figure |
+| --- | ---: |
+| Projects documented | 169+ |
+| Products shipped | 2 |
+| Workshops conducted | 4+ |
+| Grants and scholarships | ₹1.4 lakh+ |
+| Immersive company visits | 25+ across four cities |
+
+Its project areas include obstacle-avoiding vehicles, gesture-controlled and
+GPS-guided robotic cars, computer-vision systems, TinyML, embedded controllers,
+sensors, actuators, and digital fabrication. The learning visits span hardware
+manufacturing, PCB production, drones, semiconductors, robotics, electric
+vehicles, prototyping, IoT, and TinyML.
+
+These figures are portfolio-reported and will evolve as the work continues.
+They are included because they explain important design decisions in this
+repository: hardware truth is grounded, safety constraints are explicit,
+device measurements are published, and the model is expected to run on the
+same class of small boards used to build real projects.
+
 ## From builds to a local engineering model
 
 circuitheroesLM asks a new question: **can the game keep inventing useful
@@ -113,6 +143,7 @@ attributed to the Circuit Heroes website because those figures can change.
 - [Circuit Heroes games](https://www.circuitheroes.com/play)
 - [Real builds by kids](https://www.circuitheroes.com/builds)
 - [Current decks and product figures](https://www.circuitheroes.com/buy)
+- [Lakshveer Rao — personal builder portfolio](https://lakshveer.com/)
 - [EducationWorld profile of Lakshveer Rao](https://educationworld.in/young-achiever-lakshveer-rao/)
 - [Hyderabad Kids Fair 2025 brochure](https://hydkidsfair.com/wp-content/uploads/2025/08/HKF-2025-brochure1.pdf)
 
@@ -121,7 +152,10 @@ attributed to the Circuit Heroes website because those figures can change.
 **Lakshveer Rao** is the young creator of Circuit Heroes and circuitheroesLM.
 His work connects three things that are too often separated: learning through
 play, building real hardware, and making AI small enough to live alongside the
-electronics it explains.
+electronics it explains. He is also co-founder and partner of Projects by
+Laksh, where hardware and AI systems are developed through documented,
+build-first learning. Explore his wider body of work at
+[Lakshveer.com](https://lakshveer.com/).
 
 The goal is not merely to place an AI label on a learning product. It is to
 build an inspectable engineering intelligence that can live in a child's

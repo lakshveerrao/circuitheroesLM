@@ -322,7 +322,8 @@ original assets are released under the repository license.
 Created by **Lakshveer Rao** as the open foundation for Circuit Heroes and
 future offline engineering-learning products. The project continues a journey
 that began when Laksh designed the first Circuit Heroes electronics-learning
-card game at age seven. See [`docs/ABOUT.md`](docs/ABOUT.md).
+card game at age seven. See [`docs/ABOUT.md`](docs/ABOUT.md) and
+[Lakshveer's builder portfolio](https://lakshveer.com/).
 
 Project implementation: MIT. Dataset and reference materials retain their
 respective licenses and notices.
