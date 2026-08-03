@@ -1,9 +1,36 @@
 # PBL product guide
 
-PBL means **Pocket Board Lab**. It makes CircuitHeroesLM feel like a terminal
+PBL means **Projects by Laksh**. It makes CircuitHeroesLM feel like a terminal
 application instead of a collection of long build commands.
 
 ## First minute
+
+### Zero-clone install
+
+No Git checkout, pip, UV, Arduino CLI, or manual file copying is required.
+The official bootstrap transfers the PBL program once, installs it in the
+user's own application directory, and then opens with the normal `pbl`
+command.
+
+macOS, Linux, and Ubuntu Touch:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/lakshveerrao/circuitheroesLM/main/install-pbl.py | python3
+pbl
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/lakshveerrao/circuitheroesLM/main/install-pbl.py | py -3 -
+pbl
+```
+
+An executable cannot run on a new computer until its bytes have been
+transferred once. “Zero clone” means that PBL performs this transfer and setup
+as one official launch flow; users do not manage a repository or copy files.
+
+### Repository edition
 
 From the repository root:
 
@@ -17,10 +44,10 @@ The first command checks the development environment, the second saves a local
 hardware profile, and the third opens the full-screen menu. PBL stores local
 preferences and generated builds under `.pbl/`; these files are not committed.
 
-No Python package installer is used. The only product requirement is Python
-3.9 or newer. Firmware compilation still requires ESP-IDF because PBL is a
-safe interface to the real Espressif compiler and flashing tools, not a fake
-replacement for them.
+No Python package installer is used. The portable source edition requires
+Python 3.9 or newer. PBL presents firmware preparation, upload, device
+detection and monitoring through one interface while using the supported
+ESP-IDF toolchain underneath. Arduino CLI is not required.
 
 ## Commands
 
@@ -40,11 +67,16 @@ replacement for them.
 | `pbl doctor` | Check tools, ports and profile |
 | `pbl install` | Add a user-local command link; no pip or sudo |
 
-`--dry-run` prints the exact underlying commands. `--force` is required to
-override a hardware-profile mismatch. `pbl run` confirms before replacing
+`--dry-run` previews firmware actions without exposing internal tool commands.
+`--force` is required to override a hardware-profile mismatch. `pbl run`
+confirms before replacing
 device firmware unless `--yes` is supplied. Installation also creates compact
 aliases including `pbl--help`, `pbl--run`, `pbl--upload`,
 `pbl--detect-port`, `pbl--test-codes`, `pbl--select`, and `pbl--configure`.
+
+The dashboard and configurator support arrow keys, W/S, Enter, right-arrow,
+number shortcuts and Q. This also supports Ubuntu Touch terminal keypads that
+send standard arrow sequences.
 
 ## Hardware profiles
 
@@ -74,8 +106,8 @@ the test catalog clearly labels compatible examples.
   level. No continuous beep is generated.
 - Voice recordings stay in volatile RAM, are played once, and are freed.
 - PBL asks before a combined run overwrites device firmware.
-- If ESP-IDF leaves an incomplete build directory, PBL moves it into
-  `.pbl/recovered-builds` rather than deleting it.
+- If the firmware toolchain leaves an incomplete build directory, PBL moves it
+  into `.pbl/recovered-builds` rather than deleting it.
 - The native AI test automatically writes its matching CHLM artifact to the
   model partition after flashing the application.
 
